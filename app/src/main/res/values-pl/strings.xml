@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_settings">Ustawienia</string>
+    <string name="profile">Profil</string>
+    <string name="my_books">Moje ksiazki</string>
+    <string name="logout">Wyloguj</string>
+    <string name="search">Szukaj</string>
+
+</resources>
