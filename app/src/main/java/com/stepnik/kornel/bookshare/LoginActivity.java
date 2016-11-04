@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "loginFile";
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.0.101:8080/")
+            .baseUrl("http:/192.168.1.3:8080/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     UserService userService = retrofit.create(UserService.class);
@@ -66,12 +66,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<User> call, retrofit2.Response<User> response) {
                 Log.d("isOK", String.valueOf(response.isSuccessful()));
+
                 if (response.isSuccessful()){
                     Log.d("response", response.body().toString());
 
                     AppData.loggedUser = response.body();
 
-                    proccedUser();
+                    proceedUser();
 
                 } else {
                     Utilities.displayMessage(getString(R.string.err_no_user), LoginActivity.this);
@@ -87,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         return false;
     }
 
-    private void proccedUser() {
+    private void proceedUser() {
         setAsLogged();
 
         try {

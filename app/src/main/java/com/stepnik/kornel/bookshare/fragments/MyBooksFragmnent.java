@@ -44,9 +44,11 @@ public class MyBooksFragmnent extends Fragment {
     ArrayList<Book> bookListData;
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.0.101:8080/api/")
+            .baseUrl("http:/192.168.1.3:8080/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
+
+
     BookService bookService = retrofit.create(BookService.class);
 
 
@@ -74,16 +76,25 @@ public class MyBooksFragmnent extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        return super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_mybooks, container, false);
-        TextView tempTextView = (TextView) rootView.findViewById(R.id.temp_text_mybooks);
-        tempTextView.setText("My books");
 
-        lvBooks = (ListView) rootView.findViewById(R.id.lv_mybooks);
-
-        bookList = new ArrayList<>();
-        bookListData = new ArrayList<>();
-        getBooks();
 
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        View view = getView();
+        if (view != null) {
+            TextView tempTextView = (TextView) view.findViewById(R.id.temp_text_mybooks);
+            tempTextView.setText("My books");
+
+            lvBooks = (ListView) view.findViewById(R.id.lv_mybooks);
+
+            bookList = new ArrayList<>();
+            bookListData = new ArrayList<>();
+            getBooks();
+        }
     }
 
     @Override

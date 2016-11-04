@@ -49,6 +49,11 @@ public class BookDetailsFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(ARG_BOOK, selectedBook);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
 

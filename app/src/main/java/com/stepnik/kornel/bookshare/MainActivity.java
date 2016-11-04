@@ -66,12 +66,9 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         Fragment fragment = null;
-        Class fragmentClass = null;
-
-        fragmentClass = MainFragment.class;
 
         try {
-            fragment = (Fragment) fragmentClass.newInstance();
+            fragment = MainFragment.class.newInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -16,8 +16,10 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.models.Book;
+import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.BookService;
 
 import java.util.ArrayList;
@@ -36,13 +38,13 @@ import retrofit2.Retrofit;
 public class AddBookFragment extends Fragment {
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.0.101:8080/api/")
+            .baseUrl("http:/192.168.1.3:8080/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     BookService bookService = retrofit.create(BookService.class);
     EditText etTittle;
     EditText etAuthor;
-    EditText etOwnerId;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -56,7 +58,6 @@ public class AddBookFragment extends Fragment {
 
         etTittle = (EditText) rootView.findViewById(R.id.te_title);
         etAuthor = (EditText) rootView.findViewById(R.id.te_author);
-        etOwnerId = (EditText) rootView.findViewById(R.id.te_ownerId);
         Button addBook = (Button) rootView.findViewById(R.id.b_addbook);
 
         addBook.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +71,7 @@ public class AddBookFragment extends Fragment {
     }
 
     private void addNewBook() {
-        Call<Book> addBook = bookService.addBook(etTittle.getText().toString(), etAuthor.getText().toString(), 1L);
+        Call<Book> addBook = bookService.addBook(etTittle.getText().toString(), etAuthor.getText().toString(), AppData.loggedUser.getId());
 
         addBook.enqueue(new Callback<Book>() {
             @Override
@@ -81,7 +82,6 @@ public class AddBookFragment extends Fragment {
             @Override
             public void onFailure(Call<Book> call, Throwable t) {
                 Log.d("response F", t.getMessage());
-
             }
         });
     }
