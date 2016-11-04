@@ -37,8 +37,11 @@ import com.stepnik.kornel.bookshare.fragments.MyBooksFragmnent;
 import com.stepnik.kornel.bookshare.fragments.ProfileFragment;
 import com.stepnik.kornel.bookshare.fragments.SearchFragment;
 import com.stepnik.kornel.bookshare.models.Book;
+import com.stepnik.kornel.bookshare.models.User;
+import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.BookService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -102,7 +105,17 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        AppData.loggedUser = getUserFromFile();
+    }
 
+    private User getUserFromFile() {
+        User user = null;
+        try {
+            user = (User) Utilities.loadFromFile("userData", MainActivity.this);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
     @Override

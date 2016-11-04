@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.widget.Toast;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -16,7 +17,7 @@ import java.io.ObjectOutputStream;
  */
 
 public class Utilities {
-    
+
     public static void saveToFile(String fileName, Object object, Activity activity) throws IOException {
         FileOutputStream fos = activity.openFileOutput(fileName, Context.MODE_PRIVATE);
         ObjectOutputStream os = new ObjectOutputStream(fos);
@@ -39,5 +40,10 @@ public class Utilities {
                 = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public static void displayMessage(String text, Activity activity) {
+        Toast.makeText(activity, text,
+                Toast.LENGTH_LONG).show();
     }
 }

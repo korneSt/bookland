@@ -14,6 +14,8 @@ import com.stepnik.kornel.bookshare.models.User;
 import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.UserService;
 
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
@@ -32,9 +34,8 @@ public class LoginActivity extends AppCompatActivity {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     UserService userService = retrofit.create(UserService.class);
-    EditText username;
-    EditText password;
-    Button loginButton;
+
+
 
 
     @Override
@@ -42,43 +43,38 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
         boolean hasLoggedIn = settings.getBoolean("hasLoggedIn", false);
-        if(hasLoggedIn)
-        {
+        if(hasLoggedIn) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         } else {
             setContentView(R.layout.activity_login);
-            username = (EditText) findViewById(R.id.et_username);
-            password = (EditText) findViewById(R.id.et_password);
-            loginButton = (Button) findViewById(R.id.b_login);
+            final EditText username = (EditText) findViewById(R.id.et_username);
+            final EditText password = (EditText) findViewById(R.id.et_password);
+            Button loginButton = (Button) findViewById(R.id.b_login);
             loginButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    isLogged();
+                    isLogged(username.getText().toString(), password.getText().toString());
                 }
             });
         }
     }
 
-    public boolean isLogged() {
-        Call<User> login = userService.login(username.getText().toString(), password.getText().toString());
+    public boolean isLogged(String username, String password) {
+        Call<User> login = userService.login(username, password);
         login.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, retrofit2.Response<User> response) {
                 Log.d("isOK", String.valueOf(response.isSuccessful()));
                 if (response.isSuccessful()){
-                    SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0); // 0 - for private mode
-                    SharedPreferences.Editor editor = settings.edit();
-                    editor.putBoolean("hasLoggedIn", true);
-                    editor.putString("username", response.body().getUsername());
-                    AppData.loggedUser = response.body();
-                    editor.apply();
                     Log.d("response", response.body().toString());
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    LoginActivity.this.finish();
+
+                    AppData.loggedUser = response.body();
+
+                    proccedUser();
+
                 } else {
-                    displayMessage();
+                    Utilities.displayMessage(getString(R.string.err_no_user), LoginActivity.this);
                 }
             }
 
@@ -91,11 +87,32 @@ public class LoginActivity extends AppCompatActivity {
         return false;
     }
 
+    private void proccedUser() {
+        setAsLogged();
 
+        try {
+            Utilities.saveToFile("userData", AppData.loggedUser, LoginActivity.this);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Utilities.displayMessage(getString(R.string.err_savefile), this);
+        }
 
-    private void displayMessage() {
-        Toast.makeText(LoginActivity.this, "Brak takiego uzytkownika",
-                Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        LoginActivity.this.finish();
     }
+
+
+    private void setAsLogged() {
+        SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("hasLoggedIn", true);
+        editor.apply();
+    }
+
+//    private void displayMessage(String text) {
+//        Toast.makeText(LoginActivity.this, text,
+//                Toast.LENGTH_LONG).show();
+//    }
 
 }
