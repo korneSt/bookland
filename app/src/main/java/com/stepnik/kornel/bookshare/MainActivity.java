@@ -1,6 +1,8 @@
 package com.stepnik.kornel.bookshare;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -164,10 +166,11 @@ public class MainActivity extends AppCompatActivity
 
         try {
             fragment = (Fragment) fragmentClass.newInstance();
+            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -175,7 +178,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void logout() {
-        
+        SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("hasLoggedIn", false).apply();
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
 

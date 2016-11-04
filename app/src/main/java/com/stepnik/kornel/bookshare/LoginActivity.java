@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.stepnik.kornel.bookshare.models.User;
+import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.UserService;
 
 import retrofit2.Call;
@@ -70,8 +71,12 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putBoolean("hasLoggedIn", true);
                     editor.putString("username", response.body().getUsername());
+                    AppData.loggedUser = response.body();
                     editor.apply();
                     Log.d("response", response.body().toString());
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    LoginActivity.this.finish();
                 } else {
                     displayMessage();
                 }
@@ -85,6 +90,8 @@ public class LoginActivity extends AppCompatActivity {
         });
         return false;
     }
+
+
 
     private void displayMessage() {
         Toast.makeText(LoginActivity.this, "Brak takiego uzytkownika",

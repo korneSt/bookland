@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.models.Book;
+import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.BookService;
 
 import java.util.ArrayList;
@@ -91,33 +93,35 @@ public class MyBooksFragmnent extends Fragment {
 
 
     private void getBooks() {
-        Call<List<Book>> books = bookService.getBooks();
-
+        Call<List<Book>> books = bookService.getUserBooks(AppData.loggedUser.getId());
+        Log.d("user id", String.valueOf(AppData.loggedUser.getId()));
         books.enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, retrofit2.Response<List<Book>> response) {
                 bookList = new ArrayList<>();
-
-                for (Book book : response.body()) {
-                    bookListData.add(book);
-                    HashMap<String, String> bookTemp = new HashMap<>();
-                    bookTemp.put("title", book.getTitle());
-                    bookTemp.put("author", book.getAuthor());
-                    bookList.add(bookTemp);
-                }
-
-                ListAdapter adapter = new SimpleAdapter(
-                        getContext(), bookList,
-                        R.layout.list_item, new String[]{"title", "author"},
-                        new int[]{R.id.tv_title,R.id.tv_author}
-                );
-                lvBooks.setAdapter(adapter);
-                lvBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        mCallback.onBookSelected(bookListData.get(i));
+                Log.d("status", String.valueOf(response.code()));
+                if (response.isSuccessful()) {
+                    for (Book book : response.body()) {
+                        bookListData.add(book);
+                        HashMap<String, String> bookTemp = new HashMap<>();
+                        bookTemp.put("title", book.getTitle());
+                        bookTemp.put("author", book.getAuthor());
+                        bookList.add(bookTemp);
                     }
-                });
+
+                    ListAdapter adapter = new SimpleAdapter(
+                            getContext(), bookList,
+                            R.layout.list_item, new String[]{"title", "author"},
+                            new int[]{R.id.tv_title, R.id.tv_author}
+                    );
+                    lvBooks.setAdapter(adapter);
+                    lvBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            mCallback.onBookSelected(bookListData.get(i));
+                        }
+                    });
+                }
             }
 
             @Override
