@@ -49,7 +49,7 @@ public class MyBooksFragmnent extends Fragment {
 
 
     public interface OnBookSelectedListener {
-        public void onBookSelected(Book book);
+        void onBookSelected(Book book);
     }
 
 

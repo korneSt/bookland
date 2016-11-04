@@ -33,6 +33,7 @@ import com.stepnik.kornel.bookshare.fragments.MainFragment;
 import com.stepnik.kornel.bookshare.fragments.MapFragment;
 import com.stepnik.kornel.bookshare.fragments.MyBooksFragmnent;
 import com.stepnik.kornel.bookshare.fragments.ProfileFragment;
+import com.stepnik.kornel.bookshare.fragments.SearchFragment;
 import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.services.BookService;
 
@@ -49,17 +50,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
         GoogleMap.OnMapLongClickListener, MapFragment.OnFragmentInteractionListener, MyBooksFragmnent.OnBookSelectedListener{
 
-    Button btnGetBook;
-    ListView lvBooks;
     GoogleMap map;
-    ArrayList<HashMap<String, String>> bookList;
-    Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.0.104:8080/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-    BookService bookService = retrofit.create(BookService.class);
-    private ProgressDialog pDialog;
-    MapFragment mapFragmentScreen;
     FragmentManager fragmentManager;
 
     @Override
@@ -82,27 +73,6 @@ public class MainActivity extends AppCompatActivity
 
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-
-
-//        btnGetBook = (Button) findViewById(R.id.btn_book);
-//        lvBooks = (ListView) findViewById(R.id.lv_books);
-//
-//        bookList = new ArrayList<>();
-//        pDialog = new ProgressDialog(this);
-//        pDialog.setMessage("Please wait...");
-//        pDialog.setCancelable(false);
-//
-//        btnGetBook.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                // making json object request
-////                makeJsonObjectRequest();
-////                makeJsonArrayRequest();
-//                getBooks();
-//            }
-//        });
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -130,10 +100,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-//        mapFragmentScreen = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.mapView);
-
-//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
 
     }
 
@@ -176,16 +142,24 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         Fragment fragment = null;
         Class fragmentClass = null;
-        if (id == R.id.nav_home) {
-            fragmentClass = MainFragment.class;
-        } else if (id == R.id.nav_profile) {
-            fragmentClass = ProfileFragment.class;
-        } else if (id == R.id.nav_mybooks) {
-            fragmentClass = MyBooksFragmnent.class;
-        } else if (id == R.id.nav_settings) {
-            fragmentClass = MapFragment.class;
-        } else if (id == R.id.nav_share) {
-
+        switch (id) {
+            case R.id.nav_home:
+                fragmentClass = MapFragment.class;
+                break;
+            case R.id.nav_profile:
+                fragmentClass = ProfileFragment.class;
+                break;
+            case R.id.nav_mybooks:
+                fragmentClass = MyBooksFragmnent.class;
+                break;
+            case R.id.nav_search:
+                fragmentClass = SearchFragment.class;
+                break;
+            case R.id.nav_settings:
+                break;
+            case R.id.nav_logout:
+                logout();
+                break;
         }
 
         try {
@@ -200,15 +174,8 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-
-    private void showpDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
-    }
-
-    private void hidepDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
+    private void logout() {
+        
     }
 
 
