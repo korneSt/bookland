@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -28,6 +29,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.stepnik.kornel.bookshare.model.Book;
+import com.stepnik.kornel.bookshare.fragments.*;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,53 +47,12 @@ import retrofit2.Retrofit;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    Button btnGetBook;
-    ListView lvBooks;
-    //    ArrayList<Book> bookList;
-    ArrayList<HashMap<String, String>> bookList;
-    Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://10.128.64.162:8080/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-    BookService bookService = retrofit.create(BookService.class);
-    // Progress dialog
-    private ProgressDialog pDialog;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        btnGetBook = (Button) findViewById(R.id.btn_book);
-        lvBooks = (ListView) findViewById(R.id.lv_books);
-
-        bookList = new ArrayList<>();
-        pDialog = new ProgressDialog(this);
-        pDialog.setMessage("Please wait...");
-        pDialog.setCancelable(false);
-
-        btnGetBook.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // making json object request
-//                makeJsonObjectRequest();
-//                makeJsonArrayRequest();
-                getBooks();
-            }
-        });
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -101,6 +62,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        FragmentManager fm = getFragmentManager();
+        fm.beginTransaction().replace(R.id.content_frame, new FragmentHome()).commit();
     }
 
     @Override
@@ -139,18 +103,21 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+
+        FragmentManager fm = getFragmentManager();
+
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // Handle the camera action
+            fm.beginTransaction().replace(R.id.content_frame, new FragmentHome()).commit();
         } else if (id == R.id.nav_profile) {
-
+            fm.beginTransaction().replace(R.id.content_frame, new FragmentProfile()).commit();
         } else if (id == R.id.nav_mybooks) {
-
+            fm.beginTransaction().replace(R.id.content_frame, new FragmentMyBooks()).commit();
         } else if (id == R.id.nav_search) {
-
+            fm.beginTransaction().replace(R.id.content_frame, new FragmentSearch()).commit();
         } else if (id == R.id.nav_settings) {
-
+            fm.beginTransaction().replace(R.id.content_frame, new FragmentSettings()).commit();
         } else if (id == R.id.nav_logout) {
 
         } else if (id == R.id.nav_share) {
@@ -165,44 +132,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    private void showpDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
-    }
 
-    private void hidepDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
-    }
 
-    private void getBooks() {
-        Call<List<Book>> books = bookService.getBooksYear();
-
-        books.enqueue(new Callback<List<Book>>() {
-            @Override
-            public void onResponse(Call<List<Book>> call, retrofit2.Response<List<Book>> response) {
-                bookList = new ArrayList<>();
-
-                for (Book book : response.body()) {
-                    HashMap<String, String> bookTemp = new HashMap<>();
-                    bookTemp.put("title", book.getTitle());
-                    bookTemp.put("year", book.getAuthor());
-                    bookList.add(bookTemp);
-                }
-
-                ListAdapter adapter = new SimpleAdapter(
-                    MainActivity.this, bookList,
-                    R.layout.list_item, new String[]{"title", "year"},
-                    new int[]{R.id.tv_title,R.id.tv_year}
-                );
-
-                lvBooks.setAdapter(adapter);
-            }
-
-            @Override
-            public void onFailure(Call<List<Book>> call, Throwable t) {
-
-            }
-        });
-    }
 }
