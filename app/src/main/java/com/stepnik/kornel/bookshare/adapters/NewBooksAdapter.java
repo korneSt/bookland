@@ -2,13 +2,16 @@ package com.stepnik.kornel.bookshare.adapters;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.graphics.BitmapCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.models.Book;
 
@@ -33,15 +36,17 @@ public class NewBooksAdapter extends RecyclerView.Adapter<NewBooksAdapter.ViewHo
 
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
-        public TextView tvTittle;
-        public TextView tvAuthor;
-        public ViewHolder(View itemView) {
+        TextView tvTittle;
+        TextView tvAuthor;
+        ImageView cover;
+        ViewHolder(View itemView) {
             super(itemView);
             tvTittle = (TextView) itemView.findViewById(R.id.tv_title_new);
             tvAuthor = (TextView) itemView.findViewById(R.id.tv_author_new);
+            cover = (ImageView) itemView.findViewById(R.id.iv_book_cover);
         }
     }
 
@@ -69,7 +74,7 @@ public class NewBooksAdapter extends RecyclerView.Adapter<NewBooksAdapter.ViewHo
         // - replace the contents of the view with that element
         holder.tvTittle.setText(newBookList.get(position).getTitle());
         holder.tvAuthor.setText(newBookList.get(position).getAuthor());
-
+        Picasso.with(getContext()).load("https://unsplash.it/50/70/?image=" + position).into(holder.cover);
 
     }
 

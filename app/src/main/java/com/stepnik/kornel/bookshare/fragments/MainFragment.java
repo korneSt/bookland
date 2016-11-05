@@ -75,6 +75,11 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         super.onAttach(context);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
