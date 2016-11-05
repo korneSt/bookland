@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -56,7 +57,13 @@ public class MainActivity extends AppCompatActivity
         GoogleMap.OnMapLongClickListener, MapFragment.OnFragmentInteractionListener, MyBooksFragmnent.OnBookSelectedListener{
 
     GoogleMap map;
-    FragmentManager fragmentManager;
+    Fragment currentFragment;
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getSupportFragmentManager().putFragment(outState, "CURR_FRAG", currentFragment);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,16 +72,13 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Fragment fragment = null;
 
-        try {
-            fragment = MainFragment.class.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (savedInstanceState != null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.flContent,
+                    getSupportFragmentManager().getFragment(savedInstanceState, "CURR_FRAG")).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.flContent, new MainFragment()).commit();
         }
-
-        fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +87,7 @@ public class MainActivity extends AppCompatActivity
                 Fragment fragment = null;
                 try {
                     fragment = AddBookFragment.class.newInstance();
+                    currentFragment = fragment;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -172,12 +177,16 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_logout:
                 logout();
                 break;
+            default:
+                fragmentClass = MainFragment.class;
         }
 
         try {
             fragment = (Fragment) fragmentClass.newInstance();
-            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
 
+            getSupportFragmentManager().beginTransaction().replace(R.id.flContent, fragment).commit();
+            currentFragment = fragment;
+            Log.d("ID", String.valueOf(fragment.getId()));
         } catch (Exception e) {
             e.printStackTrace();
         }
