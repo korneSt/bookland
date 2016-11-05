@@ -80,7 +80,9 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.flContent,fragment).commit();
             currentFragment = fragment;
         } else {
-            getSupportFragmentManager().beginTransaction().replace(R.id.flContent, new MainFragment()).commit();
+            Fragment fragment = new MainFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.flContent, fragment).commit();
+            currentFragment = fragment;
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

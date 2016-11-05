@@ -74,11 +74,7 @@ public class MyBooksFragmnent extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        return super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.fragment_mybooks, container, false);
-
-
-        return rootView;
+        return inflater.inflate(R.layout.fragment_mybooks, container, false);
     }
 
     @Override
