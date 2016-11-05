@@ -74,8 +74,9 @@ public class MainActivity extends AppCompatActivity
 
 
         if (savedInstanceState != null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.flContent,
-                    getSupportFragmentManager().getFragment(savedInstanceState, "CURR_FRAG")).commit();
+            Fragment fragment = getSupportFragmentManager().getFragment(savedInstanceState, "CURR_FRAG");
+            getSupportFragmentManager().beginTransaction().replace(R.id.flContent,fragment).commit();
+            currentFragment = fragment;
         } else {
             getSupportFragmentManager().beginTransaction().replace(R.id.flContent, new MainFragment()).commit();
         }
