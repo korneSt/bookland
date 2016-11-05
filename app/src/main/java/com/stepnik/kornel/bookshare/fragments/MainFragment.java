@@ -6,10 +6,15 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -20,10 +25,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.adapters.NewBooksAdapter;
+import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.services.AppData;
+import com.stepnik.kornel.bookshare.services.BookService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
 
@@ -38,24 +49,25 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private ArrayList<Book> newBooks;
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http:/192.168.1.3:8080/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
+    BookService bookService = retrofit.create(BookService.class);
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        getNewBooks();
+    }
 
     @Override
     public void onStart() {
         super.onStart();
-        View view = getView();
-        if (view != null) {
-            TextView tempTextView = (TextView) view.findViewById(R.id.temp_text_mybooks);
-            tempTextView.setText("My books");
-
-            getNewBooks();
-        }
-    }
-
-    private void getNewBooks() {
+//        getNewBooks();
     }
 
     @Override
@@ -73,11 +85,12 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
 //        mRecyclerView.setHasFixedSize(true);
-
+        newBooks = AppData.getBookList();
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new NewBooksAdapter(AppData.booksArray);
+        mAdapter = new NewBooksAdapter(getActivity(), newBooks);
+//        mAdapter = new NewBooksAdapter(newBooks);
         mRecyclerView.setAdapter(mAdapter);
 
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
@@ -91,6 +104,8 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         }
 
         mMapView.getMapAsync(this);
+        getNewBooks();
+
         return rootView;
     }
 
@@ -116,6 +131,30 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     }
         getFragmentManager().beginTransaction().replace(this.getId(), fragment).commit();
 
+    }
+
+    private void getNewBooks() {
+        Call<List<Book>> books = bookService.getBooks();
+        books.enqueue(new Callback<List<Book>>() {
+            @Override
+            public void onResponse(Call<List<Book>> call, retrofit2.Response<List<Book>> response) {
+
+                Log.d("status", String.valueOf(response.code()));
+                if (response.isSuccessful()) {
+                    newBooks.addAll(response.body());
+//                    mAdapter.setNewBooksList();
+                    mAdapter.notifyItemRangeChanged(0, response.body().size());
+//                    for (Book book : response.body()) {
+//                       newBooks.add(book);
+//                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Book>> call, Throwable t) {
+
+            }
+        });
     }
 }
 

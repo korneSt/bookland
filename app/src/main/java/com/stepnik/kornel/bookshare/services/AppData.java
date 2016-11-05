@@ -24,6 +24,10 @@ public class AppData{
             new Book("Tytul", "Autor"), new Book("Tytul1", "Autor")};
 
     public static ArrayList<Book> getBookList() {
-        return (ArrayList<Book>) Arrays.asList(booksArray);
+        ArrayList<Book> books = new ArrayList<>();
+        books.add(new Book("Tytul", "Autor"));
+        books.add(new Book("Tytul", "Autor"));
+        return books;
+//        return (ArrayList<Book>) Arrays.asList(booksArray);
     }
 }

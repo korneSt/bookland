@@ -1,20 +1,35 @@
 package com.stepnik.kornel.bookshare.adapters;
 
+import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.models.Book;
+
+import java.util.ArrayList;
 
 /**
  * Created by korSt on 31.10.2016.
  */
 
 public class NewBooksAdapter extends RecyclerView.Adapter<NewBooksAdapter.ViewHolder>{
-    private Book[] mDataset;
+    private ArrayList<Book> newBookList;
+    private Context context;
+
+
+    public NewBooksAdapter(Context context, ArrayList<Book> bookList) {
+        this.context = context;
+        this.newBookList = bookList;
+    }
+    public Context getContext() {
+        return context;
+    }
 
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
@@ -31,8 +46,8 @@ public class NewBooksAdapter extends RecyclerView.Adapter<NewBooksAdapter.ViewHo
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public NewBooksAdapter(Book[] myDataset) {
-        mDataset = myDataset;
+    public NewBooksAdapter(ArrayList<Book> myDataset) {
+        newBookList = myDataset;
     }
 
     // Create new views (invoked by the layout manager)
@@ -52,8 +67,8 @@ public class NewBooksAdapter extends RecyclerView.Adapter<NewBooksAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.tvTittle.setText(mDataset[position].getTitle());
-        holder.tvAuthor.setText(mDataset[position].getAuthor());
+        holder.tvTittle.setText(newBookList.get(position).getTitle());
+        holder.tvAuthor.setText(newBookList.get(position).getAuthor());
 
 
     }
@@ -61,6 +76,11 @@ public class NewBooksAdapter extends RecyclerView.Adapter<NewBooksAdapter.ViewHo
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return newBookList.size();
+    }
+
+    public void setNewBooksList(ArrayList<Book> bookList) {
+        this.newBookList = bookList;
+        notifyItemRangeChanged(0, bookList.size());
     }
 }
