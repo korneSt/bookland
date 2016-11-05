@@ -21,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -54,7 +55,7 @@ import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
-        GoogleMap.OnMapLongClickListener, MapFragment.OnFragmentInteractionListener, MyBooksFragmnent.OnBookSelectedListener{
+        GoogleMap.OnMapLongClickListener, MyBooksFragmnent.OnBookSelectedListener{
 
     GoogleMap map;
     Fragment currentFragment;
@@ -64,7 +65,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState, "CURR_FRAG", currentFragment);
+        if (currentFragment != null) {
+            getSupportFragmentManager().putFragment(outState, "CURR_FRAG", currentFragment);
+        }
     }
 
     @Override
@@ -79,11 +82,17 @@ public class MainActivity extends AppCompatActivity
             Fragment fragment = getSupportFragmentManager().getFragment(savedInstanceState, "CURR_FRAG");
             getSupportFragmentManager().beginTransaction().replace(R.id.flContent,fragment).commit();
             currentFragment = fragment;
-        } else {
-            Fragment fragment = new MainFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.flContent, fragment).commit();
-            currentFragment = fragment;
         }
+//        else {
+//            Fragment fragment = null;
+//            try {
+//                fragment = MainFragment.class.newInstance();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            getSupportFragmentManager().beginTransaction().replace(R.id.flContent, fragment).commit();
+//            currentFragment = fragment;
+//        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +107,7 @@ public class MainActivity extends AppCompatActivity
                 }
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.flContent, fragment);
-                transaction.addToBackStack(fragment.getTag());
+                transaction.addToBackStack(null);
                 transaction.commit();
             }
         });
@@ -123,6 +132,8 @@ public class MainActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(0);
+        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_home));
         AppData.loggedUser = getUserFromFile();
     }
 
@@ -183,12 +194,15 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         Fragment fragment = null;
         Class fragmentClass = null;
+        String title = "Share Book";
         switch (id) {
             case R.id.nav_home:
-                fragmentClass = MapFragment.class;
+                fragmentClass = MainFragment.class;
+                title = "Home";
                 break;
             case R.id.nav_profile:
                 fragmentClass = ProfileFragment.class;
+                title = "Profile";
                 break;
             case R.id.nav_mybooks:
                 fragmentClass = MyBooksFragmnent.class;
@@ -208,8 +222,9 @@ public class MainActivity extends AppCompatActivity
         try {
             fragment = (Fragment) fragmentClass.newInstance();
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.flContent, fragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.flContent, fragment).addToBackStack(null).commit();
             currentFragment = fragment;
+            getSupportActionBar().setTitle(title);
             Log.d("ID", String.valueOf(fragment.getId()));
         } catch (Exception e) {
             e.printStackTrace();
@@ -251,10 +266,10 @@ public class MainActivity extends AppCompatActivity
         map.addMarker(new MarkerOptions().position(latLng).title("Book"));
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
+//    @Override
+//    public void onFragmentInteraction(Uri uri) {
+//
+//    }
 
     @Override
     public void onBookSelected(Book book) {
