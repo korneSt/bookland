@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity
 
     GoogleMap map;
     Fragment currentFragment;
+    DrawerLayout drawer;
+    NavigationView navigationView;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -99,16 +101,35 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                invalidateOptionsMenu();
+            }
+        };
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
         AppData.loggedUser = getUserFromFile();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        boolean drawerOpen = drawer.isDrawerOpen(navigationView);
+        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+        return super.onPrepareOptionsMenu(menu);
+
     }
 
     private User getUserFromFile() {
