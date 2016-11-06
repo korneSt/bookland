@@ -25,6 +25,16 @@ public class NewBooksAdapter extends RecyclerView.Adapter<NewBooksAdapter.ViewHo
     private ArrayList<Book> newBookList;
     private Context context;
 
+    private OnItemClickListener listener;
+    // Define the listener interface
+    public interface OnItemClickListener {
+        void onItemClick(View itemView, int position);
+    }
+    // Define the method that allows the parent activity or fragment to define the listener
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
 
     public NewBooksAdapter(Context context, ArrayList<Book> bookList) {
         this.context = context;
@@ -36,17 +46,31 @@ public class NewBooksAdapter extends RecyclerView.Adapter<NewBooksAdapter.ViewHo
 
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
         TextView tvTittle;
         TextView tvAuthor;
         ImageView cover;
-        ViewHolder(View itemView) {
+
+        ViewHolder(final View itemView) {
             super(itemView);
             tvTittle = (TextView) itemView.findViewById(R.id.tv_title_new);
             tvAuthor = (TextView) itemView.findViewById(R.id.tv_author_new);
             cover = (ImageView) itemView.findViewById(R.id.iv_book_cover);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Triggers click upwards to the adapter on click
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(itemView, position);
+                        }
+                    }
+                }
+            });
         }
     }
 

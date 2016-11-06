@@ -27,6 +27,8 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.facebook.stetho.Stetho;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -48,6 +50,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
@@ -65,23 +68,30 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (currentFragment != null) {
+//        if (currentFragment != null) {
             getSupportFragmentManager().putFragment(outState, "CURR_FRAG", currentFragment);
-        }
+//        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
         setSupportActionBar(toolbar);
 
 
         if (savedInstanceState != null) {
             Fragment fragment = getSupportFragmentManager().getFragment(savedInstanceState, "CURR_FRAG");
             getSupportFragmentManager().beginTransaction().replace(R.id.flContent,fragment).commit();
+
             currentFragment = fragment;
+        } else {
+            navigationView.setCheckedItem(0);
+            onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_home));
         }
 //        else {
 //            Fragment fragment = null;
@@ -130,10 +140,6 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(0);
-        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_home));
         AppData.loggedUser = getUserFromFile();
     }
 

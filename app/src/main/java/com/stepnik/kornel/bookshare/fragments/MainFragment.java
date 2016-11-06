@@ -16,12 +16,14 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.adapters.NewBooksAdapter;
@@ -68,6 +70,16 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     public void onStart() {
         super.onStart();
 //        getNewBooks();
+        ((NewBooksAdapter) mAdapter).setOnItemClickListener(new NewBooksAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                LatLng pos = new LatLng(newBooks.get(position).getLocalLat(), newBooks.get(position).getLocalLon());
+//                Toast.makeText(getActivity(), " was clicked!", Toast.LENGTH_SHORT).show();
+                Marker bookMarker = googleMap.addMarker(new MarkerOptions().position(pos).title(newBooks.get(position).getTitle()).snippet("Marker Description"));
+
+
+            }
+        });
     }
 
     @Override
@@ -85,17 +97,12 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
+        newBooks = AppData.getBookList();
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.books_recycler_view);
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-//        mRecyclerView.setHasFixedSize(true);
-        newBooks = AppData.getBookList();
-        // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new NewBooksAdapter(getActivity(), newBooks);
-//        mAdapter = new NewBooksAdapter(newBooks);
         mRecyclerView.setAdapter(mAdapter);
 
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
@@ -122,8 +129,8 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(51,19)).title("Marker Title").snippet("Marker Description"));
 
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(51,19)).title("Marker Title").snippet("Marker Description"));
     }
     @Override
     public void onMapLongClick(LatLng latLng) {

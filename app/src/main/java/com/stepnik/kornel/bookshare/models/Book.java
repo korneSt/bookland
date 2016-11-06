@@ -13,6 +13,25 @@ public class Book implements Serializable{
     private String title;
     private String author;
     private int year;
+    private double localLat;
+    private double localLon;
+
+
+    public double getLocalLat() {
+        return localLat;
+    }
+
+    public void setLocalLat(double localLat) {
+        this.localLat = localLat;
+    }
+
+    public double getLocalLon() {
+        return localLon;
+    }
+
+    public void setLocalLon(double localLon) {
+        this.localLon = localLon;
+    }
 
     public long getId() {
         return id;

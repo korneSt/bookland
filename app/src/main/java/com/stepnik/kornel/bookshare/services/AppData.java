@@ -25,7 +25,10 @@ public class AppData{
 
     public static ArrayList<Book> getBookList() {
         ArrayList<Book> books = new ArrayList<>();
-        books.add(new Book("Tytul", "Autor"));
+        books.add(new Book("Tytul", "Autor") {{
+            setLocalLat(51);
+            setLocalLon(20);
+        }});
         books.add(new Book("Tytul", "Autor"));
         return books;
 //        return (ArrayList<Book>) Arrays.asList(booksArray);
