@@ -7,15 +7,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.R;
 
 /**
@@ -36,6 +35,9 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.content_main, container, false);
+
+        MainActivity mainActivity = (MainActivity) getContext();
+        mainActivity.setTitle("Home");
 
 //        SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager().findFragmentById(R.id.map);
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
@@ -65,7 +67,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     }
     @Override
     public void onMapLongClick(LatLng latLng) {
-        Class fragmentClass = MyBooksFragmnent.class;
+        Class fragmentClass = MyBooksFragment.class;
         Fragment fragment = null;
     try {
          fragment = (Fragment) fragmentClass.newInstance();

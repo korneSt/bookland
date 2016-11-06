@@ -3,6 +3,7 @@
     <item name="ic_menu_profile" type="drawable">@drawable/ic_account_circle</item>
     <item name="ic_menu_mybooks" type="drawable">@drawable/ic_action_book</item>
     <item name="ic_menu_search" type="drawable">@drawable/ic_action_search</item>
+    <item name="ic_menu_history" type="drawable">@drawable/ic_history</item>
     <item name="ic_menu_settings" type="drawable">@drawable/ic_settings</item>
     <item name="ic_menu_logout" type="drawable">@drawable/ic_power_settings_new</item>
     <item name="ic_menu_share" type="drawable">@android:drawable/ic_menu_share</item>

@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
-        boolean hasLoggedIn = settings.getBoolean("hasLoggedIn", false);
+        boolean hasLoggedIn = true;//settings.getBoolean("hasLoggedIn", false);
         if(hasLoggedIn) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);

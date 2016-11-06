@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.R;
 
 
@@ -70,6 +71,10 @@ public class MapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        MainActivity mainActivity = (MainActivity) getContext();
+        mainActivity.setTitle("Home");
+
         return inflater.inflate(R.layout.fragment_map, container, false);
     }
 

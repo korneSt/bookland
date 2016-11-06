@@ -21,6 +21,10 @@
             android:icon="@drawable/ic_action_search"
             android:title="Search" />
         <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/ic_history"
+            android:title="History" />
+        <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
             android:title="Settings" />

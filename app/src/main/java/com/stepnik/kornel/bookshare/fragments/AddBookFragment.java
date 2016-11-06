@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.services.BookService;
@@ -58,6 +59,9 @@ public class AddBookFragment extends Fragment {
         etAuthor = (EditText) rootView.findViewById(R.id.te_author);
         etOwnerId = (EditText) rootView.findViewById(R.id.te_ownerId);
         Button addBook = (Button) rootView.findViewById(R.id.b_addbook);
+
+        MainActivity mainActivity = (MainActivity) getContext();
+        mainActivity.setTitle("Add book");
 
         addBook.setOnClickListener(new View.OnClickListener() {
             @Override
