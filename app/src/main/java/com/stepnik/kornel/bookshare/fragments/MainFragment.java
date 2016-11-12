@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.adapters.NewBooksAdapter;
 import com.stepnik.kornel.bookshare.models.Book;
+import com.stepnik.kornel.bookshare.models.Data;
 import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.BookService;
 
@@ -53,11 +54,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     private RecyclerView.LayoutManager mLayoutManager;
 
     private ArrayList<Book> newBooks;
-    Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http:/192.168.1.3:8080/api/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-    BookService bookService = retrofit.create(BookService.class);
+    BookService bookService = Data.retrofit.create(BookService.class);
 
 
     @Override

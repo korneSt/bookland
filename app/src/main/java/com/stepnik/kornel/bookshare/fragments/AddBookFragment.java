@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.models.Book;
+import com.stepnik.kornel.bookshare.models.Data;
 import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.BookService;
 
@@ -37,11 +38,7 @@ import retrofit2.Retrofit;
 
 public class AddBookFragment extends Fragment {
 
-    Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http:/192.168.1.3:8080/api/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-    BookService bookService = retrofit.create(BookService.class);
+    BookService bookService = Data.retrofit.create(BookService.class);
     EditText etTittle;
     EditText etAuthor;
 

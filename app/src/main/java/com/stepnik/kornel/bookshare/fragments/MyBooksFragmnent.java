@@ -20,6 +20,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.models.Book;
+import com.stepnik.kornel.bookshare.models.Data;
 import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.BookService;
 
@@ -42,14 +43,7 @@ public class MyBooksFragmnent extends Fragment {
     ListView lvBooks;
     ArrayList<HashMap<String, String>> bookList;
     ArrayList<Book> bookListData;
-
-    Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http:/192.168.1.3:8080/api/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-
-
-    BookService bookService = retrofit.create(BookService.class);
+    BookService bookService = Data.retrofit.create(BookService.class);
 
 
     public interface OnBookSelectedListener {
@@ -133,6 +127,7 @@ public class MyBooksFragmnent extends Fragment {
 
             @Override
             public void onFailure(Call<List<Book>> call, Throwable t) {
+                Log.d("status", String.valueOf(t.getStackTrace()));
 
             }
         });

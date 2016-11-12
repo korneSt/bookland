@@ -68,9 +68,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        if (currentFragment != null) {
+        if (currentFragment != null) {
             getSupportFragmentManager().putFragment(outState, "CURR_FRAG", currentFragment);
-//        }
+
+
+        }
     }
 
     @Override
@@ -87,11 +89,11 @@ public class MainActivity extends AppCompatActivity
         if (savedInstanceState != null) {
             Fragment fragment = getSupportFragmentManager().getFragment(savedInstanceState, "CURR_FRAG");
             getSupportFragmentManager().beginTransaction().replace(R.id.flContent,fragment).commit();
-
             currentFragment = fragment;
         } else {
             navigationView.setCheckedItem(0);
             onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_home));
+
         }
 //        else {
 //            Fragment fragment = null;
@@ -116,7 +118,7 @@ public class MainActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.flContent, fragment);
+                transaction.replace(R.id.flContent, fragment, "DISP_FRAG");
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -169,6 +171,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+        currentFragment = getSupportFragmentManager().findFragmentByTag("DISP_FRAG");
     }
 
     @Override
@@ -227,9 +230,9 @@ public class MainActivity extends AppCompatActivity
 
         try {
             fragment = (Fragment) fragmentClass.newInstance();
-
-            getSupportFragmentManager().beginTransaction().replace(R.id.flContent, fragment).addToBackStack(null).commit();
             currentFragment = fragment;
+            getSupportFragmentManager().beginTransaction().replace(R.id.flContent, fragment, "DISP_FRAG").addToBackStack(null).commit();
+
             getSupportActionBar().setTitle(title);
             Log.d("ID", String.valueOf(fragment.getId()));
         } catch (Exception e) {
@@ -282,6 +285,7 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         try {
             fragment = BookDetailsFragment.class.newInstance();
+            currentFragment = fragment;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -291,8 +295,8 @@ public class MainActivity extends AppCompatActivity
 //        args.putInt(BookDetailsFragment.ARG_POSITION, position);
         fragment.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.flContent, fragment);
-        transaction.addToBackStack(fragment.getTag());
+        transaction.replace(R.id.flContent, fragment, "DISP_FRAG");
+        transaction.addToBackStack(null);
         transaction.commit();
 
     }
