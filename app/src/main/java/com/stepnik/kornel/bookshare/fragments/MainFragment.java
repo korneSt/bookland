@@ -41,7 +41,7 @@ import retrofit2.Response;
  * Created by korSt on 31.10.2016.
  */
 
-public class MainFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
+public class MainFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     OnBookSelectedListener mCallback;
 
@@ -55,9 +55,14 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     BookServiceAPI bookServiceAPI = Data.retrofit.create(BookServiceAPI.class);
     private BookService bookService;
 
-    public interface OnBookSelectedListener {
-        void onBookSelected(Book book);
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Book markerBook = newBooks.get((Integer) marker.getTag());
+
+        mCallback.onBookSelected(markerBook);
+        return false;
     }
+
 
     @Override
     public void onResume() {
@@ -141,21 +146,8 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     public void onMapReady(GoogleMap googleMap) {
 
         this.googleMap = googleMap;
+        googleMap.setOnMarkerClickListener(this);
         addBookMarkers(newBooks);
-    }
-
-    @Override
-    public void onMapLongClick(LatLng latLng) {
-        Class fragmentClass = MyBooksFragment.class;
-        Fragment fragment = null;
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Log.d("Long", "CLICK");
-        getFragmentManager().beginTransaction().replace(R.id.flContent, fragment).commit();
-
     }
 
     @Override
@@ -180,6 +172,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
             LatLng pos = new LatLng(b.getLocalLat(), b.getLocalLon());
             Marker bookMarker = googleMap.addMarker(new MarkerOptions().position(pos)
                     .title(b.getTitle()).snippet("Book"));
+            bookMarker.setTag(books.indexOf(b));
         }
     }
 }

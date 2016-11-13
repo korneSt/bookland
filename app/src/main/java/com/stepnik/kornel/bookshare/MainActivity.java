@@ -27,6 +27,7 @@ import com.stepnik.kornel.bookshare.fragments.AddBookFragment;
 import com.stepnik.kornel.bookshare.fragments.BookDetailsFragment;
 import com.stepnik.kornel.bookshare.fragments.MainFragment;
 import com.stepnik.kornel.bookshare.fragments.MyBooksFragment;
+import com.stepnik.kornel.bookshare.fragments.OnBookSelectedListener;
 import com.stepnik.kornel.bookshare.fragments.ProfileFragment;
 import com.stepnik.kornel.bookshare.fragments.SearchFragment;
 import com.stepnik.kornel.bookshare.fragments.HistoryFragment;
@@ -39,12 +40,14 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
-        GoogleMap.OnMapLongClickListener, MyBooksFragment.OnBookSelectedListener, MainFragment.OnBookSelectedListener{
+        GoogleMap.OnMapLongClickListener, OnBookSelectedListener{
 
     GoogleMap map;
     Fragment currentFragment;
     DrawerLayout drawer;
     NavigationView navigationView;
+    OnBookSelectedListener mCallback;
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

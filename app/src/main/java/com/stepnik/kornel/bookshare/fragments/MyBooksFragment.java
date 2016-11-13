@@ -40,11 +40,6 @@ public class MyBooksFragment extends Fragment {
     BookServiceAPI bookServiceAPI = Data.retrofit.create(BookServiceAPI.class);
 
 
-    public interface OnBookSelectedListener {
-        void onBookSelected(Book book);
-    }
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
