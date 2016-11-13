@@ -26,11 +26,13 @@ public class AppData{
     public static ArrayList<Book> getBookList() {
         ArrayList<Book> books = new ArrayList<>();
         books.add(new Book("Tytul", "Autor") {{
-            setLocalLat(51);
-            setLocalLon(20);
+            setLocalLat(51.30);
+            setLocalLon(21.06);
         }});
-        books.add(new Book("Tytul", "Autor"));
+        books.add(new Book("Tytul1", "Autor") {{
+            setLocalLat(51.26);
+            setLocalLon(21.24);
+        }});
         return books;
-//        return (ArrayList<Book>) Arrays.asList(booksArray);
     }
 }

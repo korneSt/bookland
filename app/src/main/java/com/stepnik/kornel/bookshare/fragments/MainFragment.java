@@ -115,19 +115,21 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         mAdapter = new NewBooksAdapter(getActivity(), newBooks);
         mRecyclerView.setAdapter(mAdapter);
 
+        initMap(rootView, savedInstanceState);
+
+        return rootView;
+    }
+
+    public void initMap(View rootView, Bundle savedInstanceState) {
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
-        mMapView.onResume(); // needed to get the map to display immediately
-
+        mMapView.onResume();
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         mMapView.getMapAsync(this);
-
-        return rootView;
     }
 
     @Override
@@ -137,9 +139,9 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        this.googleMap = googleMap;
 
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(51, 19)).title("Marker Title").snippet("Marker Description"));
+        this.googleMap = googleMap;
+        addBookMarkers(newBooks);
     }
 
     @Override
@@ -151,7 +153,8 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         } catch (Exception e) {
             e.printStackTrace();
         }
-        getFragmentManager().beginTransaction().replace(this.getId(), fragment).commit();
+        Log.d("Long", "CLICK");
+        getFragmentManager().beginTransaction().replace(R.id.flContent, fragment).commit();
 
     }
 
@@ -170,6 +173,14 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     public void setAdapter(List<Book> books) {
         newBooks.addAll(books);
         mAdapter.notifyItemRangeChanged(0, books.size());
+    }
+
+    public void addBookMarkers(ArrayList<Book> books) {
+        for (Book b : books) {
+            LatLng pos = new LatLng(b.getLocalLat(), b.getLocalLon());
+            Marker bookMarker = googleMap.addMarker(new MarkerOptions().position(pos)
+                    .title(b.getTitle()).snippet("Book"));
+        }
     }
 }
 
