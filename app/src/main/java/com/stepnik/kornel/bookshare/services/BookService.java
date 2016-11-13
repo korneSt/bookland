@@ -20,7 +20,6 @@ public class BookService {
 
     BookServiceAPI bookServiceAPI = Data.retrofit.create(BookServiceAPI.class);
 
-    @Produce
     public void loadNewBooks() {
         Call<List<Book>> books = bookServiceAPI.getBooks();
         books.enqueue(new Callback<List<Book>>() {

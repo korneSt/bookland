@@ -39,7 +39,7 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
-        GoogleMap.OnMapLongClickListener, MyBooksFragment.OnBookSelectedListener{
+        GoogleMap.OnMapLongClickListener, MyBooksFragment.OnBookSelectedListener, MainFragment.OnBookSelectedListener{
 
     GoogleMap map;
     Fragment currentFragment;

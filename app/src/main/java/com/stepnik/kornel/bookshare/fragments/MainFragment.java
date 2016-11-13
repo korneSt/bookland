@@ -43,6 +43,8 @@ import retrofit2.Response;
 
 public class MainFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
 
+    OnBookSelectedListener mCallback;
+
     MapView mMapView;
     private GoogleMap googleMap;
     private RecyclerView mRecyclerView;
@@ -52,6 +54,10 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     private ArrayList<Book> newBooks;
     BookServiceAPI bookServiceAPI = Data.retrofit.create(BookServiceAPI.class);
     private BookService bookService;
+
+    public interface OnBookSelectedListener {
+        void onBookSelected(Book book);
+    }
 
     @Override
     public void onResume() {
@@ -69,10 +75,9 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         ((NewBooksAdapter) mAdapter).setOnItemClickListener(new NewBooksAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                LatLng pos = new LatLng(newBooks.get(position).getLocalLat(), newBooks.get(position).getLocalLon());
-//                Toast.makeText(getActivity(), " was clicked!", Toast.LENGTH_SHORT).show();
-                Marker bookMarker = googleMap.addMarker(new MarkerOptions().position(pos).title(newBooks.get(position).getTitle()).snippet("Marker Description"));
-
+                //LatLng pos = new LatLng(newBooks.get(position).getLocalLat(), newBooks.get(position).getLocalLon());
+                //Marker bookMarker = googleMap.addMarker(new MarkerOptions().position(pos).title(newBooks.get(position).getTitle()).snippet("Marker Description"));
+                mCallback.onBookSelected(newBooks.get(position));
             }
         });
     }
@@ -80,6 +85,13 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        try {
+            mCallback = (OnBookSelectedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
     }
 
     @Override
