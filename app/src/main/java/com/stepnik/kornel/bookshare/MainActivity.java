@@ -1,16 +1,13 @@
 package com.stepnik.kornel.bookshare;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -37,13 +34,14 @@ import com.stepnik.kornel.bookshare.fragments.AddBookFragment;
 import com.stepnik.kornel.bookshare.fragments.BookDetailsFragment;
 import com.stepnik.kornel.bookshare.fragments.MainFragment;
 import com.stepnik.kornel.bookshare.fragments.MapFragment;
-import com.stepnik.kornel.bookshare.fragments.MyBooksFragmnent;
+import com.stepnik.kornel.bookshare.fragments.MyBooksFragment;
 import com.stepnik.kornel.bookshare.fragments.ProfileFragment;
 import com.stepnik.kornel.bookshare.fragments.SearchFragment;
+import com.stepnik.kornel.bookshare.fragments.HistoryFragment;
+import com.stepnik.kornel.bookshare.fragments.SettingsFragment;
 import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.models.User;
 import com.stepnik.kornel.bookshare.services.AppData;
-import com.stepnik.kornel.bookshare.services.BookService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,6 +56,7 @@ import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
+        GoogleMap.OnMapLongClickListener, MapFragment.OnFragmentInteractionListener, MyBooksFragment.OnBookSelectedListener{
         GoogleMap.OnMapLongClickListener, MyBooksFragmnent.OnBookSelectedListener{
 
     GoogleMap map;
@@ -214,12 +213,16 @@ public class MainActivity extends AppCompatActivity
                 title = "Profile";
                 break;
             case R.id.nav_mybooks:
-                fragmentClass = MyBooksFragmnent.class;
+                fragmentClass = MyBooksFragment.class;
                 break;
             case R.id.nav_search:
                 fragmentClass = SearchFragment.class;
                 break;
+            case R.id.nav_history:
+                fragmentClass = HistoryFragment.class;
+                break;
             case R.id.nav_settings:
+                fragmentClass = SettingsFragment.class;
                 break;
             case R.id.nav_logout:
                 logout();
@@ -230,6 +233,7 @@ public class MainActivity extends AppCompatActivity
 
         try {
             fragment = (Fragment) fragmentClass.newInstance();
+            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
             currentFragment = fragment;
             getSupportFragmentManager().beginTransaction().replace(R.id.flContent, fragment, "DISP_FRAG").addToBackStack(null).commit();
 
@@ -299,5 +303,10 @@ public class MainActivity extends AppCompatActivity
         transaction.addToBackStack(null);
         transaction.commit();
 
+    }
+
+    public void changeFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.flContent, fragment).commit();
     }
 }

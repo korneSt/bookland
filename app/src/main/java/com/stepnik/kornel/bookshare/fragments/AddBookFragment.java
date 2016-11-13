@@ -57,6 +57,9 @@ public class AddBookFragment extends Fragment {
         etAuthor = (EditText) rootView.findViewById(R.id.te_author);
         Button addBook = (Button) rootView.findViewById(R.id.b_addbook);
 
+        MainActivity mainActivity = (MainActivity) getContext();
+        mainActivity.setTitle("Add book");
+
         addBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

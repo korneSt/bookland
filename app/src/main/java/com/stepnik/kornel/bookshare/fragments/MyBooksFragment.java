@@ -37,7 +37,7 @@ import retrofit2.Retrofit;
  * Created by korSt on 31.10.2016.
  */
 
-public class MyBooksFragmnent extends Fragment {
+public class MyBooksFragment extends Fragment {
     OnBookSelectedListener mCallback;
 
     ListView lvBooks;

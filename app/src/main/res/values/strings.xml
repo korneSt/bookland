@@ -10,6 +10,7 @@
     <string name="logout">Logout</string>
     <string name="search">Search</string>
     <string name="home">Home</string>
+    <string name="history">Historyy</string>
     <string name="err_savefile">Nie mozna zapisac pliku</string>
     <string name="err_no_user">Brak takiego uzytkownika</string>
 

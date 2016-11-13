@@ -25,6 +25,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.adapters.NewBooksAdapter;
 import com.stepnik.kornel.bookshare.models.Book;
@@ -94,6 +95,10 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
+        MainActivity mainActivity = (MainActivity) getContext();
+        mainActivity.setTitle("Home");
+
+//        SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager().findFragmentById(R.id.map);
         newBooks = AppData.getBookList();
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.books_recycler_view);
 
@@ -131,7 +136,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     }
     @Override
     public void onMapLongClick(LatLng latLng) {
-        Class fragmentClass = MyBooksFragmnent.class;
+        Class fragmentClass = MyBooksFragment.class;
         Fragment fragment = null;
     try {
          fragment = (Fragment) fragmentClass.newInstance();

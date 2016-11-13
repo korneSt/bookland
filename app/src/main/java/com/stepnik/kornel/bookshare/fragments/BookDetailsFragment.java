@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.models.Data;
@@ -39,6 +40,9 @@ public class BookDetailsFragment extends Fragment {
 //            mCurrentPosition = savedInstanceState.getInt(ARG_POSITION);
             selectedBook = (Book) savedInstanceState.getSerializable(ARG_BOOK);
         }
+
+        MainActivity mainActivity = (MainActivity) getContext();
+        mainActivity.setTitle("Book detals");
 
         return rootView;
     }
