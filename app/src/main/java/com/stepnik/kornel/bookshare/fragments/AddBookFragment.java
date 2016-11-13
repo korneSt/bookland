@@ -8,29 +8,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
 import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.models.Data;
 import com.stepnik.kornel.bookshare.services.AppData;
-import com.stepnik.kornel.bookshare.services.BookService;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.stepnik.kornel.bookshare.services.BookServiceAPI;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.GsonConverterFactory;
-import retrofit2.Retrofit;
 
 /**
  * Created by korSt on 31.10.2016.
@@ -38,7 +27,7 @@ import retrofit2.Retrofit;
 
 public class AddBookFragment extends Fragment {
 
-    BookService bookService = Data.retrofit.create(BookService.class);
+    BookServiceAPI bookServiceAPI = Data.retrofit.create(BookServiceAPI.class);
     EditText etTittle;
     EditText etAuthor;
 
@@ -71,7 +60,7 @@ public class AddBookFragment extends Fragment {
     }
 
     private void addNewBook() {
-        Call<Book> addBook = bookService.addBook(etTittle.getText().toString(), etAuthor.getText().toString(), AppData.loggedUser.getId());
+        Call<Book> addBook = bookServiceAPI.addBook(etTittle.getText().toString(), etAuthor.getText().toString(), AppData.loggedUser.getId());
 
         addBook.enqueue(new Callback<Book>() {
             @Override

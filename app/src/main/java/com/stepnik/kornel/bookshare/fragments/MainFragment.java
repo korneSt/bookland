@@ -10,13 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -25,28 +18,30 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.otto.Subscribe;
 import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.adapters.NewBooksAdapter;
+import com.stepnik.kornel.bookshare.bus.BusProvider;
+import com.stepnik.kornel.bookshare.events.NewBooksEvent;
 import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.models.Data;
 import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.BookService;
+import com.stepnik.kornel.bookshare.services.BookServiceAPI;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.GsonConverterFactory;
-import retrofit2.Retrofit;
+import retrofit2.Response;
 
 /**
  * Created by korSt on 31.10.2016.
  */
 
-public class MainFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener{
+public class MainFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
 
     MapView mMapView;
     private GoogleMap googleMap;
@@ -55,26 +50,33 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     private RecyclerView.LayoutManager mLayoutManager;
 
     private ArrayList<Book> newBooks;
-    BookService bookService = Data.retrofit.create(BookService.class);
-
+    BookServiceAPI bookServiceAPI = Data.retrofit.create(BookServiceAPI.class);
+    private BookService bookService;
 
     @Override
     public void onResume() {
         super.onResume();
-//        getNewBooks();
+        BusProvider.getInstance().register(this);
+
+        bookService = new BookService();
+        bookService.loadNewBooks();
+
+    }
+
+    @Subscribe
+    public void onBooksEvent(NewBooksEvent event) {
+        setAdapter(event.result.body());
     }
 
     @Override
     public void onStart() {
         super.onStart();
-//        getNewBooks();
         ((NewBooksAdapter) mAdapter).setOnItemClickListener(new NewBooksAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 LatLng pos = new LatLng(newBooks.get(position).getLocalLat(), newBooks.get(position).getLocalLon());
 //                Toast.makeText(getActivity(), " was clicked!", Toast.LENGTH_SHORT).show();
                 Marker bookMarker = googleMap.addMarker(new MarkerOptions().position(pos).title(newBooks.get(position).getTitle()).snippet("Marker Description"));
-
 
             }
         });
@@ -98,7 +100,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         MainActivity mainActivity = (MainActivity) getContext();
         mainActivity.setTitle("Home");
 
-//        SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager().findFragmentById(R.id.map);
         newBooks = AppData.getBookList();
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.books_recycler_view);
 
@@ -118,7 +119,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         }
 
         mMapView.getMapAsync(this);
-        getNewBooks();
 
         return rootView;
     }
@@ -132,35 +132,31 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
 
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(51,19)).title("Marker Title").snippet("Marker Description"));
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(51, 19)).title("Marker Title").snippet("Marker Description"));
     }
+
     @Override
     public void onMapLongClick(LatLng latLng) {
         Class fragmentClass = MyBooksFragment.class;
         Fragment fragment = null;
-    try {
-         fragment = (Fragment) fragmentClass.newInstance();
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         getFragmentManager().beginTransaction().replace(this.getId(), fragment).commit();
 
     }
 
     private void getNewBooks() {
-        Call<List<Book>> books = bookService.getBooks();
+        Call<List<Book>> books = bookServiceAPI.getBooks();
         books.enqueue(new Callback<List<Book>>() {
             @Override
-            public void onResponse(Call<List<Book>> call, retrofit2.Response<List<Book>> response) {
+            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
 
                 Log.d("status", String.valueOf(response.code()));
                 if (response.isSuccessful()) {
-                    newBooks.addAll(response.body());
-//                    mAdapter.setNewBooksList();
-                    mAdapter.notifyItemRangeChanged(0, response.body().size());
-//                    for (Book book : response.body()) {
-//                       newBooks.add(book);
-//                    }
+                    setAdapter(response.body());
                 }
             }
 
@@ -169,6 +165,17 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
 
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
+    }
+
+    public void setAdapter(List<Book> books) {
+        newBooks.addAll(books);
+        mAdapter.notifyItemRangeChanged(0, books.size());
     }
 }
 
