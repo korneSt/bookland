@@ -18,19 +18,17 @@ import retrofit2.Response;
 
 public class BookService {
 
-//    BookServiceAPI bookServiceAPI = Data.retrofit.create(BookServiceAPI.class);
+    BookServiceAPI bookServiceAPI = Data.retrofit.create(BookServiceAPI.class);
 
-
+    @Produce
     public void loadNewBooks() {
-        BookServiceAPI bookServiceAPI = Data.retrofit.create(BookServiceAPI.class);
         Call<List<Book>> books = bookServiceAPI.getBooks();
         books.enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
 
                 if (response.isSuccessful()) {
-                    BusProvider.getInstance().post(produceNewBooksEvent(response));
-//                    setAdapter(response.body());
+                    BusProvider.getInstance().post(new NewBooksEvent(response));
                 }
             }
 
@@ -39,10 +37,5 @@ public class BookService {
 
             }
         });
-    }
-
-    @Produce
-    public NewBooksEvent produceNewBooksEvent(Response<List<Book>> booksResult){
-        return new NewBooksEvent(booksResult);
     }
 }

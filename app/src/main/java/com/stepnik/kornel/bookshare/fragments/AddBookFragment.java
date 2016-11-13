@@ -1,6 +1,9 @@
 package com.stepnik.kornel.bookshare.fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.R;
@@ -21,15 +25,19 @@ import com.stepnik.kornel.bookshare.services.BookServiceAPI;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+import static com.stepnik.kornel.bookshare.R.id.imageView;
+
 /**
  * Created by korSt on 31.10.2016.
  */
 
 public class AddBookFragment extends Fragment {
 
-    BookServiceAPI bookServiceAPI = Data.retrofit.create(BookServiceAPI.class);
-    EditText etTittle;
-    EditText etAuthor;
+    private BookServiceAPI bookServiceAPI = Data.retrofit.create(BookServiceAPI.class);
+    private EditText etTittle;
+    private EditText etAuthor;
+    private static final int CAMERA_REQUEST = 1888;
+    private ImageView ivBookCover;
 
     @Override
     public void onAttach(Context context) {
@@ -44,7 +52,9 @@ public class AddBookFragment extends Fragment {
 
         etTittle = (EditText) rootView.findViewById(R.id.te_title);
         etAuthor = (EditText) rootView.findViewById(R.id.te_author);
+        ivBookCover = (ImageView) rootView.findViewById(R.id.iv_book_cover);
         Button addBook = (Button) rootView.findViewById(R.id.b_addbook);
+        Button takePicture = (Button) rootView.findViewById(R.id.b_takepic);
 
         MainActivity mainActivity = (MainActivity) getContext();
         mainActivity.setTitle("Add book");
@@ -53,6 +63,13 @@ public class AddBookFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 addNewBook();
+            }
+        });
+        takePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }
         });
 
@@ -78,5 +95,12 @@ public class AddBookFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            ivBookCover.setImageBitmap(photo);
+        }
     }
 }

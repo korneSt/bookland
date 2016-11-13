@@ -25,4 +25,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/b_addbook"
         android:elevation="0dp" />
+    <Button
+        android:id="@+id/b_takepic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Photo"/>
+
+    <ImageView
+        android:id="@+id/iv_book_cover"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"/>
 </LinearLayout>

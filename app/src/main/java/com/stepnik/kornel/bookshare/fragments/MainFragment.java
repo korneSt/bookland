@@ -60,13 +60,8 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
 
         bookService = new BookService();
         bookService.loadNewBooks();
-
     }
 
-    @Subscribe
-    public void onBooksEvent(NewBooksEvent event) {
-        setAdapter(event.result.body());
-    }
 
     @Override
     public void onStart() {
@@ -148,29 +143,16 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
 
     }
 
-    private void getNewBooks() {
-        Call<List<Book>> books = bookServiceAPI.getBooks();
-        books.enqueue(new Callback<List<Book>>() {
-            @Override
-            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
-
-                Log.d("status", String.valueOf(response.code()));
-                if (response.isSuccessful()) {
-                    setAdapter(response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Book>> call, Throwable t) {
-
-            }
-        });
-    }
-
     @Override
     public void onPause() {
         super.onPause();
         BusProvider.getInstance().unregister(this);
+    }
+
+
+    @Subscribe
+    public void onBooksEvent(NewBooksEvent event) {
+        setAdapter(event.result.body());
     }
 
     public void setAdapter(List<Book> books) {
