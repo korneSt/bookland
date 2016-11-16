@@ -27,6 +27,7 @@ import com.stepnik.kornel.bookshare.fragments.AddBookFragment;
 import com.stepnik.kornel.bookshare.fragments.BookDetailsFragment;
 import com.stepnik.kornel.bookshare.fragments.MainFragment;
 import com.stepnik.kornel.bookshare.fragments.MyBooksFragment;
+import com.stepnik.kornel.bookshare.fragments.BorrowedBooksFragment;
 import com.stepnik.kornel.bookshare.fragments.OnBookSelectedListener;
 import com.stepnik.kornel.bookshare.fragments.ProfileFragment;
 import com.stepnik.kornel.bookshare.fragments.SearchFragment;
@@ -202,15 +203,23 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_mybooks:
                 fragmentClass = MyBooksFragment.class;
+                title = "My books";
+                break;
+            case R.id.nav_borrowedbooks:
+                fragmentClass = BorrowedBooksFragment.class;
+                title = "Borrowed books";
                 break;
             case R.id.nav_search:
                 fragmentClass = SearchFragment.class;
+                title = "Search";
                 break;
             case R.id.nav_history:
                 fragmentClass = HistoryFragment.class;
+                title = "History";
                 break;
             case R.id.nav_settings:
                 fragmentClass = SettingsFragment.class;
+                title = "Settings";
                 break;
             case R.id.nav_logout:
                 logout();
