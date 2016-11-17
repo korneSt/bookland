@@ -7,8 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.squareup.otto.Subscribe;
 import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.R;
+import com.stepnik.kornel.bookshare.events.NewBooksEvent;
+import com.stepnik.kornel.bookshare.events.TransactionEvent;
+import com.stepnik.kornel.bookshare.models.Book;
+import com.stepnik.kornel.bookshare.models.Transaction;
+
+import java.util.List;
 
 /**
  * Created by Iza on 17/11/2016.

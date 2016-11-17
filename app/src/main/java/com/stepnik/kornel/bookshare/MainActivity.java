@@ -33,9 +33,12 @@ import com.stepnik.kornel.bookshare.fragments.ProfileFragment;
 import com.stepnik.kornel.bookshare.fragments.SearchFragment;
 import com.stepnik.kornel.bookshare.fragments.HistoryFragment;
 import com.stepnik.kornel.bookshare.fragments.SettingsFragment;
+import com.stepnik.kornel.bookshare.fragments.TransactionsFragment;
 import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.models.User;
 import com.stepnik.kornel.bookshare.services.AppData;
+import com.stepnik.kornel.bookshare.services.BookService;
+import com.stepnik.kornel.bookshare.services.TransactionService;
 
 import java.io.IOException;
 
@@ -213,6 +216,9 @@ public class MainActivity extends AppCompatActivity
                 fragmentClass = SearchFragment.class;
                 title = "Search";
                 break;
+            case R.id.nav_transactions:
+                fragmentClass = TransactionsFragment.class;
+                break;
             case R.id.nav_history:
                 fragmentClass = HistoryFragment.class;
                 title = "History";
@@ -299,6 +305,12 @@ public class MainActivity extends AppCompatActivity
         transaction.addToBackStack(null);
         transaction.commit();
 
+    }
+
+    @Override
+    public void onRentBookSelected(Book book) {
+        Utilities.displayMessage(getString(R.string.wait_accept), this);
+        new TransactionService().startTransaction(AppData.loggedUser, book);
     }
 
     public void changeFragment(Fragment fragment) {
