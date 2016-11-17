@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
@@ -52,7 +53,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     private RecyclerView.LayoutManager mLayoutManager;
 
     private ArrayList<Book> newBooks;
-    BookServiceAPI bookServiceAPI = Data.retrofit.create(BookServiceAPI.class);
     private BookService bookService;
 
     @Override
@@ -80,9 +80,10 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         ((NewBooksAdapter) mAdapter).setOnItemClickListener(new NewBooksAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                //LatLng pos = new LatLng(newBooks.get(position).getLocalLat(), newBooks.get(position).getLocalLon());
-                //Marker bookMarker = googleMap.addMarker(new MarkerOptions().position(pos).title(newBooks.get(position).getTitle()).snippet("Marker Description"));
                 mCallback.onBookSelected(newBooks.get(position));
+//                LatLng pos = new LatLng(newBooks.get(position).getLocalLat(), newBooks.get(position).getLocalLon());
+//                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 10));
+
             }
         });
     }
