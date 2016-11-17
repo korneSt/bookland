@@ -4,32 +4,31 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:text="Simple search"
+        android:text="Status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/simple_search"
-        android:textSize="30sp"
-        android:layout_margin="10dp"/>
-
-    <SearchView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:queryHint="Type title, author or ISBN"
-        />
-
-    <TextView
-        android:text="Find by cover"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/cover_search"
+        android:id="@+id/transaction_status"
         android:textSize="30sp"
         android:layout_margin="10dp"/>
 
     <Button
-        android:text="Take a photo"
+        android:text="Book"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/takephoto_search"
+        android:id="@+id/transaction_book"
         android:gravity="left|center_vertical" />
 
+    <Button
+        android:text="Owner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/transaction_owner"
+        android:gravity="left|center_vertical" />
+
+    <Button
+        android:text="Borrower"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/transaction_borrower"
+        android:gravity="left|center_vertical"/>
 </LinearLayout>
