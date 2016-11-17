@@ -13,5 +13,6 @@
     <string name="history">Historyy</string>
     <string name="err_savefile">Nie mozna zapisac pliku</string>
     <string name="err_no_user">Brak takiego uzytkownika</string>
+    <string name="wait_accept">Poczekaj na zaakcepotwanie wlasciciela</string>
 
 </resources>
