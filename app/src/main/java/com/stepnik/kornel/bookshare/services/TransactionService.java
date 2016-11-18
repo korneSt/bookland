@@ -43,6 +43,25 @@ public class TransactionService {
         });
     }
 
+    public void acceptTransaction(Long transactionId) {
+        Call<Transaction> startTransaction = transactionServiceAPI.acceptTransaction(transactionId);
+        startTransaction.enqueue(new Callback<Transaction>() {
+            @Override
+            public void onResponse(Call<Transaction> call, Response<Transaction> response) {
+                Log.d("succes", String.valueOf(response.body()));
+//                if (response.isSuccessful()) {
+//                    BusProvider.getInstance().post(new TransactionEvent(response));
+//                }
+            }
+
+            @Override
+            public void onFailure(Call<Transaction> call, Throwable t) {
+                Log.d("succes", String.valueOf(t.getStackTrace()));
+
+            }
+        });
+    }
+
     public void getAllTransactions(Long userId) {
         Call<List<Transaction>> startTransaction = transactionServiceAPI.getAllTransactions(userId);
         startTransaction.enqueue(new Callback<List<Transaction>>() {

@@ -18,6 +18,9 @@ import retrofit2.http.Query;
 
 public interface BookServiceAPI {
 
+    @GET("book")
+    Call<Book> getBook(@Query("id") Long bookId);
+
     @GET("book/all")
     Call<List<Book>> getBooks();
 
@@ -27,4 +30,7 @@ public interface BookServiceAPI {
     @FormUrlEncoded
     @POST("book/create")
     Call<Book> addBook(@Field("title") String title, @Field("author") String author, @Field("ownerId") Long ownerId);
+
+    @GET("book/author/{author}")
+    Call<List<Book>> getBookByAuthor(@Path("author") String author);
 }

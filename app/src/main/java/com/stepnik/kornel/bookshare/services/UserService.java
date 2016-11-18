@@ -1,29 +1,40 @@
 package com.stepnik.kornel.bookshare.services;
 
+import com.stepnik.kornel.bookshare.bus.BusProvider;
+import com.stepnik.kornel.bookshare.events.BookEvent;
+import com.stepnik.kornel.bookshare.events.UserEvent;
 import com.stepnik.kornel.bookshare.models.Book;
+import com.stepnik.kornel.bookshare.models.Data;
 import com.stepnik.kornel.bookshare.models.User;
 
-import java.util.List;
-
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
- * Created by korSt on 31.10.2016.
+ * Created by korSt on 18.11.2016.
  */
 
-public interface UserService {
+public class UserService {
+    UserServiceAPI userServiceAPI = Data.retrofit.create(UserServiceAPI.class);
 
-    @GET("users/{id}")
-    Call<List<Book>> getUsers(@Path("id") int userId);
+    public void getUser(Long userId) {
+        Call<User> user = userServiceAPI.getUser(userId);
 
-    @FormUrlEncoded
-    @POST("login")
-    Call<User> login(@Field("login") String username, @Field("password") String password);
+        user.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+
+                if (response.isSuccessful()) {
+                    BusProvider.getInstance().post(new UserEvent(response));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
+    }
 
 }
