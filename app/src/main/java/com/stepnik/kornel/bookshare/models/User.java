@@ -8,8 +8,8 @@ import java.io.Serializable;
 
 public class User implements Serializable {
     private long id;
-    private String username;
     private String email;
+    private String username;
     private String password;
     private int ratePos;
     private int rateNeg;

@@ -15,7 +15,15 @@ public class Book implements Serializable{
     private int year;
     private double localLat;
     private double localLon;
+    private String imagePath;
 
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 
     public double getLocalLat() {
         return localLat;

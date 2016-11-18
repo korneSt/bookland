@@ -9,7 +9,7 @@ import retrofit2.Retrofit;
 
 public class Data {
     public static Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http:/192.168.0.105:8080/api/")
+            .baseUrl("http:/10.128.77.108:8080/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     
