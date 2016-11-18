@@ -80,7 +80,11 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         ((NewBooksAdapter) mAdapter).setOnItemClickListener(new NewBooksAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                mCallback.onBookSelected(newBooks.get(position));
+                Book newBook = newBooks.get(position);
+                int pos = position+1;
+                newBook.setImagePath("http://lorempixel.com/256/256/nature/" + pos);
+
+                mCallback.onBookSelected(newBook);
 //                LatLng pos = new LatLng(newBooks.get(position).getLocalLat(), newBooks.get(position).getLocalLon());
 //                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 10));
 
@@ -113,7 +117,8 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         MainActivity mainActivity = (MainActivity) getContext();
         mainActivity.setTitle("Home");
 
-        newBooks = AppData.getBookList();
+//        newBooks = AppData.getBookList();
+        newBooks = new ArrayList<>();
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.books_recycler_view);
 
         mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);

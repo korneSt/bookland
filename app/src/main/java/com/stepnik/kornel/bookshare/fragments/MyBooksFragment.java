@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.models.Data;
+import com.stepnik.kornel.bookshare.models.User;
 import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.BookServiceAPI;
 
@@ -26,6 +27,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by korSt on 31.10.2016.
@@ -83,6 +85,7 @@ public class MyBooksFragment extends Fragment {
 
 
     private void getBooks() {
+        User user= AppData.loggedUser;
         Call<List<Book>> books = bookServiceAPI.getUserBooks(AppData.loggedUser.getId());
         Log.d("user id", String.valueOf(AppData.loggedUser.getId()));
         books.enqueue(new Callback<List<Book>>() {
@@ -91,26 +94,7 @@ public class MyBooksFragment extends Fragment {
                 bookList = new ArrayList<>();
                 Log.d("status", String.valueOf(response.code()));
                 if (response.isSuccessful()) {
-                    for (Book book : response.body()) {
-                        bookListData.add(book);
-                        HashMap<String, String> bookTemp = new HashMap<>();
-                        bookTemp.put("title", book.getTitle());
-                        bookTemp.put("author", book.getAuthor());
-                        bookList.add(bookTemp);
-                    }
-
-                    ListAdapter adapter = new SimpleAdapter(
-                            getContext(), bookList,
-                            R.layout.list_item, new String[]{"title", "author"},
-                            new int[]{R.id.tv_title, R.id.tv_author}
-                    );
-                    lvBooks.setAdapter(adapter);
-                    lvBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            mCallback.onBookSelected(bookListData.get(i));
-                        }
-                    });
+                    setAdapter(response);
                 }
             }
 
@@ -118,6 +102,29 @@ public class MyBooksFragment extends Fragment {
             public void onFailure(Call<List<Book>> call, Throwable t) {
                 Log.d("status", String.valueOf(t.getStackTrace()));
 
+            }
+        });
+    }
+
+    public void setAdapter(Response<List<Book>> response) {
+        for (Book book : response.body()) {
+            bookListData.add(book);
+            HashMap<String, String> bookTemp = new HashMap<>();
+            bookTemp.put("title", book.getTitle());
+            bookTemp.put("author", book.getAuthor());
+            bookList.add(bookTemp);
+        }
+
+        ListAdapter adapter = new SimpleAdapter(
+                getContext(), bookList,
+                R.layout.list_item, new String[]{"title", "author"},
+                new int[]{R.id.tv_title, R.id.tv_author}
+        );
+        lvBooks.setAdapter(adapter);
+        lvBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                mCallback.onBookSelected(bookListData.get(i));
             }
         });
     }
