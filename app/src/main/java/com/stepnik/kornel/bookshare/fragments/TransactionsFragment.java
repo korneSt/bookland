@@ -1,11 +1,14 @@
 package com.stepnik.kornel.bookshare.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -14,12 +17,15 @@ import com.squareup.otto.Subscribe;
 import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.bus.BusProvider;
+import com.stepnik.kornel.bookshare.events.BookEvent;
 import com.stepnik.kornel.bookshare.events.TransactionEvent;
 import com.stepnik.kornel.bookshare.models.Transaction;
+import com.stepnik.kornel.bookshare.services.BookService;
 import com.stepnik.kornel.bookshare.services.TransactionService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static java.security.AccessController.getContext;
 
@@ -31,6 +37,22 @@ public class TransactionsFragment extends Fragment{
     ListView lvTransactions;
     ArrayList<HashMap<String, String>> transactionList;
     ArrayList<Transaction> transactionData;
+    OnTransactionSelectedListener mCallback;
+    TransactionService transactionService;
+    List<Transaction> transactionResults;
+    ListAdapter adapter;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            mCallback = (OnTransactionSelectedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
 
 
     @Nullable
@@ -40,6 +62,8 @@ public class TransactionsFragment extends Fragment{
         View rootView = inflater.inflate( R.layout.fragment_transactions,container,false );
         MainActivity mainActivity = (MainActivity) getContext();
         mainActivity.setTitle("Transaction");
+
+
 
         return rootView;
     }
@@ -53,6 +77,7 @@ public class TransactionsFragment extends Fragment{
 
             transactionList = new ArrayList<>();
             transactionData = new ArrayList<>();
+
         }
     }
 
@@ -66,28 +91,37 @@ public class TransactionsFragment extends Fragment{
     public void onResume() {
         super.onResume();
         BusProvider.getInstance().register(this);
-        new TransactionService().getAllTransactions(1L);
-
+        transactionService = new  TransactionService();
+        transactionService.getAllTransactions(1L);
     }
 
     @Subscribe
     public void onTransactionEvent(TransactionEvent event) {
-
-        for (Transaction t : event.result.body()) {
-            transactionData.add(t);
+        transactionResults = event.result.body();
+        for (Transaction t : transactionResults) {
             HashMap<String, String> tempTransaction = new HashMap<>();
-            tempTransaction.put("title", String.valueOf(t.getOwnerId()));
-            tempTransaction.put("author", String.valueOf(t.getUserId()));
+
+            transactionData.add(t);
+            tempTransaction.put("title", String.valueOf("User " + t.getUserId()));
+            tempTransaction.put("author", String.valueOf("Owner " + t.getOwnerId()));
             transactionList.add(tempTransaction);
         }
-
-        ListAdapter adapter = new SimpleAdapter(
+        adapter = new SimpleAdapter(
                 getContext(), transactionList,
                 R.layout.list_item, new String[]{"title", "author"},
                 new int[]{R.id.tv_title, R.id.tv_author}
         );
         lvTransactions.setAdapter(adapter);
+        lvTransactions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                mCallback.onTransactionSelected(transactionData.get(i));
+            }
+        });
+    }
 
+    @Subscribe
+    public void onBookEvent(BookEvent event) {
     }
 
 }

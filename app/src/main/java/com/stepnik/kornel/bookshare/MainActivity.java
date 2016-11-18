@@ -29,12 +29,17 @@ import com.stepnik.kornel.bookshare.fragments.MainFragment;
 import com.stepnik.kornel.bookshare.fragments.MyBooksFragment;
 import com.stepnik.kornel.bookshare.fragments.BorrowedBooksFragment;
 import com.stepnik.kornel.bookshare.fragments.OnBookSelectedListener;
+import com.stepnik.kornel.bookshare.fragments.OnTransactionSelectedListener;
+import com.stepnik.kornel.bookshare.fragments.OnUserSelectedListener;
 import com.stepnik.kornel.bookshare.fragments.ProfileFragment;
 import com.stepnik.kornel.bookshare.fragments.SearchFragment;
 import com.stepnik.kornel.bookshare.fragments.HistoryFragment;
 import com.stepnik.kornel.bookshare.fragments.SettingsFragment;
+import com.stepnik.kornel.bookshare.fragments.TransactionFragment;
 import com.stepnik.kornel.bookshare.fragments.TransactionsFragment;
+import com.stepnik.kornel.bookshare.fragments.UserFragment;
 import com.stepnik.kornel.bookshare.models.Book;
+import com.stepnik.kornel.bookshare.models.Transaction;
 import com.stepnik.kornel.bookshare.models.User;
 import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.BookService;
@@ -43,8 +48,8 @@ import com.stepnik.kornel.bookshare.services.TransactionService;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
-        GoogleMap.OnMapLongClickListener, OnBookSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener, OnBookSelectedListener, OnTransactionSelectedListener,
+        OnUserSelectedListener {
 
     GoogleMap map;
     Fragment currentFragment;
@@ -261,32 +266,6 @@ public class MainActivity extends AppCompatActivity
 
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(51, 19)).title("Marker"));
-        googleMap.setOnMarkerClickListener(this);
-        googleMap.setOnMapLongClickListener(this);
-        map = googleMap;
-    }
-
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        Toast.makeText(getApplicationContext(),
-                        marker.getTitle(),
-                        Toast.LENGTH_SHORT).show();
-        return false;
-    }
-
-    @Override
-    public void onMapLongClick(LatLng latLng) {
-        map.addMarker(new MarkerOptions().position(latLng).title("Book"));
-    }
-
-//    @Override
-//    public void onFragmentInteraction(Uri uri) {
-//
-//    }
-
-    @Override
     public void onBookSelected(Book book) {
         Fragment fragment = null;
         try {
@@ -316,5 +295,43 @@ public class MainActivity extends AppCompatActivity
     public void changeFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.flContent, fragment).commit();
+    }
+
+    @Override
+    public void onTransactionSelected(Transaction transaction) {
+        Fragment fragment = null;
+        try {
+            fragment = TransactionFragment.class.newInstance();
+            currentFragment = fragment;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Bundle args = new Bundle();
+        args.putSerializable(TransactionFragment.ARG_TRANSACTION, transaction);
+        fragment.setArguments(args);
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.flContent, fragment, "DISP_FRAG");
+        fragmentTransaction.addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onUserSelected(User user) {
+        Fragment fragment = null;
+        try {
+            fragment = UserFragment.class.newInstance();
+            currentFragment = fragment;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Bundle args = new Bundle();
+        args.putSerializable(UserFragment.ARG_USER, user);
+        fragment.setArguments(args);
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.flContent, fragment, "DISP_FRAG");
+        fragmentTransaction.addToBackStack(null).commit();
     }
 }
