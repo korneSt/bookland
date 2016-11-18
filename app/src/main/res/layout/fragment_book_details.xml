@@ -24,25 +24,25 @@
             android:layout_height="match_parent"
             android:weightSum="1">
 
-            <EditText
+            <TextView
                 android:text="Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/temp_text_mybooks"
-                android:textSize="30sp"
+                android:id="@+id/tv_author_detail"
+                android:textSize="22sp"
                 android:layout_margin="10dp"
                 android:background="@android:color/transparent" >
-            </EditText>
+            </TextView>
 
-            <EditText
+            <TextView
                 android:text="Author"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/desc"
-                android:textSize="30sp"
+                android:textSize="18sp"
                 android:layout_margin="10dp"
                 android:background="@android:color/transparent" >
-            </EditText>
+            </TextView>
 
             <RatingBar
                 android:id="@+id/ratingBar"

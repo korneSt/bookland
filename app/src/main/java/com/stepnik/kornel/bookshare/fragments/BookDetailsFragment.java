@@ -1,6 +1,7 @@
 package com.stepnik.kornel.bookshare.fragments;
 
 import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.models.Book;
@@ -27,6 +30,8 @@ public class BookDetailsFragment extends Fragment {
     int mCurrentPosition = -1;
     Book selectedBook;
     OnBookSelectedListener mCallback;
+    TextView title;
+    TextView author;
 
 
     @Override
@@ -45,9 +50,10 @@ public class BookDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_book_details, container, false);
-        TextView tempTextView = (TextView) rootView.findViewById(R.id.temp_text_mybooks);
+        title = (TextView) rootView.findViewById(R.id.tv_author_detail);
+        author = (TextView) rootView.findViewById(R.id.desc);
         Button rentBook = (Button) rootView.findViewById(R.id.b_rentbook);
-        tempTextView.setText("My books");
+        ImageView bookCover = (ImageView) rootView.findViewById(R.id.imageView2);
 
         if (savedInstanceState != null) {
 //            mCurrentPosition = savedInstanceState.getInt(ARG_POSITION);
@@ -65,6 +71,10 @@ public class BookDetailsFragment extends Fragment {
                 mCallback.onRentBookSelected(selectedBook);
             }
         });
+
+        Picasso.with(getContext()).load(selectedBook.getImagePath()).into(bookCover);
+
+        updateTextViews(selectedBook);
 
         return rootView;
     }
@@ -88,19 +98,18 @@ public class BookDetailsFragment extends Fragment {
         // onStart is a good place to do this because the layout has already been
         // applied to the fragment at this point so we can safely call the method
         // below that sets the article text.
-        Bundle args = getArguments();
-        if (args != null) {
-            // Set article based on argument passed in
-            updateArticleView((Book) args.getSerializable(ARG_BOOK));
-        } else if (mCurrentPosition != -1) {
-            // Set article based on saved instance state defined during onCreateView
-//            updateArticleView(mCurrentPosition);
-        }
+//        Bundle args = getArguments();
+//        if (args != null) {
+//            // Set article based on argument passed in
+//            updateArticleView((Book) args.getSerializable(ARG_BOOK));
+//        } else if (mCurrentPosition != -1) {
+//            // Set article based on saved instance state defined during onCreateView
+////            updateArticleView(mCurrentPosition);
+//        }
     }
 
-    public void updateArticleView(Book book) {
-        TextView article = (TextView) getActivity().findViewById(R.id.desc);
-        article.setText(book.getTitle());
-//        mCurrentPosition = position;
+    public void updateTextViews(Book book) {
+        title.setText(book.getTitle());
+        author.setText(book.getAuthor());
     }
 }

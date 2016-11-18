@@ -31,4 +31,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/transaction_borrower"
         android:gravity="left|center_vertical"/>
+
+    <Button
+        android:text="Accept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/b_accept" />
 </LinearLayout>

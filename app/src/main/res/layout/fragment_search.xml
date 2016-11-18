@@ -10,12 +10,23 @@
         android:id="@+id/simple_search"
         android:textSize="30sp"
         android:layout_margin="10dp"/>
-
-    <SearchView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0.3"
         android:queryHint="Type title, author or ISBN"
+        android:id="@+id/sv_book"
         />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:text="Search"
+            android:id="@+id/b_search"/>
+        </LinearLayout>
 
     <TextView
         android:text="Find by cover"
@@ -31,5 +42,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/takephoto_search"
         android:gravity="left|center_vertical" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lv_searchResults"
+        android:scrollbarAlwaysDrawVerticalTrack="false" />
 
 </LinearLayout>
