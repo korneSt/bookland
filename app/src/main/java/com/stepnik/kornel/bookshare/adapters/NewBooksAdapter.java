@@ -26,10 +26,12 @@ public class NewBooksAdapter extends RecyclerView.Adapter<NewBooksAdapter.ViewHo
     private Context context;
 
     private OnItemClickListener listener;
+
     // Define the listener interface
     public interface OnItemClickListener {
         void onItemClick(View itemView, int position);
     }
+
     // Define the method that allows the parent activity or fragment to define the listener
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
@@ -98,7 +100,8 @@ public class NewBooksAdapter extends RecyclerView.Adapter<NewBooksAdapter.ViewHo
         // - replace the contents of the view with that element
         holder.tvTittle.setText(newBookList.get(position).getTitle());
         holder.tvAuthor.setText(newBookList.get(position).getAuthor());
-        Picasso.with(getContext()).load("https://unsplash.it/50/70/?image=" + position).into(holder.cover);
+        int pos = position+1;
+        Picasso.with(getContext()).load("http://lorempixel.com/164/164/nature/" + pos).into(holder.cover);
 
     }
 

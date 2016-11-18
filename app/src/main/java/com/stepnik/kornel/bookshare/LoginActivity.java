@@ -8,11 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.stepnik.kornel.bookshare.models.User;
 import com.stepnik.kornel.bookshare.services.AppData;
-import com.stepnik.kornel.bookshare.services.UserService;
+import com.stepnik.kornel.bookshare.services.UserServiceAPI;
 
 import java.io.IOException;
 
@@ -30,10 +29,10 @@ public class LoginActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "loginFile";
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http:/192.168.0.105:8080/")
+            .baseUrl("http:/10.128.77.108:8080/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
-    UserService userService = retrofit.create(UserService.class);
+    UserServiceAPI userService = retrofit.create(UserServiceAPI.class);
 
 
 
