@@ -25,7 +25,7 @@ public class BookService {
     BookServiceAPI bookServiceAPI = Data.retrofit.create(BookServiceAPI.class);
 
     public void loadNewBooks() {
-        Call<List<Book>> books = bookServiceAPI.getBooks();
+        Call<List<Book>> books = bookServiceAPI.getBooks(AppData.loggedUser.getUserId(), "");
         books.enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {

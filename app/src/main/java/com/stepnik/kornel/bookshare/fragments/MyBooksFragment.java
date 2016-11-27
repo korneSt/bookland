@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.models.Data;
+import com.stepnik.kornel.bookshare.models.LoginResponse;
 import com.stepnik.kornel.bookshare.models.User;
 import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.BookServiceAPI;
@@ -85,9 +86,9 @@ public class MyBooksFragment extends Fragment {
 
 
     private void getBooks() {
-        User user= AppData.loggedUser;
-        Call<List<Book>> books = bookServiceAPI.getUserBooks(AppData.loggedUser.getId());
-        Log.d("user id", String.valueOf(AppData.loggedUser.getId()));
+        LoginResponse user= AppData.loggedUser;
+        Call<List<Book>> books = bookServiceAPI.getUserBooks(AppData.loggedUser.getUserId());
+        Log.d("user id", String.valueOf(AppData.loggedUser.getUserId()));
         books.enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, retrofit2.Response<List<Book>> response) {
@@ -124,7 +125,7 @@ public class MyBooksFragment extends Fragment {
         lvBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                mCallback.onBookSelected(bookListData.get(i));
+                mCallback.onBookSelected(bookListData.get(i), false);
             }
         });
     }

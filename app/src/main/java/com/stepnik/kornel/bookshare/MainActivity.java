@@ -39,6 +39,7 @@ import com.stepnik.kornel.bookshare.fragments.TransactionFragment;
 import com.stepnik.kornel.bookshare.fragments.TransactionsFragment;
 import com.stepnik.kornel.bookshare.fragments.UserFragment;
 import com.stepnik.kornel.bookshare.models.Book;
+import com.stepnik.kornel.bookshare.models.LoginResponse;
 import com.stepnik.kornel.bookshare.models.Transaction;
 import com.stepnik.kornel.bookshare.models.User;
 import com.stepnik.kornel.bookshare.services.AppData;
@@ -149,10 +150,10 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private User getUserFromFile() {
-        User user = null;
+    private LoginResponse getUserFromFile() {
+        LoginResponse user = null;
         try {
-            user = (User) Utilities.loadFromFile("userData", MainActivity.this);
+            user = (LoginResponse) Utilities.loadFromFile("userData", MainActivity.this);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -266,7 +267,7 @@ public class MainActivity extends AppCompatActivity
 
 
     @Override
-    public void onBookSelected(Book book) {
+    public void onBookSelected(Book book, boolean showRentButton) {
         Fragment fragment = null;
         try {
             fragment = BookDetailsFragment.class.newInstance();
@@ -277,6 +278,7 @@ public class MainActivity extends AppCompatActivity
 
         Bundle args = new Bundle();
         args.putSerializable(BookDetailsFragment.ARG_BOOK, book);
+        args.putBoolean(BookDetailsFragment.ARG_SHOW_RENT_BUTTON, showRentButton);
 //        args.putInt(BookDetailsFragment.ARG_POSITION, position);
         fragment.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

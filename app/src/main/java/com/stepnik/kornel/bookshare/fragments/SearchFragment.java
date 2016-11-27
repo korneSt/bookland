@@ -102,7 +102,7 @@ public class SearchFragment extends Fragment {
         searchResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                mCallback.onBookSelected(bookData.get(i));
+                mCallback.onBookSelected(bookData.get(i), true);
             }
         });
     }

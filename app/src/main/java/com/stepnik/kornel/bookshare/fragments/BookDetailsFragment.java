@@ -27,11 +27,13 @@ import retrofit2.http.POST;
 public class BookDetailsFragment extends Fragment {
     public static final String ARG_POSITION = "position";
     public static final String ARG_BOOK = "book";
+    public static final String ARG_SHOW_RENT_BUTTON = "showRentButton";
     int mCurrentPosition = -1;
     Book selectedBook;
     OnBookSelectedListener mCallback;
     TextView title;
     TextView author;
+
 
 
     @Override
@@ -64,6 +66,10 @@ public class BookDetailsFragment extends Fragment {
 
         MainActivity mainActivity = (MainActivity) getContext();
         mainActivity.setTitle("Book detals");
+        if (!getArguments().getBoolean(ARG_SHOW_RENT_BUTTON)) {
+            rentBook.setVisibility(View.GONE);
+        }
+
 
         rentBook.setOnClickListener(new View.OnClickListener() {
             @Override

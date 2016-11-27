@@ -7,7 +7,9 @@ import java.io.Serializable;
  */
 
 public class User implements Serializable {
+
     private long id;
+    private String token;
     private String email;
     private String username;
     private String password;
@@ -16,6 +18,12 @@ public class User implements Serializable {
     private double prefLocalRadius;
     private double prefLocalLat;
     private double prefLocalLon;
+
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public long getId() {
         return id;
@@ -87,5 +95,13 @@ public class User implements Serializable {
 
     public void setPrefLocalLon(double prefLocalLon) {
         this.prefLocalLon = prefLocalLon;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

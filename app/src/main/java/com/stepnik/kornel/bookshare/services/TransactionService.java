@@ -7,6 +7,7 @@ import com.stepnik.kornel.bookshare.events.NewBooksEvent;
 import com.stepnik.kornel.bookshare.events.TransactionEvent;
 import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.models.Data;
+import com.stepnik.kornel.bookshare.models.LoginResponse;
 import com.stepnik.kornel.bookshare.models.Transaction;
 import com.stepnik.kornel.bookshare.models.User;
 
@@ -24,8 +25,8 @@ public class TransactionService {
 
     TransactionServiceAPI transactionServiceAPI = Data.retrofit.create(TransactionServiceAPI.class);
 
-    public void startTransaction(User user, Book book) {
-        Call<Transaction> startTransaction = transactionServiceAPI.startTransaction(book.getId(), user.getId());
+    public void startTransaction(LoginResponse user, Book book) {
+        Call<Transaction> startTransaction = transactionServiceAPI.startTransaction(book.getId(), user.getUserId());
         startTransaction.enqueue(new Callback<Transaction>() {
             @Override
             public void onResponse(Call<Transaction> call, Response<Transaction> response) {

@@ -8,6 +8,7 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -21,8 +22,8 @@ public interface BookServiceAPI {
     @GET("book")
     Call<Book> getBook(@Query("id") Long bookId);
 
-    @GET("book/all")
-    Call<List<Book>> getBooks();
+    @GET("book/near")
+    Call<List<Book>> getBooks(@Query("userId") Long userId, @Query("keyWord") String keyWord);
 
     @GET("book/user")
     Call<List<Book>> getUserBooks(@Query("id") Long userId);

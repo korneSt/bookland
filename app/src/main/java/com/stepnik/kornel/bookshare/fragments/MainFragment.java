@@ -59,7 +59,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     public boolean onMarkerClick(Marker marker) {
         Book markerBook = newBooks.get((Integer) marker.getTag());
 
-        mCallback.onBookSelected(markerBook);
+        mCallback.onBookSelected(markerBook, true);
         return false;
     }
 
@@ -84,7 +84,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
                 int pos = position+1;
                 newBook.setImagePath("http://lorempixel.com/256/256/nature/" + pos);
 
-                mCallback.onBookSelected(newBook);
+                mCallback.onBookSelected(newBook, true);
 //                LatLng pos = new LatLng(newBooks.get(position).getLocalLat(), newBooks.get(position).getLocalLon());
 //                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 10));
 

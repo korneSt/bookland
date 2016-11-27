@@ -84,7 +84,7 @@ public class TransactionFragment extends Fragment {
             currTransaction = (Transaction) getArguments().getSerializable(ARG_TRANSACTION);
         }
 
-        if (!(currTransaction.getOwnerId().equals(AppData.loggedUser.getId())) ||
+        if (!(currTransaction.getOwnerId().equals(AppData.loggedUser.getUserId())) ||
                 currTransaction.getStatus() != 1) {
             acceptButton.setVisibility(View.GONE);
 
@@ -154,7 +154,7 @@ public class TransactionFragment extends Fragment {
 
     @Subscribe
     public void onBookResult(BookEvent event) {
-        mCallback.onBookSelected(event.result.body());
+        mCallback.onBookSelected(event.result.body(), false);
     }
 
     @Subscribe

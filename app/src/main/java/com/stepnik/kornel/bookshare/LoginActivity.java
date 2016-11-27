@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.stepnik.kornel.bookshare.models.LoginRequest;
+import com.stepnik.kornel.bookshare.models.LoginResponse;
 import com.stepnik.kornel.bookshare.models.User;
 import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.UserServiceAPI;
@@ -17,8 +19,9 @@ import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.GsonConverterFactory;
+
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
@@ -29,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "loginFile";
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http:/10.128.77.108:8080/")
+            .baseUrl("http://192.168.0.102:8080/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     UserServiceAPI userService = retrofit.create(UserServiceAPI.class);
@@ -50,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
             final EditText username = (EditText) findViewById(R.id.et_username);
             final EditText password = (EditText) findViewById(R.id.et_password);
             Button loginButton = (Button) findViewById(R.id.b_login);
+
             loginButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -60,16 +64,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public boolean isLogged(String username, String password) {
-        Call<User> login = userService.login(username, password);
-        login.enqueue(new Callback<User>() {
+        LoginRequest loginRequest = new LoginRequest(username, password);
+        Call<LoginResponse> login = userService.login(loginRequest);
+        login.enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(Call<User> call, retrofit2.Response<User> response) {
+            public void onResponse(Call<LoginResponse> call, retrofit2.Response<LoginResponse> response) {
                 Log.d("isOK", String.valueOf(response.isSuccessful()));
 
                 if (response.isSuccessful()){
                     Log.d("response", response.body().toString());
-
-                    AppData.loggedUser = response.body();
+                    LoginResponse resp = new LoginResponse(response.body().getUserId(), response.body().getToken());
+                    AppData.loggedUser = resp;
 
                     proceedUser();
 
@@ -79,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
                 Log.d("response F", t.getMessage());
 
             }

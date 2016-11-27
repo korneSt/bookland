@@ -77,7 +77,7 @@ public class AddBookFragment extends Fragment {
     }
 
     private void addNewBook() {
-        Call<Book> addBook = bookServiceAPI.addBook(etTittle.getText().toString(), etAuthor.getText().toString(), AppData.loggedUser.getId());
+        Call<Book> addBook = bookServiceAPI.addBook(etTittle.getText().toString(), etAuthor.getText().toString(), AppData.loggedUser.getUserId());
 
         addBook.enqueue(new Callback<Book>() {
             @Override

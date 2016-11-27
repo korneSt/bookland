@@ -20,6 +20,7 @@ import com.stepnik.kornel.bookshare.bus.BusProvider;
 import com.stepnik.kornel.bookshare.events.BookEvent;
 import com.stepnik.kornel.bookshare.events.TransactionEvent;
 import com.stepnik.kornel.bookshare.models.Transaction;
+import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.BookService;
 import com.stepnik.kornel.bookshare.services.TransactionService;
 
@@ -92,7 +93,7 @@ public class TransactionsFragment extends Fragment{
         super.onResume();
         BusProvider.getInstance().register(this);
         transactionService = new  TransactionService();
-        transactionService.getAllTransactions(1L);
+        transactionService.getAllTransactions(AppData.loggedUser.getUserId());
     }
 
     @Subscribe

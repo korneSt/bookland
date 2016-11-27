@@ -1,6 +1,7 @@
 package com.stepnik.kornel.bookshare.services;
 
 import com.stepnik.kornel.bookshare.models.Book;
+import com.stepnik.kornel.bookshare.models.LoginResponse;
 import com.stepnik.kornel.bookshare.models.User;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import retrofit2.http.Path;
 
 public class AppData{
 
-    public static User loggedUser;
+    public static LoginResponse loggedUser;
 
     public static Book[] booksArray = {new Book("Tytul", "Autor"), new Book("Tytul1", "Autor"),
             new Book("Tytul", "Autor"), new Book("Tytul1", "Autor"),
