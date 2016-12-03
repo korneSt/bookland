@@ -19,6 +19,9 @@ public class User implements Serializable {
     private double prefLocalLat;
     private double prefLocalLon;
 
+    public User() {
+
+    }
 
     public User(String username, String password) {
         this.username = username;

@@ -28,6 +28,9 @@ public interface BookServiceAPI {
     @GET("book/user")
     Call<List<Book>> getUserBooks(@Query("id") Long userId);
 
+    @GET("book/userRent")
+    Call<List<Book>> getUserRentBooks(@Query("id") Long userId);
+
     @FormUrlEncoded
     @POST("book/create")
     Call<Book> addBook(@Field("title") String title, @Field("author") String author, @Field("ownerId") Long ownerId);

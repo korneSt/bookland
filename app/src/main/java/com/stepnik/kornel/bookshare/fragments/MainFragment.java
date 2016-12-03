@@ -2,6 +2,7 @@ package com.stepnik.kornel.bookshare.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,11 +26,14 @@ import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.adapters.NewBooksAdapter;
 import com.stepnik.kornel.bookshare.bus.BusProvider;
 import com.stepnik.kornel.bookshare.events.NewBooksEvent;
+import com.stepnik.kornel.bookshare.events.UserEvent;
 import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.models.Data;
+import com.stepnik.kornel.bookshare.models.User;
 import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.BookService;
 import com.stepnik.kornel.bookshare.services.BookServiceAPI;
+import com.stepnik.kornel.bookshare.services.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +49,7 @@ import retrofit2.Response;
 public class MainFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     OnBookSelectedListener mCallback;
-
+    OnUserSelectedListener userCallback;
     MapView mMapView;
     private GoogleMap googleMap;
     private RecyclerView mRecyclerView;
@@ -53,13 +57,19 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     private RecyclerView.LayoutManager mLayoutManager;
 
     private ArrayList<Book> newBooks;
+    private ArrayList<User> nearUsers;
+
     private BookService bookService;
+    private UserService userService;
+    Handler h;
+    Runnable r;
+
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Book markerBook = newBooks.get((Integer) marker.getTag());
-
-        mCallback.onBookSelected(markerBook, true);
+//        Book markerBook = newBooks.get((Integer) marker.getTag());
+//        mCallback.onBookSelected(markerBook, true);
+        userCallback.onUserSelected(nearUsers.get((Integer) marker.getTag()));
         return false;
     }
 
@@ -70,7 +80,18 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         BusProvider.getInstance().register(this);
 
         bookService = new BookService();
-        bookService.loadNewBooks();
+        userService = new UserService();
+
+        userService.getNearUsers();
+        h = new Handler();
+        r = new Runnable() {
+            @Override
+            public void run() {
+                bookService.loadNewBooks();
+                h.postDelayed(this, 5000);
+            }
+        };
+        h.post(r);
     }
 
 
@@ -98,9 +119,10 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
 
         try {
             mCallback = (OnBookSelectedListener) context;
+            userCallback = (OnUserSelectedListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement OnHeadlineSelectedListener");
+                    + " must implement Listeners");
         }
     }
 
@@ -153,13 +175,15 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
 
         this.googleMap = googleMap;
         googleMap.setOnMarkerClickListener(this);
-        addBookMarkers(newBooks);
+//        addBookMarkers(newBooks);
+        addUserMarkers(nearUsers);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         BusProvider.getInstance().unregister(this);
+        h.removeCallbacks(r);
     }
 
 
@@ -168,18 +192,30 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         setAdapter(event.result.body());
     }
 
-    public void setAdapter(List<Book> books) {
-        newBooks.addAll(books);
-        mAdapter.notifyItemRangeChanged(0, books.size());
+    @Subscribe
+    public void onUserEvent(UserEvent event) {
+        nearUsers = (ArrayList<User>) event.results;
+//        addUserMarkers(nearUsers);
     }
 
-    public void addBookMarkers(ArrayList<Book> books) {
-        for (Book b : books) {
-            LatLng pos = new LatLng(b.getLocalLat(), b.getLocalLon());
+    public void setAdapter(List<Book> books) {
+        if (newBooks.size() != books.size()) {
+//            newBooks = (ArrayList<Book>) books;
+            newBooks.clear();
+            newBooks.addAll(books);
+            mAdapter.notifyItemRangeChanged(0, books.size());
+        }
+
+    }
+
+    public void addUserMarkers(ArrayList<User> users) {
+        for (User u : users) {
+            LatLng pos = new LatLng(u.getPrefLocalLat(), u.getPrefLocalLon());
             Marker bookMarker = googleMap.addMarker(new MarkerOptions().position(pos)
-                    .title(b.getTitle()).snippet("Book"));
-            bookMarker.setTag(books.indexOf(b));
+                    .title(u.getUsername()).snippet("User"));
+            bookMarker.setTag(users.indexOf(u));
         }
     }
+
 }
 

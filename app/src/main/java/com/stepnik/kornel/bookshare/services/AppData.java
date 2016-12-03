@@ -27,13 +27,27 @@ public class AppData{
     public static ArrayList<Book> getBookList() {
         ArrayList<Book> books = new ArrayList<>();
         books.add(new Book("Tytul", "Autor") {{
+            setOwnerId(9);
             setLocalLat(51.30);
             setLocalLon(21.06);
         }});
         books.add(new Book("Tytul1", "Autor") {{
+            setOwnerId(9);
             setLocalLat(51.26);
             setLocalLon(21.24);
         }});
         return books;
+    }
+
+    public static ArrayList<User> getUsersList() {
+        ArrayList<User> users = new ArrayList<>();
+        users.add(new User() {{
+            setId(9);
+            setUsername("abel");
+            setPrefLocalLat(51.30);
+            setPrefLocalLon(21.06);
+        }});
+
+        return users;
     }
 }

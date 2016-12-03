@@ -96,7 +96,7 @@ public class SearchFragment extends Fragment {
         adapter = new SimpleAdapter(
                 getContext(), bookList,
                 R.layout.list_item, new String[]{"title", "author"},
-                new int[]{R.id.tv_title, R.id.tv_author}
+                new int[]{R.id.tv_item_primary, R.id.tv_item_secondary}
         );
         searchResults.setAdapter(adapter);
         searchResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {

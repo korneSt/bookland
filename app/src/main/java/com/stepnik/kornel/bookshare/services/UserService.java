@@ -7,6 +7,8 @@ import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.models.Data;
 import com.stepnik.kornel.bookshare.models.User;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,4 +39,8 @@ public class UserService {
         });
     }
 
+    public void getNearUsers() {
+        ArrayList<User> u = AppData.getUsersList();
+        BusProvider.getInstance().post(new UserEvent(u));
+    }
 }

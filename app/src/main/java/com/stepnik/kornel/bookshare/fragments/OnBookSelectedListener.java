@@ -8,6 +8,5 @@ import com.stepnik.kornel.bookshare.models.Book;
 
 public interface OnBookSelectedListener {
     void onBookSelected(Book book, boolean showRentButton);
-
     void onRentBookSelected(Book book);
 }

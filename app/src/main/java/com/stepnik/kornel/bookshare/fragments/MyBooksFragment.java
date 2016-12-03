@@ -15,10 +15,10 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.stepnik.kornel.bookshare.R;
+import com.stepnik.kornel.bookshare.adapters.BooksAdapter;
 import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.models.Data;
 import com.stepnik.kornel.bookshare.models.LoginResponse;
-import com.stepnik.kornel.bookshare.models.User;
 import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.BookServiceAPI;
 
@@ -38,17 +38,13 @@ public class MyBooksFragment extends Fragment {
     OnBookSelectedListener mCallback;
 
     ListView lvBooks;
-    ArrayList<HashMap<String, String>> bookList;
-    ArrayList<Book> bookListData;
     BookServiceAPI bookServiceAPI = Data.retrofit.create(BookServiceAPI.class);
-
+    private BooksAdapter booksAdapter;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
         try {
             mCallback = (OnBookSelectedListener) context;
         } catch (ClassCastException e) {
@@ -73,8 +69,6 @@ public class MyBooksFragment extends Fragment {
 
             lvBooks = (ListView) view.findViewById(R.id.lv_mybooks);
 
-            bookList = new ArrayList<>();
-            bookListData = new ArrayList<>();
             getBooks();
         }
     }
@@ -92,8 +86,7 @@ public class MyBooksFragment extends Fragment {
         books.enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, retrofit2.Response<List<Book>> response) {
-                bookList = new ArrayList<>();
-                Log.d("status", String.valueOf(response.code()));
+
                 if (response.isSuccessful()) {
                     setAdapter(response);
                 }
@@ -107,25 +100,15 @@ public class MyBooksFragment extends Fragment {
         });
     }
 
-    public void setAdapter(Response<List<Book>> response) {
-        for (Book book : response.body()) {
-            bookListData.add(book);
-            HashMap<String, String> bookTemp = new HashMap<>();
-            bookTemp.put("title", book.getTitle());
-            bookTemp.put("author", book.getAuthor());
-            bookList.add(bookTemp);
-        }
+    public void setAdapter(final Response<List<Book>> response) {
 
-        ListAdapter adapter = new SimpleAdapter(
-                getContext(), bookList,
-                R.layout.list_item, new String[]{"title", "author"},
-                new int[]{R.id.tv_title, R.id.tv_author}
-        );
-        lvBooks.setAdapter(adapter);
+        booksAdapter = new BooksAdapter(this.getContext(), (ArrayList<Book>) response.body());
+        lvBooks.setAdapter(booksAdapter);
         lvBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                mCallback.onBookSelected(bookListData.get(i), false);
+                mCallback.onBookSelected(response.body().get(i), false);
+
             }
         });
     }

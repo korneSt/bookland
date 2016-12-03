@@ -9,6 +9,7 @@ import com.stepnik.kornel.bookshare.models.Data;
 import com.stepnik.kornel.bookshare.models.Transaction;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -77,7 +78,26 @@ public class BookService {
 
             }
         });
+    }
 
+    public void getUserRentBooks (Long userId) {
+//        Call<List<Book>> books = bookServiceAPI.getUserRentBooks(userId);
+        ArrayList<Book> books = AppData.getBookList();
+//        books.enqueue(new Callback<List<Book>>() {
+//            @Override
+//            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
+//
+//                if (response.isSuccessful()) {
+//                    BusProvider.getInstance().post(new NewBooksEvent(response));
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Book>> call, Throwable t) {
+//
+//            }
+//        });
+        BusProvider.getInstance().post(new BookEvent(books));
     }
 
 }

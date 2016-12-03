@@ -116,7 +116,6 @@ public class MainActivity extends AppCompatActivity
                 }
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.flContent, fragment, "DISP_FRAG");
-                transaction.addToBackStack(null);
                 transaction.commit();
             }
         });
@@ -243,7 +242,7 @@ public class MainActivity extends AppCompatActivity
         try {
             fragment = (Fragment) fragmentClass.newInstance();
             currentFragment = fragment;
-            getSupportFragmentManager().beginTransaction().replace(R.id.flContent, fragment, "DISP_FRAG").addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.flContent, fragment, "DISP_FRAG").commit();
 
             getSupportActionBar().setTitle(title);
             Log.d("ID", String.valueOf(fragment.getId()));
@@ -283,7 +282,6 @@ public class MainActivity extends AppCompatActivity
         fragment.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.flContent, fragment, "DISP_FRAG");
-        transaction.addToBackStack(null);
         transaction.commit();
 
     }
@@ -315,7 +313,7 @@ public class MainActivity extends AppCompatActivity
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.flContent, fragment, "DISP_FRAG");
-        fragmentTransaction.addToBackStack(null).commit();
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -334,6 +332,6 @@ public class MainActivity extends AppCompatActivity
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.flContent, fragment, "DISP_FRAG");
-        fragmentTransaction.addToBackStack(null).commit();
+        fragmentTransaction.commit();
     }
 }

@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -21,14 +20,11 @@ import com.stepnik.kornel.bookshare.events.BookEvent;
 import com.stepnik.kornel.bookshare.events.TransactionEvent;
 import com.stepnik.kornel.bookshare.models.Transaction;
 import com.stepnik.kornel.bookshare.services.AppData;
-import com.stepnik.kornel.bookshare.services.BookService;
 import com.stepnik.kornel.bookshare.services.TransactionService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static java.security.AccessController.getContext;
 
 /**
  * Created by korSt on 17.11.2016.
@@ -110,7 +106,7 @@ public class TransactionsFragment extends Fragment{
         adapter = new SimpleAdapter(
                 getContext(), transactionList,
                 R.layout.list_item, new String[]{"title", "author"},
-                new int[]{R.id.tv_title, R.id.tv_author}
+                new int[]{R.id.tv_item_primary, R.id.tv_item_secondary}
         );
         lvTransactions.setAdapter(adapter);
         lvTransactions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
