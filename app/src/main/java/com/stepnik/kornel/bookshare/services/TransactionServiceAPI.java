@@ -1,6 +1,7 @@
 package com.stepnik.kornel.bookshare.services;
 
 import com.stepnik.kornel.bookshare.models.Book;
+import com.stepnik.kornel.bookshare.models.Message;
 import com.stepnik.kornel.bookshare.models.Transaction;
 
 import java.util.List;
@@ -29,19 +30,29 @@ public interface TransactionServiceAPI {
     @FormUrlEncoded
     Call<Transaction> acceptTransaction(@Field("transId") Long transId);
 
-    @POST("/trans/confirm")
+    @POST("trans/confirm")
     @FormUrlEncoded
     Call<Transaction> confirmTransaction(@Field("transId") Long transId);
 
-    @POST("/trans/finalize")
+    @POST("trans/finalize")
     @FormUrlEncoded
     Call<Transaction> finalizeTransaction(@Field("transId") Long transId);
 
-    @POST("/trans/close")
+    @POST("trans/close")
     @FormUrlEncoded
     Call<Transaction> closeTransaction(@Field("transId") Long transId, @Field("feedback") String feedback,
                                        @Field("owner") boolean owner);
 
+    @POST("trans/contact")
+    @FormUrlEncoded
+    Call<Message> createMessage(@Field("transId") Long transId, @Field("userId") Long userId,
+                                @Field("message") String message);
+
+    @GET("trans/messages")
+    Call<List<Message>> getMessages(@Query("transId") Long transId);
+
     @GET("trans/all")
     Call<List<Transaction>> getAllTransactions(@Query("userId") Long userId);
+
+
 }

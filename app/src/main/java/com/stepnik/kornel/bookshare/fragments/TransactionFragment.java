@@ -2,20 +2,27 @@ package com.stepnik.kornel.bookshare.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.R;
+import com.stepnik.kornel.bookshare.Utilities;
+import com.stepnik.kornel.bookshare.adapters.MessageAdapter;
 import com.stepnik.kornel.bookshare.bus.BusProvider;
 import com.stepnik.kornel.bookshare.events.BookEvent;
+import com.stepnik.kornel.bookshare.events.MessageEvent;
 import com.stepnik.kornel.bookshare.events.UserEvent;
+import com.stepnik.kornel.bookshare.models.Message;
 import com.stepnik.kornel.bookshare.models.Transaction;
 import com.stepnik.kornel.bookshare.models.User;
 import com.stepnik.kornel.bookshare.services.AppData;
@@ -23,6 +30,8 @@ import com.stepnik.kornel.bookshare.services.BookService;
 import com.stepnik.kornel.bookshare.services.TransactionService;
 import com.stepnik.kornel.bookshare.services.UserService;
 import com.stepnik.kornel.bookshare.services.UserServiceAPI;
+
+import java.util.ArrayList;
 
 /**
  * Created by Iza on 17/11/2016.
@@ -36,7 +45,12 @@ public class TransactionFragment extends Fragment {
     public static final String ARG_TRANSACTION = "transaction";
     Transaction currTransaction;
     BookService bookService;
+    ListView lvMessages;
+    private Handler h;
+    private Runnable r;
 
+    private ArrayList<Message> messages;
+    private MessageAdapter messageAdapter;
 
     @Override
     public void onAttach(Context context) {
@@ -53,16 +67,26 @@ public class TransactionFragment extends Fragment {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        BusProvider.getInstance().unregister(this);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         BusProvider.getInstance().register(this);
+        final TransactionService transactionService = new TransactionService();
+        h = new Handler();
+        r = new Runnable() {
+            @Override
+            public void run() {
+                transactionService.getMessages(currTransaction.getId());
+                h.postDelayed(this, 5000);
+            }
+        };
+        h.post(r);
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
+        h.removeCallbacks(r);
     }
 
     @Nullable
@@ -77,6 +101,13 @@ public class TransactionFragment extends Fragment {
         Button getOwner = (Button) rootView.findViewById(R.id.transaction_owner);
         Button getUser = (Button) rootView.findViewById(R.id.transaction_borrower);
         Button acceptButton = (Button) rootView.findViewById(R.id.b_accept);
+        Button confirmDelivery = (Button) rootView.findViewById(R.id.b_confirm_delivery);
+        Button sendMessage = (Button) rootView.findViewById(R.id.b_send_message);
+        lvMessages = (ListView) rootView.findViewById(R.id.lv_messages);
+        final EditText messageText = (EditText) rootView.findViewById(R.id.et_message);
+        messages = new ArrayList<>();
+        messageAdapter = new MessageAdapter(this.getContext(), messages);
+
 
         if (savedInstanceState != null) {
             currTransaction = (Transaction) savedInstanceState.getSerializable(ARG_TRANSACTION);
@@ -87,7 +118,9 @@ public class TransactionFragment extends Fragment {
         if (!(currTransaction.getOwnerId().equals(AppData.loggedUser.getUserId())) ||
                 currTransaction.getStatus() != 1) {
             acceptButton.setVisibility(View.GONE);
-
+        }
+        if (currTransaction.getStatus() != 2 || currTransaction.getOwnerId().equals(AppData.loggedUser.getUserId())) {
+            confirmDelivery.setVisibility(View.GONE);
         }
 
         statusTv.setText(setStatus(currTransaction.getStatus()));
@@ -113,8 +146,23 @@ public class TransactionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 new TransactionService().acceptTransaction(currTransaction.getId());
+                Utilities.displayMessage("Poczekaj na akceptacje właściciela", getActivity());
             }
         });
+        confirmDelivery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new TransactionService().confirmTransaction(currTransaction.getId());
+            }
+        });
+        sendMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new TransactionService().createMessage(currTransaction.getId(), AppData.loggedUser.getUserId(),
+                        messageText.getText().toString());
+            }
+        });
+
 
         return rootView;
     }
@@ -161,4 +209,17 @@ public class TransactionFragment extends Fragment {
     public void onUserResult(UserEvent event) {
         mCallbackUser.onUserSelected(event.result.body());
     }
+
+    @Subscribe
+    public void onMessageEvent(MessageEvent event) {
+        if (messages.size() != event.results.size()) {
+
+            messageAdapter.clear();
+            messageAdapter.addAll(event.results);
+            lvMessages.setAdapter(messageAdapter);
+            lvMessages.setSelection(event.results.size()-1);
+        }
+
+    }
+
 }

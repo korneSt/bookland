@@ -3,38 +3,88 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:text="Status"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/transaction_status"
-        android:textSize="30sp"
-        android:layout_margin="10dp"/>
+        android:layout_height="wrap_content">
 
-    <Button
-        android:text="Book"
+        <Button
+            android:text="Confirm delivery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/b_confirm_delivery" />
+
+        <Button
+            android:text="Accept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/b_accept" />
+
+        <TextView
+            android:text="Status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/transaction_status"
+            android:textSize="30sp"
+            android:layout_margin="10dp"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:text="Book"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/transaction_book"
+                android:gravity="left|center_vertical"
+                android:layout_weight="1" />
+
+            <Button
+                android:text="Owner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/transaction_owner"
+                android:gravity="left|center_vertical"
+                android:layout_weight="1" />
+
+            <Button
+                android:text="Borrower"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/transaction_borrower"
+                android:gravity="left|center_vertical"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lv_messages"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/transaction_book"
-        android:gravity="left|center_vertical" />
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
-    <Button
-        android:text="Owner"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/transaction_owner"
-        android:gravity="left|center_vertical" />
+        android:layout_height="wrap_content">
 
-    <Button
-        android:text="Borrower"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/transaction_borrower"
-        android:gravity="left|center_vertical"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Message"
+            android:ems="10"
+            android:id="@+id/et_message"
+            android:layout_weight="1" />
 
-    <Button
-        android:text="Accept"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/b_accept" />
+        <Button
+            android:text="Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/b_send_message"
+            android:layout_weight="1" />
+    </LinearLayout>
+
 </LinearLayout>

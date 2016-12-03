@@ -5,4 +5,5 @@ package com.stepnik.kornel.bookshare.services;
  */
 
 public class MessageService {
+
 }
