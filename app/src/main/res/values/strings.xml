@@ -14,5 +14,16 @@
     <string name="err_savefile">Nie mozna zapisac pliku</string>
     <string name="err_no_user">Brak takiego uzytkownika</string>
     <string name="wait_accept">Poczekaj na zaakcepotwanie wlasciciela</string>
+    <string name="lat_preference">Latitude</string>
+    <string name="lat_summary_preference">Set latitude</string>
+    <string name="lat_dialog_preference">Set latitude</string>
+    <string name="lon_preference">Longitude</string>
+    <string name="lon_summary_preference">Set longitude</string>
+    <string name="lon_dialog_preference">Set longitude</string>
+    <string name="radius_preference">Radius</string>
+    <string name="radius_summary_preference">Set Radius</string>
+    <string name="radius_dialog_preference">Set Radius</string>
+    <string name="settings_location">Location</string>
+    <string name="settings_other">Other</string>
 
 </resources>

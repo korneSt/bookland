@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -22,7 +23,9 @@ import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.otto.Subscribe;
 import com.stepnik.kornel.bookshare.bus.BusProvider;
+import com.stepnik.kornel.bookshare.events.UserEvent;
 import com.stepnik.kornel.bookshare.fragments.AddBookFragment;
 import com.stepnik.kornel.bookshare.fragments.BookDetailsFragment;
 import com.stepnik.kornel.bookshare.fragments.MainFragment;
@@ -45,8 +48,12 @@ import com.stepnik.kornel.bookshare.models.User;
 import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.BookService;
 import com.stepnik.kornel.bookshare.services.TransactionService;
+import com.stepnik.kornel.bookshare.services.UserService;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnBookSelectedListener, OnTransactionSelectedListener,
@@ -79,6 +86,8 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         BusProvider.getInstance().register(this);
+        new UserService().getUser(AppData.loggedUser.getUserId());
+
     }
 
 
@@ -139,6 +148,7 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         AppData.loggedUser = getUserFromFile();
+        NotificationEventReceiver.setupAlarm(getApplicationContext());
     }
 
     @Override
@@ -229,8 +239,8 @@ public class MainActivity extends AppCompatActivity
                 title = "History";
                 break;
             case R.id.nav_settings:
-                fragmentClass = SettingsFragment.class;
-                title = "Settings";
+                Intent settingsIntent = new Intent(this, MyPreferencesActivity.class);
+                startActivity(settingsIntent);
                 break;
             case R.id.nav_logout:
                 logout();
@@ -333,5 +343,16 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.flContent, fragment, "DISP_FRAG");
         fragmentTransaction.commit();
+    }
+
+    @Subscribe
+    public void onUserEvent(UserEvent event) {
+        if (event.result == null)
+            return;
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("lat_preference", String.valueOf(event.result.body().getPrefLocalLat())).apply();
+        editor.putString("lon_preference", String.valueOf(event.result.body().getPrefLocalLon())).apply();
+        editor.putString("radius_preference", String.valueOf(event.result.body().getPrefLocalRadius())).apply();
     }
 }

@@ -1,10 +1,13 @@
 package com.stepnik.kornel.bookshare.fragments;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +36,8 @@ import com.stepnik.kornel.bookshare.services.UserServiceAPI;
 
 import java.util.ArrayList;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
+
 /**
  * Created by Iza on 17/11/2016.
  */
@@ -44,7 +49,6 @@ public class TransactionFragment extends Fragment {
 
     public static final String ARG_TRANSACTION = "transaction";
     Transaction currTransaction;
-    BookService bookService;
     ListView lvMessages;
     private Handler h;
     private Runnable r;
@@ -101,7 +105,7 @@ public class TransactionFragment extends Fragment {
         Button getOwner = (Button) rootView.findViewById(R.id.transaction_owner);
         Button getUser = (Button) rootView.findViewById(R.id.transaction_borrower);
         Button acceptButton = (Button) rootView.findViewById(R.id.b_accept);
-        Button confirmDelivery = (Button) rootView.findViewById(R.id.b_confirm_delivery);
+        final Button confirmDelivery = (Button) rootView.findViewById(R.id.b_confirm_delivery);
         Button sendMessage = (Button) rootView.findViewById(R.id.b_send_message);
         lvMessages = (ListView) rootView.findViewById(R.id.lv_messages);
         final EditText messageText = (EditText) rootView.findViewById(R.id.et_message);
@@ -153,6 +157,7 @@ public class TransactionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 new TransactionService().confirmTransaction(currTransaction.getId());
+                confirmDelivery.setVisibility(View.GONE);
             }
         });
         sendMessage.setOnClickListener(new View.OnClickListener() {
@@ -218,6 +223,16 @@ public class TransactionFragment extends Fragment {
             messageAdapter.addAll(event.results);
             lvMessages.setAdapter(messageAdapter);
             lvMessages.setSelection(event.results.size()-1);
+
+            // build notification
+// the addAction re-use the same intent to keep the example short
+            NotificationCompat.Builder builder  = new NotificationCompat.Builder(getContext())
+                    .setContentTitle("New message")
+                    .setContentText("You have a new message in Bookshare.")
+                    .setSmallIcon(R.drawable.ic_action_book);
+
+            NotificationManager nManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            nManager.notify(1, builder.build());
         }
 
     }

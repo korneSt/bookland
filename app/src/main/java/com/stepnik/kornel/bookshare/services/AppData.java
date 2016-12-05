@@ -44,8 +44,8 @@ public class AppData{
         users.add(new User() {{
             setId(9);
             setUsername("abel");
-            setPrefLocalLat(51.30);
-            setPrefLocalLon(21.06);
+            setPrefLocalLat(51.3f);
+            setPrefLocalLon(21.0f);
         }});
 
         return users;

@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "loginFile";
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.10.1:8080/")
+            .baseUrl("http://192.168.0.105:8080/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     UserServiceAPI userService = retrofit.create(UserServiceAPI.class);

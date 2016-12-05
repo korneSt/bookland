@@ -15,9 +15,9 @@ public class User implements Serializable {
     private String password;
     private int ratePos;
     private int rateNeg;
-    private double prefLocalRadius;
-    private double prefLocalLat;
-    private double prefLocalLon;
+    private float prefLocalRadius;
+    private float prefLocalLat;
+    private float prefLocalLon;
 
     public User() {
 
@@ -76,27 +76,27 @@ public class User implements Serializable {
         this.rateNeg = rateNeg;
     }
 
-    public double getPrefLocalRadius() {
+    public float getPrefLocalRadius() {
         return prefLocalRadius;
     }
 
-    public void setPrefLocalRadius(double prefLocalRadius) {
+    public void setPrefLocalRadius(float prefLocalRadius) {
         this.prefLocalRadius = prefLocalRadius;
     }
 
-    public double getPrefLocalLat() {
+    public float getPrefLocalLat() {
         return prefLocalLat;
     }
 
-    public void setPrefLocalLat(double prefLocalLat) {
+    public void setPrefLocalLat(float prefLocalLat) {
         this.prefLocalLat = prefLocalLat;
     }
 
-    public double getPrefLocalLon() {
+    public float getPrefLocalLon() {
         return prefLocalLon;
     }
 
-    public void setPrefLocalLon(double prefLocalLon) {
+    public void setPrefLocalLon(float prefLocalLon) {
         this.prefLocalLon = prefLocalLon;
     }
 

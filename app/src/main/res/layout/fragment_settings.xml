@@ -3,68 +3,68 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:text="Location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textLocation"
-        android:textSize="30sp"
-        android:layout_margin="10dp"/>
+    <!--<TextView-->
+        <!--android:text="Location"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/textLocation"-->
+        <!--android:textSize="30sp"-->
+        <!--android:layout_margin="10dp"/>-->
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="159dp">
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="159dp">-->
 
-        <Button
-            android:text="Latitude"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/button3"
-            android:background="@android:color/transparent"
-            android:gravity="left|center_vertical"
-            android:layout_marginLeft="20dp" />
+        <!--<Button-->
+            <!--android:text="Latitude"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/button3"-->
+            <!--android:background="@android:color/transparent"-->
+            <!--android:gravity="left|center_vertical"-->
+            <!--android:layout_marginLeft="20dp" />-->
 
-        <Button
-            android:text="Longitude"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/button4"
-            android:background="@android:color/transparent"
-            android:gravity="left|center_vertical"
-            android:layout_marginLeft="20dp"/>
+        <!--<Button-->
+            <!--android:text="Longitude"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/button4"-->
+            <!--android:background="@android:color/transparent"-->
+            <!--android:gravity="left|center_vertical"-->
+            <!--android:layout_marginLeft="20dp"/>-->
 
-        <Button
-            android:text="Radius"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/button2"
-            android:background="@android:color/transparent"
-            android:gravity="left|center_vertical"
-            android:layout_marginLeft="20dp"/>
-    </LinearLayout>
+        <!--<Button-->
+            <!--android:text="Radius"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/button2"-->
+            <!--android:background="@android:color/transparent"-->
+            <!--android:gravity="left|center_vertical"-->
+            <!--android:layout_marginLeft="20dp"/>-->
+    <!--</LinearLayout>-->
 
-    <TextView
-        android:text="Search range"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textSearch"
-        android:textSize="30sp"
-        android:layout_margin="10dp"/>
+    <!--<TextView-->
+        <!--android:text="Search range"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/textSearch"-->
+        <!--android:textSize="30sp"-->
+        <!--android:layout_margin="10dp"/>-->
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
 
-        <Button
-            android:text="Other options"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/button5"
-            android:background="@android:color/transparent"
-            android:gravity="left|center_vertical"
-            android:layout_marginLeft="20dp"/>
-    </LinearLayout>
+        <!--<Button-->
+            <!--android:text="Other options"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/button5"-->
+            <!--android:background="@android:color/transparent"-->
+            <!--android:gravity="left|center_vertical"-->
+            <!--android:layout_marginLeft="20dp"/>-->
+    <!--</LinearLayout>-->
 
 </LinearLayout>

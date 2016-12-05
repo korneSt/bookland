@@ -43,4 +43,23 @@ public class UserService {
         ArrayList<User> u = AppData.getUsersList();
         BusProvider.getInstance().post(new UserEvent(u));
     }
+
+    public void setPreferences(Long userId, float radius, float lat, float lon) {
+        Call<Void> prefs = userServiceAPI.setPreferences(userId, radius, lat, lon);
+
+        prefs.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call call, Response response) {
+
+                if (response.isSuccessful()) {
+//                    BusProvider.getInstance().post(new UserEvent(response));
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+
+            }
+        });
+    }
 }

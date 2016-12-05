@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/settings_location">
+
+        <EditTextPreference
+            android:key="lat_preference"
+            android:numeric="decimal"
+            android:title="@string/lat_preference"
+            android:summary="@string/lat_summary_preference"
+            android:dialogTitle="@string/lat_dialog_preference" />
+        <EditTextPreference
+            android:key="lon_preference"
+            android:numeric="decimal"
+            android:title="@string/lon_preference"
+            android:summary="@string/lon_summary_preference"
+            android:dialogTitle="@string/lon_dialog_preference" />
+        <EditTextPreference
+            android:key="radius_preference"
+            android:numeric="decimal"
+            android:title="@string/radius_preference"
+            android:summary="@string/radius_summary_preference"
+            android:dialogTitle="@string/radius_dialog_preference" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_other">
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

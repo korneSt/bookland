@@ -20,6 +20,18 @@
             android:layout_height="wrap_content"
             android:id="@+id/b_accept" />
 
+        <Button
+            android:text="Return book"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/b_return" />
+
+        <Button
+            android:text="Confirm return"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/b_confirm_return" />
+
         <TextView
             android:text="Status"
             android:layout_width="match_parent"

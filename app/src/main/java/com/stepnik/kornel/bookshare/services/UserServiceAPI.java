@@ -16,6 +16,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -36,4 +37,9 @@ public interface UserServiceAPI {
 
     @GET("user/all")
     Call<User> getNearUsers();
+
+    @PUT("user/prefs/local")
+    Call<Void> setPreferences(@Query("id") Long userId, @Query("radius") float radius, @Query("lat") float lat, @Query("lon") float lon);
+
+
 }

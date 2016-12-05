@@ -4,6 +4,7 @@ import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.models.Message;
 import com.stepnik.kornel.bookshare.models.Transaction;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import retrofit2.Call;
@@ -54,5 +55,6 @@ public interface TransactionServiceAPI {
     @GET("trans/all")
     Call<List<Transaction>> getAllTransactions(@Query("userId") Long userId);
 
-
+    @GET("trans/news")
+    Call<List<Message>> getNewMessages(@Query("time") Timestamp timestamp);
 }
