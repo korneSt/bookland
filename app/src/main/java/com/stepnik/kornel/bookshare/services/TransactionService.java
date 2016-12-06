@@ -85,8 +85,64 @@ public class TransactionService {
         });
     }
 
+    public void finalizeTransaction(Long transactionId) {
+        Call<Void> startTransaction = transactionServiceAPI.finalizeTransaction(transactionId);
+        startTransaction.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.d("succes", String.valueOf(response.body()));
+//                if (response.isSuccessful()) {
+//                    BusProvider.getInstance().post(new TransactionEvent(response));
+//                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.d("fail", String.valueOf(t.getStackTrace()));
+
+            }
+        });
+    }
+
+    public void closeTransaction(Long transactionId, String feedback, int rate,  Boolean owner) {
+        Call<Void> startTransaction = transactionServiceAPI.closeTransaction(transactionId, feedback, rate, owner);
+        startTransaction.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.d("succes", String.valueOf(response.body()));
+//                if (response.isSuccessful()) {
+//                    BusProvider.getInstance().post(new TransactionEvent(response));
+//                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.d("fail", String.valueOf(t.getStackTrace()));
+
+            }
+        });
+    }
+
     public void getAllTransactions(Long userId) {
         Call<List<Transaction>> startTransaction = transactionServiceAPI.getAllTransactions(userId);
+        startTransaction.enqueue(new Callback<List<Transaction>>() {
+            @Override
+            public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
+
+                if (response.isSuccessful()) {
+                    BusProvider.getInstance().post(new TransactionEvent(response));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Transaction>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getHistoryTransactions(Long userId) {
+        Call<List<Transaction>> startTransaction = transactionServiceAPI.getHistoryTransactions(userId);
         startTransaction.enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {

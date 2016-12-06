@@ -35,6 +35,7 @@ import com.stepnik.kornel.bookshare.fragments.OnBookSelectedListener;
 import com.stepnik.kornel.bookshare.fragments.OnTransactionSelectedListener;
 import com.stepnik.kornel.bookshare.fragments.OnUserSelectedListener;
 import com.stepnik.kornel.bookshare.fragments.ProfileFragment;
+import com.stepnik.kornel.bookshare.fragments.ReturnBookFragment;
 import com.stepnik.kornel.bookshare.fragments.SearchFragment;
 import com.stepnik.kornel.bookshare.fragments.HistoryFragment;
 import com.stepnik.kornel.bookshare.fragments.SettingsFragment;
@@ -59,12 +60,10 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnBookSelectedListener, OnTransactionSelectedListener,
         OnUserSelectedListener {
 
-    GoogleMap map;
     Fragment currentFragment;
     DrawerLayout drawer;
     NavigationView navigationView;
-    OnBookSelectedListener mCallback;
-
+    FloatingActionButton fab;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -99,6 +98,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+
         setSupportActionBar(toolbar);
 
 
@@ -112,7 +113,6 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -250,6 +250,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         try {
+            fab.setVisibility(View.VISIBLE);
             fragment = (Fragment) fragmentClass.newInstance();
             currentFragment = fragment;
             getSupportFragmentManager().beginTransaction().replace(R.id.flContent, fragment, "DISP_FRAG").commit();
@@ -308,8 +309,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onTransactionSelected(Transaction transaction) {
+    public void onTransactionSelected(Transaction transaction, Boolean closed) {
         Fragment fragment = null;
+        fab.setVisibility(View.INVISIBLE);
         try {
             fragment = TransactionFragment.class.newInstance();
             currentFragment = fragment;
@@ -319,6 +321,25 @@ public class MainActivity extends AppCompatActivity
 
         Bundle args = new Bundle();
         args.putSerializable(TransactionFragment.ARG_TRANSACTION, transaction);
+        args.putBoolean(TransactionFragment.ARG_CLOSED, closed);
+        fragment.setArguments(args);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.flContent, fragment, "DISP_FRAG");
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onCloseTransaction(Transaction transaction) {
+        Fragment fragment = null;
+        try {
+            fragment = ReturnBookFragment.class.newInstance();
+            currentFragment = fragment;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Bundle args = new Bundle();
+        args.putSerializable(ReturnBookFragment.ARG_TRANSACTION, transaction);
         fragment.setArguments(args);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

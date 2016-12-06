@@ -44,12 +44,15 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class TransactionFragment extends Fragment {
 
+    public static final String ARG_CLOSED = "closed";
     public OnBookSelectedListener mCallback;
     public OnUserSelectedListener mCallbackUser;
+    public OnTransactionSelectedListener mCallbackTransaction;
 
     public static final String ARG_TRANSACTION = "transaction";
     Transaction currTransaction;
     ListView lvMessages;
+    Boolean transactionClosed;
     private Handler h;
     private Runnable r;
 
@@ -63,9 +66,10 @@ public class TransactionFragment extends Fragment {
         try {
             mCallback = (OnBookSelectedListener) context;
             mCallbackUser = (OnUserSelectedListener) context;
+            mCallbackTransaction = (OnTransactionSelectedListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement OnHeadlineSelectedListener");
+                    + " must implement Listeners");
         }
 
     }
@@ -100,24 +104,36 @@ public class TransactionFragment extends Fragment {
         View rootView = inflater.inflate( R.layout.fragment_transaction,container,false );
         MainActivity mainActivity = (MainActivity) getContext();
         mainActivity.setTitle("Transaction");
+
+        if (savedInstanceState != null) {
+            currTransaction = (Transaction) savedInstanceState.getSerializable(ARG_TRANSACTION);
+            transactionClosed = savedInstanceState.getBoolean(ARG_CLOSED);
+        } else {
+            currTransaction = (Transaction) getArguments().getSerializable(ARG_TRANSACTION);
+            transactionClosed = getArguments().getBoolean(ARG_CLOSED);
+        }
+
         TextView statusTv = (TextView) rootView.findViewById(R.id.transaction_status);
         Button getBook = (Button) rootView.findViewById(R.id.transaction_book);
         Button getOwner = (Button) rootView.findViewById(R.id.transaction_owner);
         Button getUser = (Button) rootView.findViewById(R.id.transaction_borrower);
         Button acceptButton = (Button) rootView.findViewById(R.id.b_accept);
+        Button closeTransaction = (Button) rootView.findViewById(R.id.b_close_transaction);
+        final Button confirmReturn = (Button) rootView.findViewById(R.id.b_confirm_return);
         final Button confirmDelivery = (Button) rootView.findViewById(R.id.b_confirm_delivery);
         Button sendMessage = (Button) rootView.findViewById(R.id.b_send_message);
         lvMessages = (ListView) rootView.findViewById(R.id.lv_messages);
-        final EditText messageText = (EditText) rootView.findViewById(R.id.et_message);
+        EditText messageText = (EditText) rootView.findViewById(R.id.et_message);
+
+        if (!transactionClosed){
+            messageText.setVisibility(View.GONE);
+            sendMessage.setVisibility(View.GONE);
+        }
         messages = new ArrayList<>();
         messageAdapter = new MessageAdapter(this.getContext(), messages);
 
 
-        if (savedInstanceState != null) {
-            currTransaction = (Transaction) savedInstanceState.getSerializable(ARG_TRANSACTION);
-        } else {
-            currTransaction = (Transaction) getArguments().getSerializable(ARG_TRANSACTION);
-        }
+
 
         if (!(currTransaction.getOwnerId().equals(AppData.loggedUser.getUserId())) ||
                 currTransaction.getStatus() != 1) {
@@ -125,6 +141,12 @@ public class TransactionFragment extends Fragment {
         }
         if (currTransaction.getStatus() != 2 || currTransaction.getOwnerId().equals(AppData.loggedUser.getUserId())) {
             confirmDelivery.setVisibility(View.GONE);
+        }
+        if (currTransaction.getStatus() != 3 || !currTransaction.getOwnerId().equals(AppData.loggedUser.getUserId())) {
+            confirmReturn.setVisibility(View.GONE);
+        }
+        if (currTransaction.getStatus() != 4) {
+            closeTransaction.setVisibility(View.GONE);
         }
 
         statusTv.setText(setStatus(currTransaction.getStatus()));
@@ -160,11 +182,25 @@ public class TransactionFragment extends Fragment {
                 confirmDelivery.setVisibility(View.GONE);
             }
         });
+        confirmReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new TransactionService().finalizeTransaction(currTransaction.getId());
+                confirmReturn.setVisibility(View.GONE);
+            }
+        });
+        final EditText finalMessageText = messageText;
         sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new TransactionService().createMessage(currTransaction.getId(), AppData.loggedUser.getUserId(),
-                        messageText.getText().toString());
+                        finalMessageText.getText().toString());
+            }
+        });
+        closeTransaction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCallbackTransaction.onCloseTransaction(currTransaction);
             }
         });
 
@@ -199,7 +235,7 @@ public class TransactionFragment extends Fragment {
                 returnMessage = "Ksiazka oddana";
                 break;
             case 5:
-                returnMessage = "Transakcja ukonczona";
+                returnMessage = "Transakcja zakonczona";
                 break;
         }
         return returnMessage;
@@ -223,18 +259,7 @@ public class TransactionFragment extends Fragment {
             messageAdapter.addAll(event.results);
             lvMessages.setAdapter(messageAdapter);
             lvMessages.setSelection(event.results.size()-1);
-
-            // build notification
-// the addAction re-use the same intent to keep the example short
-            NotificationCompat.Builder builder  = new NotificationCompat.Builder(getContext())
-                    .setContentTitle("New message")
-                    .setContentText("You have a new message in Bookshare.")
-                    .setSmallIcon(R.drawable.ic_action_book);
-
-            NotificationManager nManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-            nManager.notify(1, builder.build());
         }
-
     }
 
 }

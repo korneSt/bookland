@@ -24,7 +24,7 @@
             android:text="Return book"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/b_return" />
+            android:id="@+id/b_close_transaction" />
 
         <Button
             android:text="Confirm return"

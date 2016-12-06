@@ -112,7 +112,7 @@ public class TransactionsFragment extends Fragment{
         lvTransactions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                mCallback.onTransactionSelected(transactionData.get(i));
+                mCallback.onTransactionSelected(transactionData.get(i), true);
             }
         });
     }
