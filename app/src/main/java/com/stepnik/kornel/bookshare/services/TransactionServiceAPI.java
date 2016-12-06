@@ -57,5 +57,5 @@ public interface TransactionServiceAPI {
     Call<List<Transaction>> getHistoryTransactions(@Query("userId") Long userId);
 
     @GET("trans/news")
-    Call<List<Message>> getNewMessages(@Query("time") Timestamp timestamp);
+    Call<List<Message>> getNewMessages();
 }

@@ -35,8 +35,8 @@ public interface UserServiceAPI {
 //    Call<User.LoginResponse> login(@Field("username") String username, @Field("password") String password);
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
 
-    @GET("user/all")
-    Call<User> getNearUsers();
+    @GET("user/near")
+    Call<List<User>> getNearUsers(@Query("userId") Long userId);
 
     @PUT("user/prefs/local")
     Call<Void> setPreferences(@Query("id") Long userId, @Query("radius") float radius, @Query("lat") float lat, @Query("lon") float lon);

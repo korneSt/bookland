@@ -198,7 +198,7 @@ public class TransactionService {
     }
 
     public void getNewMessages(Timestamp timestamp) {
-        Call<List<Message>> newMessages = transactionServiceAPI.getNewMessages(timestamp);
+        Call<List<Message>> newMessages = transactionServiceAPI.getNewMessages();
         newMessages.enqueue(new Callback<List<Message>>() {
             @Override
             public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {

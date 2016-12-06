@@ -125,14 +125,12 @@ public class TransactionFragment extends Fragment {
         lvMessages = (ListView) rootView.findViewById(R.id.lv_messages);
         EditText messageText = (EditText) rootView.findViewById(R.id.et_message);
 
-        if (!transactionClosed){
+        if (transactionClosed || currTransaction.getStatus() == 1){
             messageText.setVisibility(View.GONE);
             sendMessage.setVisibility(View.GONE);
         }
         messages = new ArrayList<>();
         messageAdapter = new MessageAdapter(this.getContext(), messages);
-
-
 
 
         if (!(currTransaction.getOwnerId().equals(AppData.loggedUser.getUserId())) ||
@@ -172,7 +170,7 @@ public class TransactionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 new TransactionService().acceptTransaction(currTransaction.getId());
-                Utilities.displayMessage("Poczekaj na akceptacje właściciela", getActivity());
+                Utilities.displayMessage("Zaakceptowano", getActivity());
             }
         });
         confirmDelivery.setOnClickListener(new View.OnClickListener() {
@@ -180,6 +178,7 @@ public class TransactionFragment extends Fragment {
             public void onClick(View view) {
                 new TransactionService().confirmTransaction(currTransaction.getId());
                 confirmDelivery.setVisibility(View.GONE);
+                Utilities.displayMessage("Zaakceptowano", getActivity());
             }
         });
         confirmReturn.setOnClickListener(new View.OnClickListener() {
