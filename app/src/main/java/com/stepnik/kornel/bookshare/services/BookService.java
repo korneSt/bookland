@@ -62,8 +62,8 @@ public class BookService {
         });
     }
 
-    public void getBookByAuthor(String author) {
-        Call<List<Book>> books = bookServiceAPI.getBookByAuthor(author);
+    public void searchBook(Long userId, String keyWord) {
+        Call<List<Book>> books = bookServiceAPI.searchBook(userId, keyWord);
         books.enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {

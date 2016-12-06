@@ -20,6 +20,7 @@ import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.bus.BusProvider;
 import com.stepnik.kornel.bookshare.events.NewBooksEvent;
 import com.stepnik.kornel.bookshare.models.Book;
+import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.BookService;
 
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class SearchFragment extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new BookService().getBookByAuthor(searchView.getText().toString());
+                new BookService().searchBook(AppData.loggedUser.getUserId(), searchView.getText().toString());
             }
         });
 

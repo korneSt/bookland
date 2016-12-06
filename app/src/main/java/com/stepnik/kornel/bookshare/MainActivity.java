@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.*;
@@ -51,6 +52,8 @@ import com.stepnik.kornel.bookshare.services.BookService;
 import com.stepnik.kornel.bookshare.services.TransactionService;
 import com.stepnik.kornel.bookshare.services.UserService;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity
     DrawerLayout drawer;
     NavigationView navigationView;
     FloatingActionButton fab;
-
+    TextView tvUsername;
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -99,7 +102,7 @@ public class MainActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         fab = (FloatingActionButton) findViewById(R.id.fab);
-
+        tvUsername = (TextView) findViewById(R.id.tv_nav_username);
         setSupportActionBar(toolbar);
 
 
@@ -292,7 +295,7 @@ public class MainActivity extends AppCompatActivity
 //        args.putInt(BookDetailsFragment.ARG_POSITION, position);
         fragment.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.flContent, fragment, "DISP_FRAG");
+        transaction.replace(R.id.flContent, fragment, "DISP_FRAG").addToBackStack(null);
         transaction.commit();
 
     }
@@ -301,6 +304,7 @@ public class MainActivity extends AppCompatActivity
     public void onRentBookSelected(Book book) {
         Utilities.displayMessage(getString(R.string.wait_accept), this);
         new TransactionService().startTransaction(AppData.loggedUser, book);
+        getSupportFragmentManager().popBackStackImmediate();
     }
 
     public void changeFragment(Fragment fragment) {
@@ -370,6 +374,8 @@ public class MainActivity extends AppCompatActivity
     public void onUserEvent(UserEvent event) {
         if (event.result == null)
             return;
+        tvUsername = (TextView) findViewById(R.id.tv_nav_username);
+        tvUsername.setText(event.result.body().getUsername());
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("lat_preference", String.valueOf(event.result.body().getPrefLocalLat())).apply();
