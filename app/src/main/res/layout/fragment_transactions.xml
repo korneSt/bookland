@@ -7,6 +7,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/lv_transactions"
-        android:scrollbarAlwaysDrawVerticalTrack="false" />
+        android:scrollbarAlwaysDrawVerticalTrack="false"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="18dp"
+        android:padding="8dp"/>
 
 </LinearLayout>

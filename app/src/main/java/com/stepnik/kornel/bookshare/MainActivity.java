@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.*;
@@ -35,6 +36,7 @@ import com.stepnik.kornel.bookshare.fragments.OnBookSelectedListener;
 import com.stepnik.kornel.bookshare.fragments.OnTransactionSelectedListener;
 import com.stepnik.kornel.bookshare.fragments.OnUserSelectedListener;
 import com.stepnik.kornel.bookshare.fragments.ProfileFragment;
+import com.stepnik.kornel.bookshare.fragments.ReturnBookFragment;
 import com.stepnik.kornel.bookshare.fragments.SearchFragment;
 import com.stepnik.kornel.bookshare.fragments.HistoryFragment;
 import com.stepnik.kornel.bookshare.fragments.SettingsFragment;
@@ -50,6 +52,8 @@ import com.stepnik.kornel.bookshare.services.BookService;
 import com.stepnik.kornel.bookshare.services.TransactionService;
 import com.stepnik.kornel.bookshare.services.UserService;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -59,13 +63,11 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnBookSelectedListener, OnTransactionSelectedListener,
         OnUserSelectedListener {
 
-    GoogleMap map;
     Fragment currentFragment;
     DrawerLayout drawer;
     NavigationView navigationView;
-    OnBookSelectedListener mCallback;
-
-
+    FloatingActionButton fab;
+    TextView tvUsername;
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -99,6 +101,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        tvUsername = (TextView) findViewById(R.id.tv_nav_username);
         setSupportActionBar(toolbar);
 
 
@@ -112,7 +116,6 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -250,6 +253,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         try {
+            fab.setVisibility(View.VISIBLE);
             fragment = (Fragment) fragmentClass.newInstance();
             currentFragment = fragment;
             getSupportFragmentManager().beginTransaction().replace(R.id.flContent, fragment, "DISP_FRAG").commit();
@@ -291,7 +295,7 @@ public class MainActivity extends AppCompatActivity
 //        args.putInt(BookDetailsFragment.ARG_POSITION, position);
         fragment.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.flContent, fragment, "DISP_FRAG");
+        transaction.replace(R.id.flContent, fragment, "DISP_FRAG").addToBackStack(null);
         transaction.commit();
 
     }
@@ -300,6 +304,7 @@ public class MainActivity extends AppCompatActivity
     public void onRentBookSelected(Book book) {
         Utilities.displayMessage(getString(R.string.wait_accept), this);
         new TransactionService().startTransaction(AppData.loggedUser, book);
+        getSupportFragmentManager().popBackStackImmediate();
     }
 
     public void changeFragment(Fragment fragment) {
@@ -308,8 +313,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onTransactionSelected(Transaction transaction) {
+    public void onTransactionSelected(Transaction transaction, Boolean closed) {
         Fragment fragment = null;
+        fab.setVisibility(View.INVISIBLE);
         try {
             fragment = TransactionFragment.class.newInstance();
             currentFragment = fragment;
@@ -319,6 +325,25 @@ public class MainActivity extends AppCompatActivity
 
         Bundle args = new Bundle();
         args.putSerializable(TransactionFragment.ARG_TRANSACTION, transaction);
+        args.putBoolean(TransactionFragment.ARG_CLOSED, closed);
+        fragment.setArguments(args);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.flContent, fragment, "DISP_FRAG");
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onCloseTransaction(Transaction transaction) {
+        Fragment fragment = null;
+        try {
+            fragment = ReturnBookFragment.class.newInstance();
+            currentFragment = fragment;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Bundle args = new Bundle();
+        args.putSerializable(ReturnBookFragment.ARG_TRANSACTION, transaction);
         fragment.setArguments(args);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -349,6 +374,8 @@ public class MainActivity extends AppCompatActivity
     public void onUserEvent(UserEvent event) {
         if (event.result == null)
             return;
+        tvUsername = (TextView) findViewById(R.id.tv_nav_username);
+        tvUsername.setText(event.result.body().getUsername());
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("lat_preference", String.valueOf(event.result.body().getPrefLocalLat())).apply();

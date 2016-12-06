@@ -28,7 +28,7 @@
                 android:text="username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/profile_username"
+                android:id="@+id/tv_profile_username"
                 android:textSize="30sp"
                 android:layout_margin="10dp"/>
 
@@ -36,7 +36,7 @@
                 android:text="Reputation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/profile_reputation"
+                android:id="@+id/tv_profile_reputation"
                 android:textSize="30sp"
                 android:layout_margin="10dp"/>
 

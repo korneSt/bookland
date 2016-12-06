@@ -35,6 +35,6 @@ public interface BookServiceAPI {
     @POST("book/create")
     Call<Book> addBook(@Field("title") String title, @Field("author") String author, @Field("ownerId") Long ownerId);
 
-    @GET("book/author/{author}")
-    Call<List<Book>> getBookByAuthor(@Path("author") String author);
+    @GET("book/near")
+    Call<List<Book>> searchBook(@Query("userId") Long userId, @Query("keyWord") String keyword);
 }

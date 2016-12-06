@@ -15,9 +15,12 @@ import android.widget.SimpleAdapter;
 import com.squareup.otto.Subscribe;
 import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.R;
+import com.stepnik.kornel.bookshare.adapters.BooksAdapter;
+import com.stepnik.kornel.bookshare.adapters.TransactionAdapter;
 import com.stepnik.kornel.bookshare.bus.BusProvider;
 import com.stepnik.kornel.bookshare.events.BookEvent;
 import com.stepnik.kornel.bookshare.events.TransactionEvent;
+import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.models.Transaction;
 import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.TransactionService;
@@ -38,6 +41,7 @@ public class TransactionsFragment extends Fragment{
     TransactionService transactionService;
     List<Transaction> transactionResults;
     ListAdapter adapter;
+    TransactionAdapter transactionAdapter;
 
     @Override
     public void onAttach(Context context) {
@@ -94,25 +98,41 @@ public class TransactionsFragment extends Fragment{
 
     @Subscribe
     public void onTransactionEvent(TransactionEvent event) {
-        transactionResults = event.result.body();
-        for (Transaction t : transactionResults) {
-            HashMap<String, String> tempTransaction = new HashMap<>();
 
-            transactionData.add(t);
-            tempTransaction.put("title", String.valueOf("User " + t.getUserId()));
-            tempTransaction.put("author", String.valueOf("Owner " + t.getOwnerId()));
-            transactionList.add(tempTransaction);
-        }
-        adapter = new SimpleAdapter(
-                getContext(), transactionList,
-                R.layout.list_item, new String[]{"title", "author"},
-                new int[]{R.id.tv_item_primary, R.id.tv_item_secondary}
-        );
-        lvTransactions.setAdapter(adapter);
+        setAdapter(event.result.body());
+
+
+//        transactionResults = event.result.body();
+//        for (Transaction t : transactionResults) {
+//            HashMap<String, String> tempTransaction = new HashMap<>();
+//
+//            transactionData.add(t);
+//            tempTransaction.put("title", String.valueOf("User " + t.getUserId()));
+//            tempTransaction.put("author", String.valueOf("Owner " + t.getOwnerId()));
+//            transactionList.add(tempTransaction);
+//        }
+//        adapter = new SimpleAdapter(
+//                getContext(), transactionList,
+//                R.layout.list_item, new String[]{"title", "author"},
+//                new int[]{R.id.tv_item_primary, R.id.tv_item_secondary}
+//        );
+//        lvTransactions.setAdapter(adapter);
+//        lvTransactions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                mCallback.onTransactionSelected(transactionData.get(i), true);
+//            }
+//        });
+    }
+
+    private void setAdapter(final List<Transaction> transaction) {
+        transactionAdapter = new TransactionAdapter(this.getContext(), (ArrayList<Transaction>) transaction);
+        lvTransactions.setAdapter(transactionAdapter);
         lvTransactions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                mCallback.onTransactionSelected(transactionData.get(i));
+                mCallback.onTransactionSelected(transaction.get(i), false);
+
             }
         });
     }

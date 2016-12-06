@@ -82,7 +82,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         bookService = new BookService();
         userService = new UserService();
 
-        userService.getNearUsers();
+        userService.getNearUsers(AppData.loggedUser.getUserId());
         h = new Handler();
         r = new Runnable() {
             @Override
@@ -176,6 +176,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         this.googleMap = googleMap;
         googleMap.setOnMarkerClickListener(this);
 //        addBookMarkers(newBooks);
+        if (nearUsers != null)
         addUserMarkers(nearUsers);
     }
 
@@ -194,8 +195,10 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Subscribe
     public void onUserEvent(UserEvent event) {
+        if (event.results == null)
+            return;
         nearUsers = (ArrayList<User>) event.results;
-//        addUserMarkers(nearUsers);
+        addUserMarkers(nearUsers);
     }
 
     public void setAdapter(List<Book> books) {

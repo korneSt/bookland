@@ -47,11 +47,8 @@ public class NotificationEventReceiver extends WakefulBroadcastReceiver {
     public void onReceive(final Context context, Intent intent) {
         final String action = intent.getAction();
         final Intent[] serviceIntent = {null};
-//        new TransactionService().getNewMessages(new Timestamp(1480471111111L));
 
-        Timestamp currentTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
-        Call<List<Message>> newMessages = transactionServiceAPI.getNewMessages(currentTime);
+        Call<List<Message>> newMessages = transactionServiceAPI.getNewMessages();
         newMessages.enqueue(new Callback<List<Message>>() {
             @Override
             public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {

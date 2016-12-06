@@ -36,13 +36,11 @@ public interface TransactionServiceAPI {
     Call<Transaction> confirmTransaction(@Field("transId") Long transId);
 
     @POST("trans/finalize")
-    @FormUrlEncoded
-    Call<Transaction> finalizeTransaction(@Field("transId") Long transId);
+    Call<Void> finalizeTransaction(@Query("transId") Long transId);
 
     @POST("trans/close")
-    @FormUrlEncoded
-    Call<Transaction> closeTransaction(@Field("transId") Long transId, @Field("feedback") String feedback,
-                                       @Field("owner") boolean owner);
+    Call<Void> closeTransaction(@Query("transId") Long transId, @Query("feedback") String feedback,
+                                       @Query("rate") int rate, @Query("owner") boolean owner);
 
     @POST("trans/contact")
     @FormUrlEncoded
@@ -55,6 +53,9 @@ public interface TransactionServiceAPI {
     @GET("trans/all")
     Call<List<Transaction>> getAllTransactions(@Query("userId") Long userId);
 
+    @GET("trans/history")
+    Call<List<Transaction>> getHistoryTransactions(@Query("userId") Long userId);
+
     @GET("trans/news")
-    Call<List<Message>> getNewMessages(@Query("time") Timestamp timestamp);
+    Call<List<Message>> getNewMessages();
 }

@@ -9,18 +9,43 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.squareup.otto.Subscribe;
 import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.R;
+import com.stepnik.kornel.bookshare.bus.BusProvider;
+import com.stepnik.kornel.bookshare.events.UserEvent;
+import com.stepnik.kornel.bookshare.services.AppData;
+import com.stepnik.kornel.bookshare.services.TransactionService;
+import com.stepnik.kornel.bookshare.services.UserService;
+
+import org.w3c.dom.Text;
 
 /**
  * Created by korSt on 31.10.2016.
  */
 
 public class ProfileFragment extends Fragment {
+
+    private TextView tvUsername;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
+        new UserService().getUser(AppData.loggedUser.getUserId());
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
     }
 
     @Nullable
@@ -28,8 +53,9 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        return super.onCreateView(inflater, container, savedInstanceState);
         final View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
-        //TextView tempTextView = (TextView) rootView.findViewById(R.id.temp_text);
-        //tempTextView.setText("Profile");
+        tvUsername = (TextView) rootView.findViewById(R.id.tv_profile_username);
+        TextView tvReputation = (TextView) rootView.findViewById(R.id.tv_profile_reputation);
+
         final MainActivity mainActivity = (MainActivity) getContext();
         mainActivity.setTitle("Profile");
         Button myBooks = (Button) rootView.findViewById(R.id.profile_mybooks);
@@ -83,5 +109,10 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Subscribe
+    public void onUserEvent(UserEvent event) {
+        tvUsername.setText(event.result.body().getUsername());
     }
 }

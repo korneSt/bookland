@@ -7,5 +7,6 @@ import com.stepnik.kornel.bookshare.models.Transaction;
  */
 
 public interface OnTransactionSelectedListener {
-    void onTransactionSelected(Transaction transaction);
+    void onTransactionSelected(Transaction transaction, Boolean closed);
+    void onCloseTransaction(Transaction transaction);
 }

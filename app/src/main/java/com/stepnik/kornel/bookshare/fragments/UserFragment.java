@@ -70,7 +70,7 @@ public class UserFragment extends Fragment {
             selectetUser = (User) getArguments().getSerializable(ARG_USER);
         }
 
-        mainActivity.setTitle(selectetUser.getUsername());
+//        mainActivity.setTitle(selectetUser.getUsername());
         username.setText(selectetUser.getUsername());
         userReputation.setText(String.valueOf(selectetUser.getRatePos()));
 
