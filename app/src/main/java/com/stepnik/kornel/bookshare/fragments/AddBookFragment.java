@@ -63,7 +63,6 @@ public class AddBookFragment extends Fragment {
         etIsbn = (EditText) rootView.findViewById(R.id.et_isbn);
 
         Button addBook = (Button) rootView.findViewById(R.id.b_addbook);
-        Button takePicture = (Button) rootView.findViewById(R.id.b_takepic);
 
         MainActivity mainActivity = (MainActivity) getContext();
         mainActivity.setTitle("Add book");
@@ -73,13 +72,6 @@ public class AddBookFragment extends Fragment {
             public void onClick(View view) {
 //                addNewBook();
                 new GoodreadsService().searchBooks(etTittle.getText().toString());
-            }
-        });
-        takePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }
         });
 

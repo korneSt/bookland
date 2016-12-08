@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorGreen"
             android:textSize="22sp"
-            android:textColor="@color/colorWhite"
+            android:textColor="#FFFFFF"
             android:id="@+id/b_accept"
             android:layout_margin="10dp"/>
 
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorRed"
-            android:textColor="@color/colorWhite"
+            android:textColor="#FFFFFF"
             android:textSize="22sp"
             android:id="@+id/b_decline"
             android:layout_margin="10dp"/>

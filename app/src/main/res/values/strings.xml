@@ -33,8 +33,9 @@
     <string name="login_password_placeholder">password</string>
     <string name="is_login_info">Logged</string>
 
-    <string name="add_book_info1">Enter title and author of the book</string>
-    <string name="add_book_info2">Taking a photo of the book is recommended</string>
+    <string name="add_book_info1">Enter title, author and ISBN number of the book</string>
+    <string name="add_book_info2">Evaluate state of the book</string>
+    <!--<string name="add_book_info3">Taking a photo of the book is recommended</string>-->
     <string name="make_photo_button">Make a photo</string>
 
 </resources>

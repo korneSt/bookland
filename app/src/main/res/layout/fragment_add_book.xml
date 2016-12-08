@@ -29,6 +29,15 @@
         android:hint="author"
         android:paddingLeft="10dp" />
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/et_isbn"
+        android:hint="ISBN"
+        android:paddingLeft="10dp" />
+
     <TextView
         android:text="@string/add_book_info2"
         android:layout_width="match_parent"
@@ -37,12 +46,13 @@
         android:paddingTop="10dp"
         android:layout_margin="5dp" />
 
-    <Button
-        android:id="@+id/b_takepic"
+    <RatingBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/make_photo_button"/>
+        android:id="@+id/rb_condition"
+        android:numStars="5"
+        android:stepSize="1"/>
+
 
     <RelativeLayout
         android:orientation="vertical"
@@ -60,13 +70,7 @@
             android:id="@+id/b_addbook"
             android:layout_marginBottom="5dp" />
 
-        <ImageView
-            android:id="@+id/iv_book_cover"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+
     </RelativeLayout>
 
 
