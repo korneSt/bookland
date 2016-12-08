@@ -6,6 +6,7 @@ import com.stepnik.kornel.bookshare.services.HeaderInterceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 /**
  * Created by korSt on 03.11.2016.
@@ -20,5 +21,10 @@ public class Data {
             .baseUrl("http://192.168.0.105:8080/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient)
+            .build();
+
+    public static Retrofit retrofitGR = new Retrofit.Builder()
+            .baseUrl("https://www.goodreads.com/")
+            .addConverterFactory(SimpleXmlConverterFactory.create())
             .build();
 }

@@ -1,8 +1,10 @@
 package com.stepnik.kornel.bookshare.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +20,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.otto.Subscribe;
@@ -67,8 +70,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-//        Book markerBook = newBooks.get((Integer) marker.getTag());
-//        mCallback.onBookSelected(markerBook, true);
         userCallback.onUserSelected(nearUsers.get((Integer) marker.getTag()));
         return false;
     }
@@ -81,6 +82,20 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
 
         bookService = new BookService();
         userService = new UserService();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        String latPref = preferences.getString("lat_preference", "51");
+        String lonPref = preferences.getString("lon_preference", "19");
+        final LatLng pos = new LatLng(Double.parseDouble(latPref), Double.parseDouble(lonPref));
+
+        mMapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 10));
+                googleMap.setOnMarkerClickListener(MainFragment.this);
+
+            }
+        });
 
         userService.getNearUsers(AppData.loggedUser.getUserId());
         h = new Handler();
@@ -136,10 +151,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        MainActivity mainActivity = (MainActivity) getContext();
-        mainActivity.setTitle("Home");
-
-//        newBooks = AppData.getBookList();
         newBooks = new ArrayList<>();
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.books_recycler_view);
 
@@ -174,10 +185,8 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     public void onMapReady(GoogleMap googleMap) {
 
         this.googleMap = googleMap;
-        googleMap.setOnMarkerClickListener(this);
-//        addBookMarkers(newBooks);
         if (nearUsers != null)
-        addUserMarkers(nearUsers);
+            addUserMarkers(nearUsers);
     }
 
     @Override

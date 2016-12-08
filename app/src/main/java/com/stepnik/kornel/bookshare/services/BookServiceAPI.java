@@ -33,7 +33,8 @@ public interface BookServiceAPI {
 
     @FormUrlEncoded
     @POST("book/create")
-    Call<Book> addBook(@Field("title") String title, @Field("author") String author, @Field("ownerId") Long ownerId);
+    Call<Book> addBook(@Field("title") String title, @Field("author") String author, @Field("ownerId") Long ownerId,
+                       @Field("isbn") int isbn, @Field("cover") String cover, @Field("condition") int condition);
 
     @GET("book/near")
     Call<List<Book>> searchBook(@Query("userId") Long userId, @Query("keyWord") String keyword);

@@ -41,7 +41,7 @@ public class TransactionService {
 
             @Override
             public void onFailure(Call<Transaction> call, Throwable t) {
-                Log.d("succes", String.valueOf(t.getStackTrace()));
+                Log.d("fail", String.valueOf(t.getStackTrace()));
 
             }
         });
@@ -66,6 +66,25 @@ public class TransactionService {
         });
     }
 
+    public void rejectTransaction(Long transactionId) {
+        Call<Transaction> rejectTransaction = transactionServiceAPI.rejectTransaction(transactionId);
+        rejectTransaction.enqueue(new Callback<Transaction>() {
+            @Override
+            public void onResponse(Call<Transaction> call, Response<Transaction> response) {
+                Log.d("succes", String.valueOf(response.body()));
+//                if (response.isSuccessful()) {
+//                    BusProvider.getInstance().post(new TransactionEvent(response));
+//                }
+            }
+
+            @Override
+            public void onFailure(Call<Transaction> call, Throwable t) {
+                Log.d("fail", String.valueOf(t.getStackTrace()));
+
+            }
+        });
+    }
+
     public void confirmTransaction(Long transactionId) {
         Call<Transaction> startTransaction = transactionServiceAPI.confirmTransaction(transactionId);
         startTransaction.enqueue(new Callback<Transaction>() {
@@ -79,7 +98,7 @@ public class TransactionService {
 
             @Override
             public void onFailure(Call<Transaction> call, Throwable t) {
-                Log.d("succes", String.valueOf(t.getStackTrace()));
+                Log.d("fail", String.valueOf(t.getStackTrace()));
 
             }
         });
@@ -173,7 +192,7 @@ public class TransactionService {
 
             @Override
             public void onFailure(Call<Message> call, Throwable t) {
-                Log.d("succes", String.valueOf(t.getStackTrace()));
+                Log.d("fail", String.valueOf(t.getStackTrace()));
 
             }
         });
