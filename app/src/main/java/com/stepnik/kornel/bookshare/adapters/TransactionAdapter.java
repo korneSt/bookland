@@ -43,10 +43,10 @@ public class TransactionAdapter extends ArrayAdapter<Transaction>{
 
         if (AppData.loggedUser.getUserId().equals(transaction.getOwnerId())) {
             tvUser.setText(transaction.getUserName());
-            convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGold));
+            convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorBookFromMe));
         } else {
             tvUser.setText(transaction.getOwnerName());
-            convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+            convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorBookForMe));
         }
 
         int resourceId = R.drawable.ic_action_book;

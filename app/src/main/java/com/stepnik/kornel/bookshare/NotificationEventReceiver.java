@@ -52,7 +52,7 @@ public class NotificationEventReceiver extends WakefulBroadcastReceiver {
         newMessages.enqueue(new Callback<List<Message>>() {
             @Override
             public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
-                if (response.body().size() > 0) {
+                if (response.body() != null && response.body().size() > 0) {
                     String lastMessage = response.body().get(response.body().size() - 1).getMessage();
 
                     if (ACTION_START_NOTIFICATION_SERVICE.equals(action)) {

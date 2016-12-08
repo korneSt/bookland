@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity
 
         }
 
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,6 +133,7 @@ public class MainActivity extends AppCompatActivity
                 transaction.commit();
             }
         });
+
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -217,31 +219,31 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
             case R.id.nav_home:
                 fragmentClass = MainFragment.class;
-                title = "Home";
+                title = getResources().getString(R.string.home);
                 break;
             case R.id.nav_profile:
                 fragmentClass = ProfileFragment.class;
-                title = "Profile";
+                title = getResources().getString(R.string.profile);
                 break;
             case R.id.nav_mybooks:
                 fragmentClass = MyBooksFragment.class;
-                title = "My books";
+                title = getResources().getString(R.string.my_books);
                 break;
             case R.id.nav_borrowedbooks:
                 fragmentClass = BorrowedBooksFragment.class;
-                title = "Borrowed books";
+                title = getResources().getString(R.string.borrowed_books);
                 break;
             case R.id.nav_search:
                 fragmentClass = SearchFragment.class;
-                title = "Search";
+                title = getResources().getString(R.string.search);
                 break;
             case R.id.nav_transactions:
                 fragmentClass = TransactionsFragment.class;
-                title = "Activity";
+                title = getResources().getString(R.string.activity);
                 break;
             case R.id.nav_history:
                 fragmentClass = HistoryFragment.class;
-                title = "History";
+                title = getResources().getString(R.string.history);
                 break;
             case R.id.nav_settings:
                 Intent settingsIntent = new Intent(this, MyPreferencesActivity.class);
@@ -269,6 +271,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public FloatingActionButton getFloatingActionButton() {
+        return fab;
     }
 
     private void logout() {
