@@ -13,6 +13,8 @@
     <string name="history">Historyy</string>
     <string name="err_savefile">Nie mozna zapisac pliku</string>
     <string name="err_no_user">Brak takiego uzytkownika</string>
+    <string name="register_succes">Registered! You can login now</string>
+    <string name="register_fail">Register failed! Try again</string>
     <string name="wait_accept">Poczekaj na zaakcepotwanie wlasciciela</string>
     <string name="lat_preference">Latitude</string>
     <string name="lat_summary_preference">Set latitude</string>

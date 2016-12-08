@@ -18,7 +18,7 @@ public class Data {
             .build();
 
     public static Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.0.105:8080/api/")
+            .baseUrl("http://bookland.azurewebsites.net/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient)
             .build();

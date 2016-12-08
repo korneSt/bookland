@@ -4,6 +4,7 @@ import com.stepnik.kornel.bookshare.LoginActivity;
 import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.models.LoginRequest;
 import com.stepnik.kornel.bookshare.models.LoginResponse;
+import com.stepnik.kornel.bookshare.models.RegisterRequest;
 import com.stepnik.kornel.bookshare.models.User;
 
 import java.util.List;
@@ -34,6 +35,10 @@ public interface UserServiceAPI {
     @Headers("Content-Type: application/json")
 //    Call<User.LoginResponse> login(@Field("username") String username, @Field("password") String password);
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
+
+    @POST("register")
+    @Headers("Content-Type: application/json")
+    Call<Void> register(@Body RegisterRequest registerRequest);
 
     @GET("user/near")
     Call<List<User>> getNearUsers(@Query("userId") Long userId);
