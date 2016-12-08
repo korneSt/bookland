@@ -3,8 +3,8 @@
     <color name="colorPrimaryOld">#3F51B5</color>
     <color name="colorPrimaryDarkOld">#303F9F</color>
 
-    <color name="colorPrimary">#e57373</color>
-    <color name="colorPrimaryDark">#8b0d0d</color>
+    <color name="colorPrimary">#00c853</color>
+    <color name="colorPrimaryDark">#1b5e20</color>
 
     <color name="colorAccent">#ff5252</color>
     <color name="colorGold">#FFD700</color>
@@ -12,7 +12,12 @@
     <color name="loginButton">#FFFF5252</color>
     <color name="registerButton">#ff9292</color>
 
-    <color name="colorGreen">#00c853</color>
-    <color name="colorRed">#FF0000</color>
+    <color name="colorGreen">#4caf50</color>
+    <color name="colorRed">#e53935</color>
+
+    <color name="fragmentButton">#b71c1c</color>
+
+    <color name="colorBookForMe">#cfd8dc</color>
+    <color name="colorBookFromMe">#ffe0b2</color>
 
 </resources>

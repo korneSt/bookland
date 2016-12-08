@@ -4,18 +4,36 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="home">BookShare App</string>
+    <string name="activity">Activity</string>
     <string name="profile">Profile</string>
-    <string name="my_books">My Books</string>
-    <string name="logout">Logout</string>
+    <string name="my_books">My books</string>
+    <string name="borrowed_books">Borrowed books</string>
     <string name="search">Search</string>
-    <string name="home">Home</string>
-    <string name="history">Historyy</string>
+    <string name="history">History</string>
+    <string name="action_settings">Settings</string>
+    <string name="logout">Logout</string>
+
+    <string name="around_you">Books around you:</string>
+
+    <string name="reputation">Reputation:</string>
+
+    <string name="state">State of the book:</string>
+    <string name="rent_book_button">Rent the book</string>
+
+    <string name="rate_transaction_button">Rate transaction</string>
+
+    <string name="simple_search">Simple search</string>
+    <string name="search_button">Search</string>
+    <string name="find_by_cover">Find by cover</string>
+    <string name="take_photo_button">Take a photo</string>
+
     <string name="err_savefile">Nie mozna zapisac pliku</string>
     <string name="err_no_user">Brak takiego uzytkownika</string>
     <string name="register_succes">Registered! You can login now</string>
     <string name="register_fail">Register failed! Try again</string>
     <string name="wait_accept">Poczekaj na zaakcepotwanie wlasciciela</string>
+
     <string name="lat_preference">Latitude</string>
     <string name="lat_summary_preference">Set latitude</string>
     <string name="lat_dialog_preference">Set latitude</string>
@@ -27,6 +45,7 @@
     <string name="radius_dialog_preference">Set Radius</string>
     <string name="settings_location">Location</string>
     <string name="settings_other">Other</string>
+
     <string name="login_button">Login</string>
     <string name="register_button">Create account</string>
     <string name="login_username_placeholder">username</string>
