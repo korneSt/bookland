@@ -27,5 +27,9 @@
     <string name="radius_dialog_preference">Set Radius</string>
     <string name="settings_location">Location</string>
     <string name="settings_other">Other</string>
+    <string name="login_button">Login</string>
+    <string name="register_button">Create account</string>
+    <string name="login_username_placeholder">username</string>
+    <string name="login_password_placeholder">password</string>
 
 </resources>
