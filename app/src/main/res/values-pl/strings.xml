@@ -1,25 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="navigation_drawer_open">Otwórz menu</string>
+    <string name="navigation_drawer_close">Zamknij menu</string>
+    <string name="home">Ekran główny</string>
+    <string name="err_savefile">Nie można zapisać pliku</string>
+    <string name="err_no_user">Brak takiego użytkownika</string>
+    <string name="wait_accept">Poczekaj na zaakcepotwanie przez właściciela</string>
+
     <string name="action_settings">Ustawienia</string>
     <string name="profile">Profil</string>
-    <string name="my_books">Moje ksiazki</string>
+    <string name="my_books">Moje książki</string>
     <string name="logout">Wyloguj</string>
     <string name="search">Szukaj</string>
     <string name="history">Historia</string>
-    <string name="lat_preference">Latitude</string>
-    <string name="lat_summary_preference">Set latitude</string>
-    <string name="lat_dialog_preference">Set latitude</string>
-    <string name="lon_preference">Longitude</string>
-    <string name="lon_summary_preference">Set longitude</string>
-    <string name="lon_dialog_preference">Set longitude</string>
-    <string name="radius_preference">Radius</string>
-    <string name="radius_summary_preference">Set Radius</string>
-    <string name="radius_dialog_preference">Set Radius</string>
-    <string name="settings_location">Location</string>
-    <string name="settings_other">Other</string>
+    <string name="lat_preference">Szerokość geograficzna</string>
+    <string name="lat_summary_preference">Ustaw szerokość geograficzną</string>
+    <string name="lat_dialog_preference">Ustaw szerokość geograficzną</string>
+    <string name="lon_preference">Długość geograficzna</string>
+    <string name="lon_summary_preference">Ustaw długość geograficzną</string>
+    <string name="lon_dialog_preference">Ustaw długość geograficzną</string>
+    <string name="radius_preference">Promień</string>
+    <string name="radius_summary_preference">Ustaw promień</string>
+    <string name="radius_dialog_preference">Ustaw promień</string>
+    <string name="settings_location">Lokalizacja</string>
+    <string name="settings_other">Pozostałe</string>
     <string name="login_button">Zaloguj</string>
     <string name="register_button">Utwórz konto</string>
     <string name="login_username_placeholder">nazwa</string>
     <string name="login_password_placeholder">hasło</string>
+    <string name="is_login_info">Zalogowany</string>
 
 </resources>

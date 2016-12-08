@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryOld">#3F51B5</color>
+    <color name="colorPrimaryDarkOld">#303F9F</color>
+
+    <color name="colorPrimary">#e57373</color>
+    <color name="colorPrimaryDark">#8b0d0d</color>
+
     <color name="colorAccent">#ff5252</color>
     <color name="colorGold">#FFD700</color>
+
     <color name="loginButton">#FFFF5252</color>
     <color name="registerButton">#ff9292</color>
 </resources>

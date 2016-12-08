@@ -58,8 +58,11 @@
 
     <Button
         android:text="Rent book"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/red_button_round"
+        android:layout_gravity="center_horizontal"
         android:id="@+id/b_rentbook" />
 
 </LinearLayout>

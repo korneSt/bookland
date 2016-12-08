@@ -3,13 +3,22 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:text="@string/add_book_info1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_book_info1"
+        android:paddingTop="10dp"
+        android:layout_margin="5dp" />
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/te_title"
-        android:hint="title" />
+        android:hint="title"
+        android:paddingLeft="10dp" />
 
     <EditText
         android:layout_width="match_parent"
@@ -17,22 +26,48 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/te_author"
-        android:hint="author" />
+        android:hint="author"
+        android:paddingLeft="10dp" />
 
-    <Button
-        android:text="Add book"
+    <TextView
+        android:text="@string/add_book_info2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/b_addbook"
-        android:elevation="0dp" />
+        android:id="@+id/add_book_info2"
+        android:paddingTop="10dp"
+        android:layout_margin="5dp" />
+
     <Button
         android:id="@+id/b_takepic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Photo"/>
+        android:layout_gravity="center_horizontal"
+        android:text="@string/make_photo_button"/>
 
-    <ImageView
-        android:id="@+id/iv_book_cover"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"/>
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:text="Add book"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/red_button"
+            android:textColor="#ffffff"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/b_addbook"
+            android:layout_marginBottom="5dp" />
+
+        <ImageView
+            android:id="@+id/iv_book_cover"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+
+
 </LinearLayout>
