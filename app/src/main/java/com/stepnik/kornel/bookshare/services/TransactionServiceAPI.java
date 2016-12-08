@@ -31,6 +31,10 @@ public interface TransactionServiceAPI {
     @FormUrlEncoded
     Call<Transaction> acceptTransaction(@Field("transId") Long transId);
 
+    @POST("trans/reject")
+    @FormUrlEncoded
+    Call<Transaction> rejectTransaction(@Field("transId") Long transId);
+
     @POST("trans/confirm")
     @FormUrlEncoded
     Call<Transaction> confirmTransaction(@Field("transId") Long transId);

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 
 import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.R;
@@ -21,11 +22,13 @@ import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.models.Data;
 import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.BookServiceAPI;
+import com.stepnik.kornel.bookshare.services.GoodreadsService;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 
 import static com.stepnik.kornel.bookshare.R.id.imageView;
+import static com.stepnik.kornel.bookshare.R.id.ratingBar;
 
 /**
  * Created by korSt on 31.10.2016.
@@ -38,6 +41,9 @@ public class AddBookFragment extends Fragment {
     private EditText etAuthor;
     private static final int CAMERA_REQUEST = 1888;
     private ImageView ivBookCover;
+    private RatingBar ratingBar;
+    private EditText etIsbn;
+
 
     @Override
     public void onAttach(Context context) {
@@ -53,6 +59,9 @@ public class AddBookFragment extends Fragment {
         etTittle = (EditText) rootView.findViewById(R.id.te_title);
         etAuthor = (EditText) rootView.findViewById(R.id.te_author);
         ivBookCover = (ImageView) rootView.findViewById(R.id.iv_book_cover);
+        ratingBar = (RatingBar) rootView.findViewById(R.id.rb_condition);
+        etIsbn = (EditText) rootView.findViewById(R.id.et_isbn);
+
         Button addBook = (Button) rootView.findViewById(R.id.b_addbook);
         Button takePicture = (Button) rootView.findViewById(R.id.b_takepic);
 
@@ -62,7 +71,8 @@ public class AddBookFragment extends Fragment {
         addBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addNewBook();
+//                addNewBook();
+                new GoodreadsService().searchBooks(etTittle.getText().toString());
             }
         });
         takePicture.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +87,11 @@ public class AddBookFragment extends Fragment {
     }
 
     private void addNewBook() {
-        Call<Book> addBook = bookServiceAPI.addBook(etTittle.getText().toString(), etAuthor.getText().toString(), AppData.loggedUser.getUserId());
+        Call<Book> addBook = bookServiceAPI.addBook(etTittle.getText().toString(), etAuthor.getText().toString(),
+                AppData.loggedUser.getUserId(),
+                Integer.parseInt(etIsbn.getText().toString()),
+                "https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png",
+                ratingBar.getNumStars());
 
         addBook.enqueue(new Callback<Book>() {
             @Override

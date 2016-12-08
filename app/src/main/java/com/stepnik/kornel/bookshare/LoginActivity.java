@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import com.stepnik.kornel.bookshare.models.LoginRequest;
 import com.stepnik.kornel.bookshare.models.LoginResponse;
+import com.stepnik.kornel.bookshare.models.RegisterRequest;
 import com.stepnik.kornel.bookshare.models.User;
 import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.UserServiceAPI;
@@ -61,6 +62,13 @@ public class LoginActivity extends AppCompatActivity {
                     isLogged(username.getText().toString(), password.getText().toString());
                 }
             });
+
+            registerButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
         }
     }
 
@@ -86,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Log.d("response F", t.getMessage());
+                Log.d("fail", t.getMessage());
 
             }
         });
@@ -120,5 +128,27 @@ public class LoginActivity extends AppCompatActivity {
 //        Toast.makeText(LoginActivity.this, text,
 //                Toast.LENGTH_LONG).show();
 //    }
+
+    private void register(String username, String email, String password) {
+        RegisterRequest registerRequest = new RegisterRequest(username, email, password);
+
+        Call<Void> register = userService.register(registerRequest);
+        register.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
+                if (response.isSuccessful()){
+                    Utilities.displayMessage(getString(R.string.register_succes), LoginActivity.this);
+                } else {
+                    Utilities.displayMessage(getString(R.string.register_fail), LoginActivity.this);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.d("fail", t.getMessage());
+            }
+        });
+
+    }
 
 }

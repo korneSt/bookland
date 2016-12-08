@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView;
     FloatingActionButton fab;
     TextView tvUsername;
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -236,6 +237,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_transactions:
                 fragmentClass = TransactionsFragment.class;
+                title = "Activity";
                 break;
             case R.id.nav_history:
                 fragmentClass = HistoryFragment.class;
@@ -304,7 +306,21 @@ public class MainActivity extends AppCompatActivity
     public void onRentBookSelected(Book book) {
         Utilities.displayMessage(getString(R.string.wait_accept), this);
         new TransactionService().startTransaction(AppData.loggedUser, book);
-        getSupportFragmentManager().popBackStackImmediate();
+
+        Fragment fragment = null;
+        try {
+            fragment = MainFragment.class.newInstance();
+            currentFragment = fragment;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.flContent, fragment, "DISP_FRAG").addToBackStack(null);
+        transaction.commit();
+
+//        int i = getSupportFragmentManager().getBackStackEntryCount() - 1;
+//        currentFragment = (Fragment) getSupportFragmentManager().getBackStackEntryAt(i);
+//        getSupportFragmentManager().popBackStackImmediate();
     }
 
     public void changeFragment(Fragment fragment) {

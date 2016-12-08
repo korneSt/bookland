@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -117,14 +118,17 @@ public class TransactionFragment extends Fragment {
         Button getBook = (Button) rootView.findViewById(R.id.transaction_book);
         Button getOwner = (Button) rootView.findViewById(R.id.transaction_owner);
         Button getUser = (Button) rootView.findViewById(R.id.transaction_borrower);
-        Button acceptButton = (Button) rootView.findViewById(R.id.b_accept);
+        final Button acceptButton = (Button) rootView.findViewById(R.id.b_accept);
         Button closeTransaction = (Button) rootView.findViewById(R.id.b_close_transaction);
+        final Button declineButton = (Button) rootView.findViewById(R.id.b_decline);
         final Button confirmReturn = (Button) rootView.findViewById(R.id.b_confirm_return);
         final Button confirmDelivery = (Button) rootView.findViewById(R.id.b_confirm_delivery);
-        Button sendMessage = (Button) rootView.findViewById(R.id.b_send_message);
+        ImageButton sendMessage = (ImageButton) rootView.findViewById(R.id.b_send_message);
         lvMessages = (ListView) rootView.findViewById(R.id.lv_messages);
         EditText messageText = (EditText) rootView.findViewById(R.id.et_message);
-
+        final TransactionService transactionService = new TransactionService();
+        final UserService userService = new UserService();
+        final BookService bookService = new BookService();
         if (transactionClosed || currTransaction.getStatus() == 1){
             messageText.setVisibility(View.GONE);
             sendMessage.setVisibility(View.GONE);
@@ -136,6 +140,9 @@ public class TransactionFragment extends Fragment {
         if (!(currTransaction.getOwnerId().equals(AppData.loggedUser.getUserId())) ||
                 currTransaction.getStatus() != 1) {
             acceptButton.setVisibility(View.GONE);
+        }
+        if (currTransaction.getStatus() != 1) {
+            declineButton.setVisibility(View.GONE);
         }
         if (currTransaction.getStatus() != 2 || currTransaction.getOwnerId().equals(AppData.loggedUser.getUserId())) {
             confirmDelivery.setVisibility(View.GONE);
@@ -151,32 +158,34 @@ public class TransactionFragment extends Fragment {
         getBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new BookService().getBook(currTransaction.getBookId());
+                bookService.getBook(currTransaction.getBookId());
             }
         });
         getOwner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new UserService().getUser(currTransaction.getOwnerId());
+                userService.getUser(currTransaction.getOwnerId());
             }
         });
         getUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new UserService().getUser(currTransaction.getUserId());
+                userService.getUser(currTransaction.getUserId());
             }
         });
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new TransactionService().acceptTransaction(currTransaction.getId());
+                transactionService.acceptTransaction(currTransaction.getId());
+                declineButton.setVisibility(View.GONE);
+                acceptButton.setVisibility(View.GONE);
                 Utilities.displayMessage("Zaakceptowano", getActivity());
             }
         });
         confirmDelivery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new TransactionService().confirmTransaction(currTransaction.getId());
+                transactionService.confirmTransaction(currTransaction.getId());
                 confirmDelivery.setVisibility(View.GONE);
                 Utilities.displayMessage("Zaakceptowano", getActivity());
             }
@@ -184,10 +193,21 @@ public class TransactionFragment extends Fragment {
         confirmReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new TransactionService().finalizeTransaction(currTransaction.getId());
+                transactionService.finalizeTransaction(currTransaction.getId());
                 confirmReturn.setVisibility(View.GONE);
             }
         });
+        declineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                transactionService.rejectTransaction(currTransaction.getId());
+                ((MainActivity) getContext()).getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.flContent, new MainFragment())
+                        .commit();
+            }
+        });
+
         final EditText finalMessageText = messageText;
         sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override

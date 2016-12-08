@@ -21,6 +21,7 @@ import com.stepnik.kornel.bookshare.events.BookEvent;
 import com.stepnik.kornel.bookshare.events.NewBooksEvent;
 import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.models.User;
+import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.BookService;
 import com.stepnik.kornel.bookshare.services.UserService;
 
@@ -63,12 +64,12 @@ public class UserFragment extends Fragment {
 
         lvUserRentBooks = (ListView) rootView.findViewById(R.id.lv_user_rent_books);
 
-        if (savedInstanceState != null) {
-//            mCurrentPosition = savedInstanceState.getInt(ARG_POSITION);
-            selectetUser = (User) savedInstanceState.getSerializable(ARG_USER);
-        } else {
+//        if (savedInstanceState != null) {
+////            mCurrentPosition = savedInstanceState.getInt(ARG_POSITION);
+//            selectetUser = (User) savedInstanceState.getSerializable(ARG_USER);
+//        } else {
             selectetUser = (User) getArguments().getSerializable(ARG_USER);
-        }
+//        }
 
 //        mainActivity.setTitle(selectetUser.getUsername());
         username.setText(selectetUser.getUsername());
@@ -94,7 +95,7 @@ public class UserFragment extends Fragment {
         super.onResume();
         BusProvider.getInstance().register(this);
         bookService = new BookService();
-        bookService.getUserRentBooks(selectetUser.getId());
+        bookService.getUserBooks(selectetUser.getId());
     }
 
     @Subscribe
@@ -105,7 +106,11 @@ public class UserFragment extends Fragment {
         lvUserRentBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                bookCallback.onBookSelected(event.results.get(i), true);
+                if (AppData.loggedUser.getUserId().equals(event.results.get(i).getOwnerId())) {
+                    bookCallback.onBookSelected(event.results.get(i), false);
+                } else {
+                    bookCallback.onBookSelected(event.results.get(i), true);
+                }
             }
         });
     }

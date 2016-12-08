@@ -1,11 +1,14 @@
 package com.stepnik.kornel.bookshare.services;
 
+import android.util.Log;
+
 import com.squareup.otto.Produce;
 import com.stepnik.kornel.bookshare.bus.BusProvider;
 import com.stepnik.kornel.bookshare.events.BookEvent;
 import com.stepnik.kornel.bookshare.events.NewBooksEvent;
 import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.models.Data;
+import com.stepnik.kornel.bookshare.models.LoginResponse;
 import com.stepnik.kornel.bookshare.models.Transaction;
 
 import java.io.IOException;
@@ -75,6 +78,27 @@ public class BookService {
 
             @Override
             public void onFailure(Call<List<Book>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getUserBooks(Long userId) {
+
+        Call<List<Book>> books = bookServiceAPI.getUserBooks(userId);
+
+        books.enqueue(new Callback<List<Book>>() {
+            @Override
+            public void onResponse(Call<List<Book>> call, retrofit2.Response<List<Book>> response) {
+
+                if (response.isSuccessful()) {
+                    BusProvider.getInstance().post(new BookEvent(response.body()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Book>> call, Throwable t) {
+                Log.d("status", String.valueOf(t.getStackTrace()));
 
             }
         });
