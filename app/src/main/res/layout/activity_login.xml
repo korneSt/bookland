@@ -104,6 +104,83 @@
         </TableRow>
 
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="30dp">
+
+            <EditText
+                android:id="@+id/et_username_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignRight="@id/fakeView"
+                android:background="@drawable/login_name_round"
+                android:ems="10"
+                android:hint="@string/login_username_placeholder"
+                android:padding="5dp"
+                android:inputType="textPersonName" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/et_password_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/fakeView"
+                android:layout_alignParentRight="true"
+                android:background="#dfdfdf"
+                android:ems="10"
+                android:hint="@string/login_password_placeholder"
+                android:padding="5dp"
+                android:inputType="textPassword" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/et_password_register_repeat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/fakeView"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/login_password_round"
+                android:ems="10"
+                android:hint="@string/login_password_repeat_placeholder"
+                android:padding="5dp"
+                android:inputType="textPassword" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="3dp">
+
+            <Button
+                android:id="@+id/b_create_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/fakeView"
+                android:layout_alignParentRight="true"
+                android:gravity="center_horizontal"
+                android:background="@color/loginButton"
+                android:textColor="#212121"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:text="@string/register_button"
+                android:weightSum="2" />
+
+        </TableRow>
+
+
     </TableLayout>
 
 </RelativeLayout>
