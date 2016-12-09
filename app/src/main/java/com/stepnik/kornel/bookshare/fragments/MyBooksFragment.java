@@ -80,9 +80,8 @@ public class MyBooksFragment extends Fragment {
 
 
     private void getBooks() {
-        LoginResponse user= AppData.loggedUser;
+
         Call<List<Book>> books = bookServiceAPI.getUserBooks(AppData.loggedUser.getUserId());
-        Log.d("user id", String.valueOf(AppData.loggedUser.getUserId()));
         books.enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, retrofit2.Response<List<Book>> response) {

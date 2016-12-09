@@ -10,13 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.R;
+import com.stepnik.kornel.bookshare.bus.BusProvider;
 import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.models.Data;
+import com.stepnik.kornel.bookshare.services.BookService;
 
 import retrofit2.http.POST;
 
@@ -33,6 +36,8 @@ public class BookDetailsFragment extends Fragment {
     OnBookSelectedListener mCallback;
     TextView title;
     TextView author;
+    RatingBar condition;
+    ImageView bookCover;
 
 
 
@@ -54,8 +59,10 @@ public class BookDetailsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_book_details, container, false);
         title = (TextView) rootView.findViewById(R.id.tv_author_detail);
         author = (TextView) rootView.findViewById(R.id.desc);
+        condition = (RatingBar) rootView.findViewById(R.id.rb_condition_book);
         Button rentBook = (Button) rootView.findViewById(R.id.b_rentbook);
-        ImageView bookCover = (ImageView) rootView.findViewById(R.id.imageView2);
+        bookCover = (ImageView) rootView.findViewById(R.id.imageView2);
+        Button deleteBook = (Button) rootView.findViewById(R.id.b_delete_book);
 
         if (savedInstanceState != null) {
 //            mCurrentPosition = savedInstanceState.getInt(ARG_POSITION);
@@ -64,13 +71,21 @@ public class BookDetailsFragment extends Fragment {
             selectedBook = (Book) getArguments().getSerializable(ARG_BOOK);
         }
 
-        MainActivity mainActivity = (MainActivity) getContext();
-        mainActivity.setTitle("Book detals");
+
         if (!getArguments().getBoolean(ARG_SHOW_RENT_BUTTON)) {
             rentBook.setVisibility(View.GONE);
         }
+        if (getArguments().getBoolean(ARG_SHOW_RENT_BUTTON)) {
+            deleteBook.setVisibility(View.GONE);
+        }
 
-
+        deleteBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCallback.onDeleteBookSelected(selectedBook.getId());
+//                new BookService().deleteBook(selectedBook.getId());
+            }
+        });
         rentBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,23 +114,30 @@ public class BookDetailsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+    }
 
-        // During startup, check if there are arguments passed to the fragment.
-        // onStart is a good place to do this because the layout has already been
-        // applied to the fragment at this point so we can safely call the method
-        // below that sets the article text.
-//        Bundle args = getArguments();
-//        if (args != null) {
-//            // Set article based on argument passed in
-//            updateArticleView((Book) args.getSerializable(ARG_BOOK));
-//        } else if (mCurrentPosition != -1) {
-//            // Set article based on saved instance state defined during onCreateView
-////            updateArticleView(mCurrentPosition);
-//        }
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        updateTextViews(selectedBook);
+
     }
 
     public void updateTextViews(Book book) {
         title.setText(book.getTitle());
         author.setText(book.getAuthor());
+        condition.setRating(book.getCondition());
+        if (book.getImagePath() != null) {
+            Picasso.with(getContext()).load(book.getImagePath()).into(bookCover);
+        } else {
+            bookCover.setImageResource(R.drawable.image_holder_big);
+        }
     }
 }

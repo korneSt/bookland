@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                fab.setVisibility(View.INVISIBLE);
                 Fragment fragment = null;
                 try {
                     fragment = AddBookFragment.class.newInstance();
@@ -229,10 +230,7 @@ public class MainActivity extends AppCompatActivity
                 fragmentClass = MyBooksFragment.class;
                 title = getResources().getString(R.string.my_books);
                 break;
-            case R.id.nav_borrowedbooks:
-                fragmentClass = BorrowedBooksFragment.class;
-                title = getResources().getString(R.string.borrowed_books);
-                break;
+
             case R.id.nav_search:
                 fragmentClass = SearchFragment.class;
                 title = getResources().getString(R.string.search);
@@ -327,6 +325,23 @@ public class MainActivity extends AppCompatActivity
 //        int i = getSupportFragmentManager().getBackStackEntryCount() - 1;
 //        currentFragment = (Fragment) getSupportFragmentManager().getBackStackEntryAt(i);
 //        getSupportFragmentManager().popBackStackImmediate();
+    }
+
+    @Override
+    public void onDeleteBookSelected(Long bookId) {
+        new BookService().deleteBook(bookId);
+        Utilities.displayMessage("Usunieto ksiazke", this);
+
+        Fragment fragment = null;
+        try {
+            fragment = MainFragment.class.newInstance();
+            currentFragment = fragment;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.flContent, fragment, "DISP_FRAG").addToBackStack(null);
+        transaction.commit();
     }
 
     public void changeFragment(Fragment fragment) {

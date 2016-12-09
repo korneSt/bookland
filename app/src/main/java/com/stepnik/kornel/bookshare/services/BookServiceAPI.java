@@ -5,6 +5,7 @@ import com.stepnik.kornel.bookshare.models.Book;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -22,6 +23,9 @@ public interface BookServiceAPI {
     @GET("book")
     Call<Book> getBook(@Query("id") Long bookId);
 
+    @DELETE("book")
+    Call<Void> deleteBook(@Query("id") Long bookId);
+
     @GET("book/near")
     Call<List<Book>> getBooks(@Query("userId") Long userId, @Query("keyWord") String keyWord);
 
@@ -33,8 +37,8 @@ public interface BookServiceAPI {
 
     @FormUrlEncoded
     @POST("book/create")
-    Call<Book> addBook(@Field("title") String title, @Field("author") String author, @Field("ownerId") Long ownerId,
-                       @Field("isbn") int isbn, @Field("cover") String cover, @Field("condition") int condition);
+    Call<Void> addBook(@Field("ownerId") Long ownerId, @Field("title") String title, @Field("author") String author,
+                       @Field("isbn") String isbn, @Field(value = "cover", encoded = false) String cover, @Field("condition") String condition);
 
     @GET("book/near")
     Call<List<Book>> searchBook(@Query("userId") Long userId, @Query("keyWord") String keyword);

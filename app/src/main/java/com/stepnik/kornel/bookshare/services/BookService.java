@@ -124,4 +124,19 @@ public class BookService {
         BusProvider.getInstance().post(new BookEvent(books));
     }
 
+    public void deleteBook(long bookId) {
+        Call<Void> book = bookServiceAPI.deleteBook(bookId);
+
+        book.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+    }
 }

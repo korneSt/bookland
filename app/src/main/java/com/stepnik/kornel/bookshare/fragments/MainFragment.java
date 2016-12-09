@@ -117,9 +117,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
             @Override
             public void onItemClick(View view, int position) {
                 Book newBook = newBooks.get(position);
-                int pos = position+1;
-                newBook.setImagePath("http://lorempixel.com/256/256/nature/" + pos);
-
                 mCallback.onBookSelected(newBook, true);
 //                LatLng pos = new LatLng(newBooks.get(position).getLocalLat(), newBooks.get(position).getLocalLon());
 //                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 10));
@@ -217,7 +214,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
             newBooks.addAll(books);
             mAdapter.notifyItemRangeChanged(0, books.size());
         }
-
     }
 
     public void addUserMarkers(ArrayList<User> users) {

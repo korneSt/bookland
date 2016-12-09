@@ -15,14 +15,40 @@ public class Book implements Serializable{
     private int year;
     private double localLat;
     private double localLon;
-    private String imagePath;
+    private int isbn;
+    private String coverLink;
+    int condition;
+
+    public int getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(int isbn) {
+        this.isbn = isbn;
+    }
+
+    public String getCover() {
+        return coverLink;
+    }
+
+    public void setCover(String cover) {
+        this.coverLink = cover;
+    }
+
+    public int getCondition() {
+        return condition;
+    }
+
+    public void setCondition(int condition) {
+        this.condition = condition;
+    }
 
     public String getImagePath() {
-        return imagePath;
+        return coverLink;
     }
 
     public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+        this.coverLink = imagePath;
     }
 
     public double getLocalLat() {

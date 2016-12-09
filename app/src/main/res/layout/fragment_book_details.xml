@@ -66,12 +66,12 @@
         android:layout_height="wrap_content" >
 
         <RatingBar
-            android:id="@+id/ratingBar"
+            android:id="@+id/rb_condition_book"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numStars="5"
             android:stepSize="1.0"
-            android:rating="4.0"
+            android:isIndicator="true"
             android:progressTint="@color/colorGold"/>
     </TableRow>
 
@@ -91,6 +91,17 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="25dp"
             android:layout_centerHorizontal="true" />
+
+        <Button
+            android:text="Delete book"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/b_rentbook"
+            android:layout_toStartOf="@+id/b_rentbook"
+            android:layout_marginRight="54dp"
+            android:layout_marginEnd="54dp"
+            android:id="@+id/b_delete_book" />
 
     </RelativeLayout>
 

@@ -52,29 +52,18 @@
             android:layout_margin="5dp" />
 
         <RatingBar
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/rb_condition"
             android:numStars="5"
             android:stepSize="1"/>
     </LinearLayout>
 
-    <ScrollView
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
-
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/lv_ocr_results" />
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="match_parent"
+        android:id="@+id/lv_ocr_results"
+        android:layout_weight="1" />
 
 
     <LinearLayout
@@ -88,6 +77,12 @@
             android:layout_height="wrap_content"
             android:text="Take picture"
             android:id="@+id/read_text"
+            android:layout_weight="1" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:id="@+id/b_search_gr"
             android:layout_weight="1" />
 
         <CheckBox

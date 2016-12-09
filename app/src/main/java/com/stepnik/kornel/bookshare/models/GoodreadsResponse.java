@@ -6,6 +6,7 @@ import org.simpleframework.xml.Path;
 import org.simpleframework.xml.Root;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by korSt on 08.12.2016.
@@ -14,22 +15,19 @@ import java.util.ArrayList;
 @Root(strict=false)
 public class GoodreadsResponse {
 
-    @Element(name = "work")
-    public static class Work {
-        @Element
-        int id;
+    public GoodreadsResponse() {
+
     }
 
+    @ElementList
+    @Path("GoodreadsResponse/search")
+    private List<Work> results;
 
-    @Element(name = "search")
-    public static class Search {
-        @Element
-        Results results;
-    }
-    @Element(name = "results")
-    public static class Results {
-        @ElementList(name = "results", entry = "work")
-        ArrayList<Work> results;
+    public List<Work> getResults() {
+        return results;
     }
 
+    public void setResults(List<Work> results) {
+        this.results = results;
+    }
 }

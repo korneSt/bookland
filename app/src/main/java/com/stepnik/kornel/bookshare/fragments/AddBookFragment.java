@@ -1,19 +1,15 @@
 package com.stepnik.kornel.bookshare.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -21,23 +17,25 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
+
+import com.android.volley.toolbox.Volley;
+import com.android.volley.RequestQueue;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
-import com.stepnik.kornel.bookshare.LoginActivity;
 import com.stepnik.kornel.bookshare.MainActivity;
 import com.stepnik.kornel.bookshare.OcrCaptureActivity;
 import com.stepnik.kornel.bookshare.R;
+import com.stepnik.kornel.bookshare.Utilities;
+import com.stepnik.kornel.bookshare.adapters.GoodreadsAdapter;
 import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.models.Data;
+import com.stepnik.kornel.bookshare.models.SearchResponse;
 import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.BookServiceAPI;
 import com.stepnik.kornel.bookshare.services.GoodreadsService;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -56,11 +54,15 @@ public class AddBookFragment extends Fragment {
     private ImageView ivBookCover;
     private RatingBar ratingBar;
     private EditText etIsbn;
+    private RequestQueue requestQueue;
 
-//    FloatingActionButton floatingActionButton = ((MainActivity) getActivity()).getFloatingActionButton();
+
+    //    FloatingActionButton floatingActionButton = ((MainActivity) getActivity()).getFloatingActionButton();
     private CompoundButton autoFocus;
     private CompoundButton useFlash;
     private ListView lvOcrResults;
+    private GoodreadsAdapter goodreadsAdapter;
+    String selectedBookCover = "";
 
     private static final int RC_OCR_CAPTURE = 9003;
 
@@ -70,10 +72,23 @@ public class AddBookFragment extends Fragment {
 
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_add_book, container, false);
+
+        requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+
 
         etTittle = (EditText) rootView.findViewById(R.id.te_title);
         etAuthor = (EditText) rootView.findViewById(R.id.te_author);
@@ -86,7 +101,7 @@ public class AddBookFragment extends Fragment {
         lvOcrResults = (ListView) rootView.findViewById(R.id.lv_ocr_results);
 
         Button addBook = (Button) rootView.findViewById(R.id.b_addbook);
-
+        Button searchBooks = (Button) rootView.findViewById(R.id.b_search_gr);
         MainActivity mainActivity = (MainActivity) getContext();
         mainActivity.setTitle("Add book");
 
@@ -100,14 +115,19 @@ public class AddBookFragment extends Fragment {
                 startActivityForResult(intent, RC_OCR_CAPTURE);
             }
         });
-
+        searchBooks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getGoodreadsSearch(etTittle.getText().toString());
+            }
+        });
         addBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                addNewBook();
-//                new GoodreadsService().searchBooks(etTittle.getText().toString());
-                Intent intent = new Intent(getActivity(), OcrCaptureActivity.class);
-                startActivity(intent);
+                addNewBook();
+//                new GoodreadsService().searchBooks("Diuna");
+//                getGoodreadsSearch(etTittle.getText().toString());
+
             }
         });
 
@@ -125,20 +145,29 @@ public class AddBookFragment extends Fragment {
     }
 
     private void addNewBook() {
-        Call<Book> addBook = bookServiceAPI.addBook(etTittle.getText().toString(), etAuthor.getText().toString(),
-                AppData.loggedUser.getUserId(),
-                Integer.parseInt(etIsbn.getText().toString()),
-                "https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png",
-                ratingBar.getNumStars());
 
-        addBook.enqueue(new Callback<Book>() {
+        String title = etTittle.getText().toString();
+        String author = etAuthor.getText().toString();
+        String isbn = etIsbn.getText().toString().length() > 0 ?
+                etIsbn.getText().toString() : "";
+
+        String rating = (int) ratingBar.getRating() > 0 ?
+                String.valueOf((int) ratingBar.getRating()) : "";
+
+        Call<Void> addBook = bookServiceAPI.addBook( AppData.loggedUser.getUserId(),title,author,
+                isbn,
+                selectedBookCover,
+                rating);
+
+        addBook.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<Book> call, retrofit2.Response<Book> response) {
+            public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
                 Log.d("response", response.toString());
+                Utilities.displayMessage("Dodano książkę", getActivity());
             }
 
             @Override
-            public void onFailure(Call<Book> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
                 Log.d("response F", t.getMessage());
             }
         });
@@ -155,18 +184,47 @@ public class AddBookFragment extends Fragment {
         if(requestCode == RC_OCR_CAPTURE) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
-                    ArrayList<String> textArray = data.getStringArrayListExtra(OcrCaptureActivity.TextArray);
+                    final ArrayList<String> textArray = data.getStringArrayListExtra(OcrCaptureActivity.TextArray);
                     final ArrayAdapter<String> aa;
                     aa = new ArrayAdapter<>(  getContext(),
                             android.R.layout.simple_list_item_1,
                             textArray
                     );
                     lvOcrResults.setAdapter(aa);
+                    lvOcrResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            etTittle.setText(textArray.get(i));
+                        }
+                    });
                 }
             }
         }
         else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    private void getGoodreadsSearch(String title) {
+        GoodreadsService.getSearchBook(title, requestQueue, new GoodreadsService.WeatherClientListener()
+        {
+            @Override
+            public void onCityResponse(List<SearchResponse> city) {
+                setAdapter(city);
+            }
+        });
+    }
+
+    private void setAdapter(final List<SearchResponse> searchResponses) {
+        goodreadsAdapter = new GoodreadsAdapter(this.getContext(), (ArrayList<SearchResponse>) searchResponses);
+        lvOcrResults.setAdapter(goodreadsAdapter);
+        lvOcrResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                etTittle.setText(searchResponses.get(i).getTitle());
+                etAuthor.setText(searchResponses.get(i).getAuthor());
+                selectedBookCover = searchResponses.get(i).getPath();
+            }
+        });
     }
 }

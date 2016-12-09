@@ -1,8 +1,11 @@
 package com.stepnik.kornel.bookshare.adapters;
 
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.graphics.BitmapCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -96,12 +99,15 @@ public class NewBooksAdapter extends RecyclerView.Adapter<NewBooksAdapter.ViewHo
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
+
         holder.tvTittle.setText(newBookList.get(position).getTitle());
         holder.tvAuthor.setText(newBookList.get(position).getAuthor());
-        int pos = position+1;
-        Picasso.with(getContext()).load("http://lorempixel.com/164/164/nature/" + pos).into(holder.cover);
+
+        if (newBookList.get(position).getImagePath() != null) {
+            Picasso.with(getContext()).load(newBookList.get(position).getImagePath()).into(holder.cover);
+        } else {
+            holder.cover.setImageResource(R.drawable.image_holder_small);
+        }
 
     }
 
