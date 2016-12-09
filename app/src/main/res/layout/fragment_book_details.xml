@@ -25,7 +25,7 @@
             android:weightSum="1">
 
             <TextView
-                android:text="Title"
+                android:text=""
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_author_detail"
@@ -35,7 +35,7 @@
             </TextView>
 
             <TextView
-                android:text="Author"
+                android:text=""
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/desc"
@@ -78,11 +78,13 @@
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
 
         <Button
             android:text="@string/rent_book_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/red_button_round"

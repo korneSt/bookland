@@ -3,17 +3,38 @@
 
     <string name="navigation_drawer_open">Otwórz menu</string>
     <string name="navigation_drawer_close">Zamknij menu</string>
-    <string name="home">Ekran główny</string>
+
     <string name="err_savefile">Nie można zapisać pliku</string>
     <string name="err_no_user">Brak takiego użytkownika</string>
     <string name="wait_accept">Poczekaj na zaakcepotwanie przez właściciela</string>
+    <string name="register_succes">Zarejestrowano! Możesz się zalogować</string>
+    <string name="register_fail">Rejestracja nieudana! Spróbuj ponownie</string>
 
-    <string name="action_settings">Ustawienia</string>
+    <string name="home">BookShare App</string>
+    <string name="activity">Aktywyności</string>
     <string name="profile">Profil</string>
     <string name="my_books">Moje książki</string>
-    <string name="logout">Wyloguj</string>
     <string name="search">Szukaj</string>
     <string name="history">Historia</string>
+    <string name="borrowed_books">Wypożyczone książki</string>
+    <string name="action_settings">Ustawienia</string>
+    <string name="logout">Wyloguj</string>
+
+    <string name="around_you">Książki w okolicy:</string>
+
+    <string name="reputation">Reputacja:</string>
+
+    <string name="state">Stan siążki:</string>
+    <string name="rent_book_button">Wypożycz książkę</string>
+
+    <string name="rate_transaction_button">Oceń transakcję</string>
+
+    <string name="simple_search_hint">Wpisz tytuł, autora lub ISBN</string>
+    <string name="simple_search">Wyszukiwanie proste</string>
+    <string name="search_button">Szukaj</string>
+    <string name="find_by_cover">Szukaj po okładce</string>
+    <string name="take_photo_button">Zrób zdjęcie</string>
+
     <string name="lat_preference">Szerokość geograficzna</string>
     <string name="lat_summary_preference">Ustaw szerokość geograficzną</string>
     <string name="lat_dialog_preference">Ustaw szerokość geograficzną</string>
@@ -25,10 +46,32 @@
     <string name="radius_dialog_preference">Ustaw promień</string>
     <string name="settings_location">Lokalizacja</string>
     <string name="settings_other">Pozostałe</string>
+    <string name="settings_search_range">Promień wyszukiwania</string>
+
     <string name="login_button">Zaloguj</string>
     <string name="register_button">Utwórz konto</string>
     <string name="login_username_placeholder">nazwa</string>
     <string name="login_password_placeholder">hasło</string>
+    <string name="login_password_repeat_placeholder">powtórz hasło</string>
     <string name="is_login_info">Zalogowany</string>
+
+    <string name="add_book_title_placeholder">tytuł</string>
+    <string name="add_book_author_placeholder">autor</string>
+    <string name="add_book_isbn_placeholder">ISBN</string>
+    <string name="add_book_info1">Wpisz tytuł, autora lub numer ISBN książki</string>
+    <string name="add_book_info2">Oceń stan książki</string>
+    <string name="add_book_button">Dodaj książkę</string>
+    <string name="make_photo_button">Zrób zdjęcie</string>
+
+    <string name="transaction_confirm_delivery_button">Potwierdź dostarczenie</string>
+    <string name="transaction_accept_button">Akceptuj</string>
+    <string name="transaction_decline_button">Odrzuć</string>
+    <string name="transaction_return_book_button">Zwróć książkę</string>
+    <string name="transaction_confirm_return_button">Potwierdź zwrot</string>
+    <string name="transaction_status">Status</string>
+    <string name="transaction_book_button">Książka</string>
+    <string name="transaction_owner_button">Właściciel</string>
+    <string name="transaction_borrower_button">Pożyczający</string>
+    <string name="transaction_message">wiadomość</string>
 
 </resources>

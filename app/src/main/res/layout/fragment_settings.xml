@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:text="Location"
+        android:text="@string/settings_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textLocation"
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:text="Latitude"
+                android:text="@string/lat_preference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textLatitude"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:text="Longitude"
+                android:text="@string/lon_preference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textLongitude"
@@ -68,7 +68,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:text="Radius"
+                android:text="@string/radius_preference"
                 android:layout_width="191dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/textRadius"
@@ -93,7 +93,7 @@
     </LinearLayout>
 
     <TextView
-        android:text="Search range"
+        android:text="@string/settings_search_range"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textSearch"
@@ -106,7 +106,7 @@
         android:layout_height="match_parent">
 
         <Button
-            android:text="Other options"
+            android:text="@string/settings_other"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/button5"

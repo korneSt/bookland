@@ -55,7 +55,7 @@
     </LinearLayout>
 
     <Button
-        android:text="My books"
+        android:text="@string/my_books"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/fragmentButton"
@@ -67,7 +67,7 @@
         android:layout_marginRight="20dp" />
 
     <Button
-        android:text="History"
+        android:text="@string/history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/fragmentButton"
@@ -79,7 +79,7 @@
         android:layout_marginRight="20dp" />
 
     <Button
-        android:text="Search"
+        android:text="@string/search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/fragmentButton"

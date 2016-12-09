@@ -9,7 +9,7 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:text="Confirm delivery"
+            android:text="@string/transaction_confirm_delivery_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/b_confirm_delivery"
@@ -17,7 +17,7 @@
             android:layout_marginRight="40dp" />
 
         <Button
-            android:text="Accept"
+            android:text="@string/transaction_accept_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorGreen"
@@ -29,7 +29,7 @@
             android:layout_marginRight="30dp"/>
 
         <Button
-            android:text="Decline"
+            android:text="@string/transaction_decline_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorRed"
@@ -42,7 +42,7 @@
             android:layout_marginRight="30dp" />
 
         <Button
-            android:text="Return book"
+            android:text="@string/transaction_return_book_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/b_close_transaction"
@@ -50,7 +50,7 @@
             android:layout_marginRight="40dp"/>
 
         <Button
-            android:text="Confirm return"
+            android:text="@string/transaction_confirm_return_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/b_confirm_return"
@@ -58,7 +58,7 @@
             android:layout_marginRight="40dp" />
 
         <TextView
-            android:text="Status"
+            android:text="@string/transaction_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/transaction_status"
@@ -71,7 +71,7 @@
             android:layout_height="match_parent">
 
             <Button
-                android:text="Book"
+                android:text="@string/transaction_book_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/transaction_book"
@@ -79,7 +79,7 @@
                 android:layout_weight="1" />
 
             <Button
-                android:text="Owner"
+                android:text="@string/transaction_owner_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/transaction_owner"
@@ -87,7 +87,7 @@
                 android:layout_weight="1" />
 
             <Button
-                android:text="Borrower"
+                android:text="@string/transaction_borrower_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/transaction_borrower"
@@ -111,7 +111,7 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Message"
+            android:text="@string/transaction_message"
             android:ems="10"
             android:id="@+id/et_message"
             android:layout_weight="16" />
