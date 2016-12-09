@@ -18,6 +18,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
         android:queryHint="Type title, author or ISBN"
+        android:hint="@string/simple_search_hint"
+        android:paddingLeft="10dp"
         android:id="@+id/sv_book"
         />
         <Button

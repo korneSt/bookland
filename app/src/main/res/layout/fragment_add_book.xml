@@ -3,6 +3,14 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:text="@string/add_book_info1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_book_info1"
+        android:textSize="14sp"
+        android:paddingTop="10dp"
+        android:layout_margin="5dp" />
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -16,6 +24,14 @@
             android:paddingTop="10dp"
             android:layout_margin="5dp" />
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/te_title"
+        android:hint="@string/add_book_title_placeholder"
+        android:paddingLeft="10dp" />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,6 +41,14 @@
             android:hint="title"
             android:paddingLeft="10dp" />
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/te_author"
+        android:hint="@string/add_book_author_placeholder"
+        android:paddingLeft="10dp" />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,6 +58,14 @@
             android:hint="author"
             android:paddingLeft="10dp" />
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/et_isbn"
+        android:hint="@string/add_book_isbn_placeholder"
+        android:paddingLeft="10dp" />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,6 +75,14 @@
             android:hint="ISBN"
             android:paddingLeft="10dp" />
 
+    <TextView
+        android:text="@string/add_book_info2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:id="@+id/add_book_info2"
+        android:paddingTop="10dp"
+        android:layout_margin="5dp" />
         <TextView
             android:text="@string/add_book_info2"
             android:layout_width="match_parent"
@@ -106,11 +146,14 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
         android:layout_height="wrap_content"
         android:minHeight="0dp">
 
         <Button
-            android:text="Add book"
+            android:text="@string/add_book_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -118,7 +161,7 @@
             android:textColor="#ffffff"
             android:layout_alignParentBottom="true"
             android:id="@+id/b_addbook"
-            android:layout_marginBottom="5dp" />
+            android:layout_marginBottom="10dp" />
 
 
     </LinearLayout>

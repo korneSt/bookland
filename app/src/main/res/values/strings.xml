@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">BookShare</string>
 
+    <string name="err_savefile">File can not be saved</string>
+    <string name="err_no_user">User not exist</string>
+    <string name="register_succes">Registered! You can login now</string>
+    <string name="register_fail">Register failed! Try again</string>
+    <string name="wait_accept">Wait for accept from owner</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -23,16 +29,11 @@
 
     <string name="rate_transaction_button">Rate transaction</string>
 
+    <string name="simple_search_hint">Type title, author or ISBN</string>
     <string name="simple_search">Simple search</string>
     <string name="search_button">Search</string>
     <string name="find_by_cover">Find by cover</string>
     <string name="take_photo_button">Take a photo</string>
-
-    <string name="err_savefile">Nie mozna zapisac pliku</string>
-    <string name="err_no_user">Brak takiego uzytkownika</string>
-    <string name="register_succes">Registered! You can login now</string>
-    <string name="register_fail">Register failed! Try again</string>
-    <string name="wait_accept">Poczekaj na zaakcepotwanie wlasciciela</string>
 
     <string name="lat_preference">Latitude</string>
     <string name="lat_summary_preference">Set latitude</string>
@@ -44,17 +45,34 @@
     <string name="radius_summary_preference">Set Radius</string>
     <string name="radius_dialog_preference">Set Radius</string>
     <string name="settings_location">Location</string>
+    <string name="settings_search_range">Search range</string>
     <string name="settings_other">Other</string>
 
     <string name="login_button">Login</string>
     <string name="register_button">Create account</string>
     <string name="login_username_placeholder">username</string>
     <string name="login_password_placeholder">password</string>
+    <string name="login_password_repeat_placeholder">repeat password</string>
     <string name="is_login_info">Logged</string>
 
+    <string name="add_book_title_placeholder">title</string>
+    <string name="add_book_author_placeholder">author</string>
+    <string name="add_book_isbn_placeholder">ISBN</string>
     <string name="add_book_info1">Enter title, author and ISBN number of the book</string>
     <string name="add_book_info2">Evaluate state of the book</string>
+    <string name="add_book_button">Add book</string>
     <!--<string name="add_book_info3">Taking a photo of the book is recommended</string>-->
-    <string name="make_photo_button">Make a photo</string>
+    <string name="make_photo_button">Take a photo</string>
+
+    <string name="transaction_confirm_delivery_button">Confirm delivery</string>
+    <string name="transaction_accept_button">Accept</string>
+    <string name="transaction_decline_button">Decline</string>
+    <string name="transaction_return_book_button">Return book</string>
+    <string name="transaction_confirm_return_button">Confirm return</string>
+    <string name="transaction_status">Status</string>
+    <string name="transaction_book_button">Book</string>
+    <string name="transaction_owner_button">Owner</string>
+    <string name="transaction_borrower_button">Borrower</string>
+    <string name="transaction_message">message</string>
 
 </resources>
