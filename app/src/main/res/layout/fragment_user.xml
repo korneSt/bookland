@@ -24,20 +24,22 @@
             android:weightSum="1">
 
             <TextView
-                android:text="username"
+                android:text=""
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/user_username"
                 android:textSize="30sp"
-                android:layout_margin="10dp"/>
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp" />
 
             <TextView
-                android:text="Reputation"
+                android:text="@string/reputation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/user_reputation"
-                android:textSize="30sp"
-                android:layout_margin="10dp"/>
+                android:textSize="20sp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp" />
 
             <ProgressBar
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"

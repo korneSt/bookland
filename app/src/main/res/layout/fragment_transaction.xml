@@ -12,7 +12,9 @@
             android:text="Confirm delivery"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/b_confirm_delivery" />
+            android:id="@+id/b_confirm_delivery"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp" />
 
         <Button
             android:text="Accept"
@@ -22,7 +24,9 @@
             android:textSize="22sp"
             android:textColor="#FFFFFF"
             android:id="@+id/b_accept"
-            android:layout_margin="10dp"/>
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"/>
 
         <Button
             android:text="Decline"
@@ -32,19 +36,26 @@
             android:textColor="#FFFFFF"
             android:textSize="22sp"
             android:id="@+id/b_decline"
-            android:layout_margin="10dp"/>
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp" />
 
         <Button
             android:text="Return book"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/b_close_transaction" />
+            android:id="@+id/b_close_transaction"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"/>
 
         <Button
             android:text="Confirm return"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/b_confirm_return" />
+            android:id="@+id/b_confirm_return"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp" />
 
         <TextView
             android:text="Status"

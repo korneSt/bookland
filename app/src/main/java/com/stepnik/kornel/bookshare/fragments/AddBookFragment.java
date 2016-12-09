@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +57,7 @@ public class AddBookFragment extends Fragment {
     private RatingBar ratingBar;
     private EditText etIsbn;
 
+//    FloatingActionButton floatingActionButton = ((MainActivity) getActivity()).getFloatingActionButton();
     private CompoundButton autoFocus;
     private CompoundButton useFlash;
     private ListView lvOcrResults;
@@ -106,6 +110,16 @@ public class AddBookFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+//        if (floatingActionButton != null) {
+//            floatingActionButton.hide();
+//        }
+
+//        FloatingActionButton floatingActionButton = (FloatingActionButton) rootView.findViewById(R.id.fab);
+//        CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) floatingActionButton.getLayoutParams();
+//        p.setAnchorId(View.NO_ID);
+//        floatingActionButton.setLayoutParams(p);
+//        floatingActionButton.setVisibility(View.GONE);
 
         return rootView;
     }

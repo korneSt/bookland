@@ -15,11 +15,15 @@
         android:layout_height="wrap_content"
         android:id="@+id/rb_user_rating"
         android:numStars="5"
-        android:stepSize="1"/>
+        android:stepSize="1"
+        android:layout_gravity="center_horizontal" />
 
     <Button
-        android:text="Button"
+        android:text="@string/rate_transaction_button"
+        android:backgroundTint="@color/fragmentButton"
+        android:textColor="#ffffff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/b_return" />
+        android:id="@+id/b_return"
+        android:layout_margin="20dp" />
 </LinearLayout>
