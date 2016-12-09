@@ -1,6 +1,7 @@
 package com.stepnik.kornel.bookshare.services;
 
 import com.stepnik.kornel.bookshare.models.Book;
+import com.stepnik.kornel.bookshare.models.GoodreadsResponse;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -14,5 +15,5 @@ import retrofit2.http.Query;
 public interface GoodreadsServiceAPI {
 
     @GET("search.xml")
-    Call<ResponseBody> getBooks(@Query("key") String key, @Query("q") String title);
+    Call<GoodreadsResponse> getBooks(@Query("key") String key, @Query("q") String title);
 }

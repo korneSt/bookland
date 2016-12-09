@@ -11,12 +11,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.stepnik.kornel.bookshare.LoginActivity;
 import com.stepnik.kornel.bookshare.MainActivity;
+import com.stepnik.kornel.bookshare.OcrCaptureActivity;
 import com.stepnik.kornel.bookshare.R;
 import com.stepnik.kornel.bookshare.models.Book;
 import com.stepnik.kornel.bookshare.models.Data;
@@ -24,11 +32,13 @@ import com.stepnik.kornel.bookshare.services.AppData;
 import com.stepnik.kornel.bookshare.services.BookServiceAPI;
 import com.stepnik.kornel.bookshare.services.GoodreadsService;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 
-import static com.stepnik.kornel.bookshare.R.id.imageView;
-import static com.stepnik.kornel.bookshare.R.id.ratingBar;
 
 /**
  * Created by korSt on 31.10.2016.
@@ -44,6 +54,11 @@ public class AddBookFragment extends Fragment {
     private RatingBar ratingBar;
     private EditText etIsbn;
 
+    private CompoundButton autoFocus;
+    private CompoundButton useFlash;
+    private ListView lvOcrResults;
+
+    private static final int RC_OCR_CAPTURE = 9003;
 
     @Override
     public void onAttach(Context context) {
@@ -62,16 +77,33 @@ public class AddBookFragment extends Fragment {
         ratingBar = (RatingBar) rootView.findViewById(R.id.rb_condition);
         etIsbn = (EditText) rootView.findViewById(R.id.et_isbn);
 
+        autoFocus = (CompoundButton) rootView.findViewById(R.id.auto_focus);
+        useFlash = (CompoundButton) rootView.findViewById(R.id.use_flash);
+        lvOcrResults = (ListView) rootView.findViewById(R.id.lv_ocr_results);
+
         Button addBook = (Button) rootView.findViewById(R.id.b_addbook);
 
         MainActivity mainActivity = (MainActivity) getContext();
         mainActivity.setTitle("Add book");
 
+        rootView.findViewById(R.id.read_text).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), OcrCaptureActivity.class);
+                intent.putExtra(OcrCaptureActivity.AutoFocus, autoFocus.isChecked());
+                intent.putExtra(OcrCaptureActivity.UseFlash, useFlash.isChecked());
+
+                startActivityForResult(intent, RC_OCR_CAPTURE);
+            }
+        });
+
         addBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                addNewBook();
-                new GoodreadsService().searchBooks(etTittle.getText().toString());
+//                new GoodreadsService().searchBooks(etTittle.getText().toString());
+                Intent intent = new Intent(getActivity(), OcrCaptureActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -103,10 +135,24 @@ public class AddBookFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            ivBookCover.setImageBitmap(photo);
+
+        if(requestCode == RC_OCR_CAPTURE) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    ArrayList<String> textArray = data.getStringArrayListExtra(OcrCaptureActivity.TextArray);
+                    final ArrayAdapter<String> aa;
+                    aa = new ArrayAdapter<>(  getContext(),
+                            android.R.layout.simple_list_item_1,
+                            textArray
+                    );
+                    lvOcrResults.setAdapter(aa);
+                }
+            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 }

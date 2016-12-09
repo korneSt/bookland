@@ -17,6 +17,9 @@ public class Data {
             .addInterceptor(new HeaderInterceptor())
             .build();
 
+    private static OkHttpClient httpClientGR = new OkHttpClient.Builder()
+            .build();
+
     public static Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://bookland.azurewebsites.net/api/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -24,6 +27,7 @@ public class Data {
             .build();
 
     public static Retrofit retrofitGR = new Retrofit.Builder()
+            .client(new OkHttpClient())
             .baseUrl("https://www.goodreads.com/")
             .addConverterFactory(SimpleXmlConverterFactory.create())
             .build();
