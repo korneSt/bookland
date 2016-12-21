@@ -9,6 +9,7 @@ import com.stepnik.kornel.bookshare.models.User;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -37,8 +38,8 @@ public interface UserServiceAPI {
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
 
     @POST("register")
-    @Headers("Content-Type: application/json")
-    Call<Void> register(@Body RegisterRequest registerRequest);
+//    @Headers("Content-Type: application/json")
+    Call<ResponseBody> register(@Body RegisterRequest registerRequest);
 
     @GET("user/near")
     Call<List<User>> getNearUsers(@Query("userId") Long userId);

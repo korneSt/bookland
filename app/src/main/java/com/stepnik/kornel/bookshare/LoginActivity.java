@@ -21,6 +21,8 @@ import com.stepnik.kornel.bookshare.services.UserServiceAPI;
 
 import java.io.IOException;
 
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -67,6 +69,17 @@ public class LoginActivity extends AppCompatActivity {
                 Button loginButton = (Button) findViewById(R.id.b_login);
                 Button registerButton = (Button) findViewById(R.id.b_register);
 
+
+                final EditText registerUsername = (EditText) findViewById(R.id.et_username_register);
+                final EditText registerPassword = (EditText) findViewById(R.id.et_password_register);
+                final EditText registerPasswordRepeat = (EditText) findViewById(R.id.et_password_register_repeat);
+                final Button createAccButton = (Button) findViewById(R.id.b_create_account);
+
+                createAccButton.setVisibility(View.INVISIBLE);
+                registerUsername.setVisibility(View.INVISIBLE);
+                registerPassword.setVisibility(View.INVISIBLE);
+                registerPasswordRepeat.setVisibility(View.INVISIBLE);
+
                 loginButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -74,10 +87,26 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
+                createAccButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(!registerPassword.getText().toString().equals(registerPasswordRepeat.getText().toString())) {
+                            Utilities.displayMessage("Haslo sie nie zgadza", LoginActivity.this);
+                            return;
+                        }
+                        register(registerUsername.getText().toString(),
+                                "test@mail.pl",
+                                registerPassword.getText().toString());
+                    }
+                });
+
                 registerButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        createAccButton.setVisibility(View.VISIBLE);
+                        registerUsername.setVisibility(View.VISIBLE);
+                        registerPassword.setVisibility(View.VISIBLE);
+                        registerPasswordRepeat.setVisibility(View.VISIBLE);
                     }
                 });
             }
@@ -153,10 +182,10 @@ public class LoginActivity extends AppCompatActivity {
     private void register(String username, String email, String password) {
         RegisterRequest registerRequest = new RegisterRequest(username, email, password);
 
-        Call<Void> register = userService.register(registerRequest);
-        register.enqueue(new Callback<Void>() {
+        Call<ResponseBody> register = userService.register(registerRequest);
+        register.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                 if (response.isSuccessful()){
                     Utilities.displayMessage(getString(R.string.register_succes), LoginActivity.this);
                 } else {
@@ -165,8 +194,8 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.d("fail", t.getMessage());
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d("fail", "throw");
             }
         });
 
