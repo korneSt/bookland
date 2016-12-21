@@ -74,4 +74,6 @@
     <string name="transaction_borrower_button">Pożyczający</string>
     <string name="transaction_message">wiadomość</string>
 
+    <string name="login_no_connection">BRAK DOSTĘPU DO INTERNETU</string>
+
 </resources>

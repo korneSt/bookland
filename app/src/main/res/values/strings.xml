@@ -75,4 +75,6 @@
     <string name="transaction_borrower_button">Borrower</string>
     <string name="transaction_message">message</string>
 
+    <string name="login_no_connection">NO INTERNET CONNECTION</string>
+
 </resources>
