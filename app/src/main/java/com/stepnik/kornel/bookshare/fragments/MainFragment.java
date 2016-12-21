@@ -77,6 +77,8 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public void onResume() {
+        mMapView.onResume();
+
         super.onResume();
         BusProvider.getInstance().register(this);
 
@@ -88,25 +90,27 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         String lonPref = preferences.getString("lon_preference", "19");
         final LatLng pos = new LatLng(Double.parseDouble(latPref), Double.parseDouble(lonPref));
 
-        mMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 10));
-                googleMap.setOnMarkerClickListener(MainFragment.this);
-
-            }
-        });
+//        mMapView.getMapAsync(new OnMapReadyCallback() {
+//            @Override
+//            public void onMapReady(GoogleMap googleMap) {
+//                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 10));
+//                googleMap.setOnMarkerClickListener(MainFragment.this);
+//
+//            }
+//        });
 
         userService.getNearUsers(AppData.loggedUser.getUserId());
-        h = new Handler();
-        r = new Runnable() {
-            @Override
-            public void run() {
-                bookService.loadNewBooks();
-                h.postDelayed(this, 5000);
-            }
-        };
-        h.post(r);
+        bookService.loadNewBooks();
+
+//        h = new Handler();
+//        r = new Runnable() {
+//            @Override
+//            public void run() {
+//                bookService.loadNewBooks();
+//                h.postDelayed(this, 5000);
+//            }
+//        };
+//        h.post(r);
     }
 
 
@@ -163,8 +167,15 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
 
     public void initMap(View rootView, Bundle savedInstanceState) {
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
-        mMapView.onCreate(savedInstanceState);
+        try {
+            // Temporary fix for crash issue
+            mMapView.onCreate(savedInstanceState);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+//        mMapView.onCreate(savedInstanceState);
         mMapView.onResume();
+//        mMapView.getMapAsync(this);
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
@@ -182,15 +193,18 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
     public void onMapReady(GoogleMap googleMap) {
 
         this.googleMap = googleMap;
+        this.googleMap.setOnMarkerClickListener(MainFragment.this);
+
         if (nearUsers != null)
             addUserMarkers(nearUsers);
     }
 
     @Override
     public void onPause() {
+        mMapView.onPause();
         super.onPause();
         BusProvider.getInstance().unregister(this);
-        h.removeCallbacks(r);
+//        h.removeCallbacks(r);
     }
 
 
@@ -225,5 +239,18 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Google
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mMapView != null)
+        mMapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        if (mMapView != null)
+        mMapView.onLowMemory();
+    }
 }
 

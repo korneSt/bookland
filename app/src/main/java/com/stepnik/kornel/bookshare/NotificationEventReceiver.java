@@ -69,20 +69,11 @@ public class NotificationEventReceiver extends WakefulBroadcastReceiver {
 
             }
         });
-
-//        if (ACTION_START_NOTIFICATION_SERVICE.equals(action)) {
-//            Log.i(getClass().getSimpleName(), "onReceive from alarm, starting notification service");
-//            serviceIntent = NotificationService.createIntentStartNotificationService(context);
-//        } else if (ACTION_DELETE_NOTIFICATION.equals(action)) {
-//            Log.i(getClass().getSimpleName(), "onReceive delete notification action, starting notification service to handle delete");
-//            serviceIntent = NotificationService.createIntentDeleteNotification(context);
-//        }
     }
 
     private static long getTriggerAt(Date now) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(now);
-        //calendar.add(Calendar.HOUR, NOTIFICATIONS_INTERVAL_IN_HOURS);
         return calendar.getTimeInMillis();
     }
 

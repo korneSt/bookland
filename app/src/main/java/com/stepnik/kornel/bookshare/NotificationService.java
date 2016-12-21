@@ -32,34 +32,20 @@ public class NotificationService extends IntentService{
         return intent;
     }
 
-    public static Intent createIntentDeleteNotification(Context context) {
-        Intent intent = new Intent(context, NotificationService.class);
-        intent.setAction(ACTION_DELETE);
-        return intent;
-    }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d(getClass().getSimpleName(), "onHandleIntent, started handling a notification event");
         try {
             String action = intent.getAction();
             if (ACTION_START.equals(action)) {
                 processStartNotification();
-            }
-            if (ACTION_DELETE.equals(action)) {
-                processDeleteNotification(intent);
             }
         } finally {
             WakefulBroadcastReceiver.completeWakefulIntent(intent);
         }
     }
 
-    private void processDeleteNotification(Intent intent) {
-        // Log something?
-    }
-
     private void processStartNotification() {
-        // Do something. For example, fetch fresh data from backend to create a rich notification?
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentTitle("New message")

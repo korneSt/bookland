@@ -113,6 +113,7 @@ public class ProfileFragment extends Fragment {
 
     @Subscribe
     public void onUserEvent(UserEvent event) {
-        tvUsername.setText(event.result.body().getUsername());
+        if(event.result != null)
+            tvUsername.setText(event.result.body().getUsername());
     }
 }

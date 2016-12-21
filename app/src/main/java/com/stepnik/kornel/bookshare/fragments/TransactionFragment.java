@@ -153,6 +153,10 @@ public class TransactionFragment extends Fragment {
         if (currTransaction.getStatus() != 4) {
             closeTransaction.setVisibility(View.GONE);
         }
+        if (currTransaction.getStatus() == 5) {
+            messageText.setVisibility(View.GONE);
+            sendMessage.setVisibility(View.GONE);
+        }
 
         statusTv.setText(setStatus(currTransaction.getStatus()));
         getBook.setOnClickListener(new View.OnClickListener() {
@@ -212,6 +216,7 @@ public class TransactionFragment extends Fragment {
         sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 new TransactionService().createMessage(currTransaction.getId(), AppData.loggedUser.getUserId(),
                         finalMessageText.getText().toString());
             }
@@ -267,6 +272,7 @@ public class TransactionFragment extends Fragment {
 
     @Subscribe
     public void onUserResult(UserEvent event) {
+        if (event.result != null)
         mCallbackUser.onUserSelected(event.result.body());
     }
 

@@ -99,8 +99,8 @@ public class HistoryFragment extends Fragment{
             HashMap<String, String> tempTransaction = new HashMap<>();
 
             transactionData.add(t);
-            tempTransaction.put("title", String.valueOf("User " + t.getUserId()));
-            tempTransaction.put("author", String.valueOf("Owner " + t.getOwnerId()));
+            tempTransaction.put("title", String.valueOf("User: " + t.getUserName()));
+            tempTransaction.put("author", String.valueOf("My summary: " + t.getOwnerSummary()));
             transactionList.add(tempTransaction);
         }
         adapter = new SimpleAdapter(

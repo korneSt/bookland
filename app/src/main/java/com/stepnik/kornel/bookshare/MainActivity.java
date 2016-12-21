@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
@@ -74,8 +75,6 @@ public class MainActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
         if (currentFragment != null) {
             getSupportFragmentManager().putFragment(outState, "CURR_FRAG", currentFragment);
-
-
         }
     }
 
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity
 
         if (savedInstanceState != null) {
             Fragment fragment = getSupportFragmentManager().getFragment(savedInstanceState, "CURR_FRAG");
-            getSupportFragmentManager().beginTransaction().replace(R.id.flContent,fragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.flContent,fragment).addToBackStack(null).commit();
             currentFragment = fragment;
         } else {
             navigationView.setCheckedItem(0);
@@ -130,7 +129,7 @@ public class MainActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.flContent, fragment, "DISP_FRAG");
+                transaction.replace(R.id.flContent, fragment, "DISP_FRAG").addToBackStack(null);
                 transaction.commit();
             }
         });
@@ -257,8 +256,21 @@ public class MainActivity extends AppCompatActivity
         try {
             fab.setVisibility(View.VISIBLE);
             fragment = (Fragment) fragmentClass.newInstance();
-            currentFragment = fragment;
-            getSupportFragmentManager().beginTransaction().replace(R.id.flContent, fragment, "DISP_FRAG").commit();
+             currentFragment = fragment;
+            Log.d("count ", String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
+//            getSupportFragmentManager().popBackStack();
+//            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.flContent, fragment, "DISP_FRAG");
+            if (fragmentClass.equals(MainFragment.class)) {
+                transaction.commit();
+            } else {
+                getSupportFragmentManager().popBackStack("Current", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                transaction.addToBackStack("Current").commit();
+                transaction.commit();
+
+            }
+//            getSupportFragmentManager().beginTransaction().replace(R.id.flContent, fragment, "DISP_FRAG").addToBackStack(null).commit();
 
             getSupportActionBar().setTitle(title);
             Log.d("ID", String.valueOf(fragment.getId()));
@@ -346,7 +358,7 @@ public class MainActivity extends AppCompatActivity
 
     public void changeFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.flContent, fragment).commit();
+        transaction.replace(R.id.flContent, fragment).addToBackStack(null).commit();
     }
 
     @Override
@@ -366,7 +378,7 @@ public class MainActivity extends AppCompatActivity
         fragment.setArguments(args);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.flContent, fragment, "DISP_FRAG");
-        fragmentTransaction.commit();
+        fragmentTransaction.addToBackStack(null).commit();
     }
 
     @Override
@@ -385,7 +397,7 @@ public class MainActivity extends AppCompatActivity
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.flContent, fragment, "DISP_FRAG");
-        fragmentTransaction.commit();
+        fragmentTransaction.addToBackStack(null).commit();
     }
 
     @Override
@@ -404,7 +416,7 @@ public class MainActivity extends AppCompatActivity
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.flContent, fragment, "DISP_FRAG");
-        fragmentTransaction.commit();
+        fragmentTransaction.addToBackStack(null).commit();
     }
 
     @Subscribe
